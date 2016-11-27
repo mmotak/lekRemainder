@@ -3,6 +3,7 @@ package pl.com.mmotak.lekremainder.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import pl.com.mmotak.lekremainder.activities.AddDrugActivity;
 import pl.com.mmotak.lekremainder.activities.MainActivity;
 
 /**
@@ -13,4 +14,6 @@ import pl.com.mmotak.lekremainder.activities.MainActivity;
 @Component(modules = {DiStorageModule.class,DiApplicationModule.class})
 public interface DiComponent {
     void inject(MainActivity mainActivity);
+
+    void inject(AddDrugActivity addDrugActivity);
 }
