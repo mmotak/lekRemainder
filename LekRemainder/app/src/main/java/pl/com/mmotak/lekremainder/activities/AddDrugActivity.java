@@ -1,8 +1,8 @@
 package pl.com.mmotak.lekremainder.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,9 +22,7 @@ public class AddDrugActivity extends BaseNavDrawerActivity {
         ((LekRemainderApplication) getApplication()).getDiComponent().inject(this);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show());
+        fab.setOnClickListener(view -> startActivity(new Intent(this, NewDrugActivity.class)));
     }
 
 }
