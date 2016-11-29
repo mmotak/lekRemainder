@@ -6,11 +6,16 @@ package pl.com.mmotak.lekremainder.models;
 
 public class Drug {
 
+    public String name;
+    public String type;
+
     public Drug() {
         name = "";
         type = "";
     }
 
-    public String name;
-    public String type;
+    public Drug(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
 }

@@ -17,7 +17,6 @@ public class NewDrugActivity extends BaseNavDrawerActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_drug);
         viewModel = new NewDrugViewModel(this);
         binding.setDrugViewModel(viewModel);
-        //setContentView(R.layout.activity_new_drug);
     }
 
 }
