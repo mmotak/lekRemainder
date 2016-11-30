@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.AddDrugActivity"
+            android:name=".activities.DrugsActivity"
             android:label="@string/title_activity_add_drug"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity

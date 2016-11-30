@@ -11,4 +11,6 @@ public interface IDataProvider {
     String getName();
 
     void addNewDrug(Drug drug);
+
+    rx.Observable<Drug> getObservable();
 }
