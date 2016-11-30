@@ -51,7 +51,6 @@
                 android:scrollbars="vertical"
                 app:layoutManager="@{LayoutManagers.linear()}"
                 app:adapter="@{drugsViewModel.adapter}"
-                app:items="@{drugsViewModel.drugs}"
                 app:visibility="@{drugsViewModel.recyclerViewVisibility}"
                 tools:listitem="@layout/item_drug"/>
 

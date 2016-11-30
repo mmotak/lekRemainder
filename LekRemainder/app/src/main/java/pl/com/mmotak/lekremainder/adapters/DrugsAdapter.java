@@ -1,5 +1,6 @@
 package pl.com.mmotak.lekremainder.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
@@ -21,12 +22,11 @@ import pl.com.mmotak.lekremainder.viewModels.ItemDrugViewModel;
 
 public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHolder> {
 
-    private ObservableArrayList<Drug> list;
+    private List<Drug> list = new ArrayList<>();
     private Context context;
 
-    public DrugsAdapter(Context context, ObservableArrayList<Drug> drugs) {
+    public DrugsAdapter(Context context) {
         this.context = context;
-        this.list = drugs;
     }
 
     @Override public DrugViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,16 +43,16 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
         return list.size();
     }
 
-//    public void setDrugList(List<Drug> inputList) {
-//        list.clear();
-//        list.addAll(inputList);
-//        notifyDataSetChanged();
-//    }
-//
-//    public void addDrug(Drug drug) {
-//        list.add(drug);
-//        notifyDataSetChanged();
-//    }
+    public void setDrugList(List<Drug> inputList) {
+        list.clear();
+        list.addAll(inputList);
+        notifyDataSetChanged();
+    }
+
+    public void addDrug(Drug drug) {
+        list.add(drug);
+        notifyDataSetChanged();
+    }
 
     public static class DrugViewHolder extends RecyclerView.ViewHolder {
         final ItemDrugBinding binding;

@@ -26,13 +26,14 @@ public class DrugsViewModel extends AbstractBaseViewModel {
     @Inject IDataProvider dataProvider;
 
     public ObservableInt recyclerViewVisibility = new ObservableInt(View.VISIBLE);
-    public ObservableArrayList<Drug> drugs = new ObservableArrayList<>();
 
     private Subscription subscription;
+    private DrugsAdapter adapter;
 
     public DrugsViewModel(Activity baseActivity) {
         super(baseActivity);
         getDiComponent().inject(this);
+        adapter = new DrugsAdapter(getBaseActivity());
         subscribe();
     }
 
@@ -41,21 +42,19 @@ public class DrugsViewModel extends AbstractBaseViewModel {
     }
 
     public RecyclerView.Adapter getAdapter() {
-        return new DrugsAdapter(getBaseActivity(), drugs);
+        return adapter;
     }
 
     private void subscribe() {
         subscription = dataProvider.getObservable().subscribe(new Subscriber<Drug>() {
             @Override public void onCompleted() {
-                recyclerViewVisibility.set(View.VISIBLE);
             }
 
             @Override public void onError(Throwable e) {
-                recyclerViewVisibility.set(View.INVISIBLE);
             }
 
             @Override public void onNext(Drug drug) {
-                drugs.add(drug);
+                adapter.addDrug(drug);
             }
         });
     }
