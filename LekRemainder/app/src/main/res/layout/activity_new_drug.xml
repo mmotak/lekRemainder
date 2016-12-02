@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="pl.com.mmotak.lekremainder.activities.NewDrugActivity">
 
     <data>
+
         <variable
             name="drugViewModel"
             type="pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel"/>
@@ -12,11 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:fitsSystemWindows="true"
-        android:orientation="vertical"
-        tools:context="pl.com.mmotak.lekremainder.activities.NewDrugActivity">
-
+        android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -32,51 +30,113 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@{drugViewModel.name}"/>
+            android:layout_height="match_parent">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@={drugViewModel.name}"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@{drugViewModel.type}"/>
+                <!-- Drug Name -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="@{drugViewModel.name}"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@={drugViewModel.type}"/>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="@={drugViewModel.name}"/>
 
-        <Button
-            android:text="Save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="@{drugViewModel.enableButton}"
-            android:onClick="@{drugViewModel.onSaveClick}"/>
+                <!-- Drug Type -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="@{drugViewModel.type}"/>
 
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="@={drugViewModel.type}"/>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_weight="3"
+                        android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}"
+                        android:checked="@={drugViewModel.startDateEnable}"
+                        android:text="@string/start_date"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:gravity="center_vertical"
+                        android:layout_weight="7"
+                        android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}"
+                        android:text="@{drugViewModel.startDate}"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="10"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:layout_gravity="left"
+                        android:textColor="@{drugViewModel.endDateEnable ? @color/primary_text : @color/secondary_text}"
+                        android:checked="@={drugViewModel.endDateEnable}"
+                        android:onClick="@{drugViewModel.endDateCheckClick}"
+                        android:text="@string/end_date"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7"
+                        android:layout_gravity="right"
+                        android:gravity="center_vertical"
+                        android:textColor="@{drugViewModel.endDateEnable ? @color/primary_text : @color/secondary_text}"
+                        android:onClick="@{drugViewModel.endDateClick}"
+                        android:text="@{drugViewModel.endDate}"/>
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{drugViewModel.enableButton}"
+                    android:onClick="@{drugViewModel.onSaveClick}"
+                    android:text="Save"/>
+
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>
 

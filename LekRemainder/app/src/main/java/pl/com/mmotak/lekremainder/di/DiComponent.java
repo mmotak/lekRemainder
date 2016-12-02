@@ -13,7 +13,7 @@ import pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel;
  */
 
 @Singleton
-@Component(modules = {DiStorageModule.class,DiApplicationModule.class})
+@Component(modules = {DiStorageModule.class,DiApplicationModule.class,DiUiModules.class})
 public interface DiComponent {
     void inject(MainActivity mainActivity);
 
