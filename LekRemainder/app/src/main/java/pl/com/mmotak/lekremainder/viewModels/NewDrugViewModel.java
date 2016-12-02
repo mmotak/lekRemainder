@@ -52,6 +52,35 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         getBaseActivity().finish();
     }
 
+    public void startDateCheckClick(View view) {
+        if (startDateEnable.get()) {
+            startDateClick(view);
+        } else {
+            drug.enableStartDate(false);
+        }
+    }
+
+    public void startDateClick(View view) {
+        if (startDateEnable.get()) {
+            dateUIProvider.showDialog(getBaseActivity(),
+                    drug.getStartDate(),
+                    new IDateUIProvider.IResult() {
+
+                        @Override public void onSuccess(DateTime dateTime) {
+                            drug.setStartDate(dateTime);
+                            drug.enableStartDate(true);
+                            startDate.set(getFormattedDate(dateTime));
+                            startDateEnable.set(true);
+                        }
+
+                        @Override public void onFail() {
+                            startDateEnable.set(false);
+                            drug.enableStartDate(false);
+                        }
+                    });
+        }
+    }
+
     public void endDateCheckClick(View view) {
         if (endDateEnable.get()) {
             endDateClick(view);

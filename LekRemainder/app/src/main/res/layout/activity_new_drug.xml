@@ -9,6 +9,8 @@
         <variable
             name="drugViewModel"
             type="pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel"/>
+
+        <import type="pl.com.mmotak.lekremainder.bindings.DialogManager"/>
     </data>
 
     <LinearLayout
@@ -87,6 +89,7 @@
                         android:layout_weight="3"
                         android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}"
                         android:checked="@={drugViewModel.startDateEnable}"
+                        android:onClick="@{drugViewModel.startDateCheckClick}"
                         android:text="@string/start_date"/>
 
                     <TextView
@@ -95,6 +98,7 @@
                         android:layout_gravity="right"
                         android:gravity="center_vertical"
                         android:layout_weight="7"
+                        android:onClick="@{drugViewModel.startDateClick}"
                         android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}"
                         android:text="@{drugViewModel.startDate}"/>
                 </LinearLayout>
