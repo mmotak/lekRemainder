@@ -97,10 +97,21 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="right"
                         android:gravity="center_vertical"
-                        android:layout_weight="7"
+                        android:layout_weight="6"
                         android:onClick="@{drugViewModel.startDateClick}"
                         android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}"
                         android:text="@{drugViewModel.startDate}"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="right"
+                        app:errorMessage="@{drugViewModel.errorMsg}"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -124,12 +135,23 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="7"
+                        android:layout_weight="6"
                         android:layout_gravity="right"
                         android:gravity="center_vertical"
                         android:textColor="@{drugViewModel.endDateEnable ? @color/primary_text : @color/secondary_text}"
                         android:onClick="@{drugViewModel.endDateClick}"
                         android:text="@{drugViewModel.endDate}"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="right"
+                        app:errorMessage="@{drugViewModel.errorMsg}"
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"/>
                 </LinearLayout>
 
                 <Button

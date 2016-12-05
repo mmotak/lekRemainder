@@ -40,7 +40,7 @@ public class Drug {
     }
 
     public void setEndDate(DateTime dateTime) {
-        startDate.setValue(dateTime);
+        endDate.setValue(dateTime);
     }
 
     public boolean isStartDateEnable() {

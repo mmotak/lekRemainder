@@ -34,6 +34,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     public ObservableBoolean startDateEnable;
     public ObservableBoolean endDateEnable;
 
+    public ObservableField<String> errorMsg;
+
     public ObservableBoolean enableButton;
 
     private Drug drug = new Drug();
@@ -57,7 +59,10 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
             startDateClick(view);
         } else {
             drug.enableStartDate(false);
+            errorMsg.set("");
         }
+
+        enableSaveButton();
     }
 
     public void startDateClick(View view) {
@@ -71,11 +76,13 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
                             drug.enableStartDate(true);
                             startDate.set(getFormattedDate(dateTime));
                             startDateEnable.set(true);
+                            validateDates();
                         }
 
                         @Override public void onFail() {
                             startDateEnable.set(false);
                             drug.enableStartDate(false);
+                            errorMsg.set("");
                         }
                     });
         }
@@ -86,7 +93,10 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
             endDateClick(view);
         } else {
             drug.enableEndDate(false);
+            errorMsg.set("");
         }
+
+        enableSaveButton();
     }
 
     public void endDateClick(View view) {
@@ -100,11 +110,13 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
                             drug.enableEndDate(true);
                             endDate.set(getFormattedDate(dateTime));
                             endDateEnable.set(true);
+                            validateDates();
                         }
 
                         @Override public void onFail() {
                             endDateEnable.set(false);
                             drug.enableEndDate(false);
+                            errorMsg.set("");
                         }
                     });
         }
@@ -112,6 +124,22 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
     private String getFormattedDate(DateTime dateTime) {
         return dateTime == null ? "" : dateTime.toString(dateTimeFormat);
+    }
+
+    private void validateDates() {
+        if (startDateEnable.get() && endDateEnable.get()) {
+            DateTime start = drug.getStartDate();
+            DateTime end = drug.getEndDate();
+            if (start.isAfter(end)) {
+                errorMsg.set("Start Date is after end date!");
+            } else {
+                errorMsg.set("");
+            }
+        } else {
+            errorMsg.set("");
+        }
+
+        enableSaveButton();
     }
 
     private void clearFields() {
@@ -125,6 +153,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
         startDate = new ObservableField<>(getFormattedDate(drug.getStartDate()));
         endDate = new ObservableField<>(getFormattedDate(drug.getEndDate()));
+
+        errorMsg = new ObservableField<>("");
     }
 
     private void setUpProperty() {
@@ -146,6 +176,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     }
 
     private void enableSaveButton() {
-        enableButton.set(name.get().length() > 0 && type.get().length() > 0);
+        boolean isNoErrorMsg = !(errorMsg.get().length() > 0);
+        enableButton.set(name.get().length() > 0 && type.get().length() > 0 && isNoErrorMsg);
     }
 }

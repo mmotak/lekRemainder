@@ -1,10 +1,8 @@
 package pl.com.mmotak.lekremainder.bindings;
 
-import android.databinding.BaseObservable;
 import android.databinding.BindingAdapter;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  * Created by mmotak on 02.12.2016.
@@ -20,6 +18,14 @@ public class DialogBindings {
     @BindingAdapter("dialogOnClick")
     public static void setDialogOnClick(View view, DialogManager.Factory factory) {
         view.setOnClickListener(factory.create(view, null));
+    }
+
+    @BindingAdapter("errorMessage")
+    public static void setErrorMessage(TextView tv, CharSequence error) {
+        if (error.length() > 0) {
+            tv.setError(error);
+        }
+        else tv.setError(null);
     }
 
 //    @BindingAdapter(value={"dialogOnClick", "dialogResult"})
