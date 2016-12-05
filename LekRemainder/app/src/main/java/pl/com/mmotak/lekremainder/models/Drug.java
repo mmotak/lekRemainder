@@ -11,17 +11,24 @@ public class Drug {
     public String name;
     public String type;
 
+    public int doses;
+    public int dosesEveryH;
+
     private EnableObject<DateTime> startDate;
     private EnableObject<DateTime> endDate;
 
-    public Drug(String name, String type) {
+    public Drug(String name, String type, int doses, int dosesEveryH) {
         this.name = name;
         this.type = type;
+        this.doses = doses;
+        this.dosesEveryH = dosesEveryH;
     }
 
     public Drug() {
         name = "";
         type = "";
+        doses = 3;
+        dosesEveryH = 4;
 
         startDate = new EnableObject<>();
         endDate = new EnableObject<>();

@@ -1,6 +1,7 @@
 package pl.com.mmotak.lekremainder.bindings;
 
 import android.databinding.BindingAdapter;
+import android.databinding.InverseBindingAdapter;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,6 +27,16 @@ public class DialogBindings {
             tv.setError(error);
         }
         else tv.setError(null);
+    }
+
+    @BindingAdapter("android:text")
+    public static void setText(TextView view, int value) {
+        view.setText(Integer.toString(value));
+    }
+
+    @InverseBindingAdapter(attribute = "android:text")
+    public static int getText(TextView view) {
+        return Integer.parseInt(view.getText().toString());
     }
 
 //    @BindingAdapter(value={"dialogOnClick", "dialogResult"})

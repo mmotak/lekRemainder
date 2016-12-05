@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,6 +29,9 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     public ObservableField<String> name;
     public ObservableField<String> type;
 
+    public ObservableInt doses;
+    public ObservableInt dosesEveryH;
+
     public ObservableField<String> startDate;
     public ObservableField<String> endDate;
 
@@ -38,13 +42,14 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
     public ObservableBoolean enableButton;
 
-    private Drug drug = new Drug();
+    private Drug drug;
     private String dateTimeFormat;
 
-    public NewDrugViewModel(Activity baseActivity) {
+    public NewDrugViewModel(Activity baseActivity, Drug drug) {
         super(baseActivity);
         getDiComponent().inject(this);
-        clearFields();
+        this.drug = drug;
+        clearFields(this.drug);
         setUpProperty();
     }
 
@@ -142,23 +147,38 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         enableSaveButton();
     }
 
-    private void clearFields() {
+    private void clearFields(Drug drug) {
 
         enableButton = new ObservableBoolean(false);
-        name = new ObservableField<>("");
-        type = new ObservableField<>("");
+        name = new ObservableField<>(drug.name);
+        type = new ObservableField<>(drug.type);
 
-        startDateEnable = new ObservableBoolean(false);
-        endDateEnable = new ObservableBoolean(false);
+        startDateEnable = new ObservableBoolean(drug.isStartDateEnable());
+        endDateEnable = new ObservableBoolean(drug.isEndDateEnable());
 
         startDate = new ObservableField<>(getFormattedDate(drug.getStartDate()));
         endDate = new ObservableField<>(getFormattedDate(drug.getEndDate()));
+
+        doses = new ObservableInt(drug.doses);
+        dosesEveryH = new ObservableInt(drug.dosesEveryH);
 
         errorMsg = new ObservableField<>("");
     }
 
     private void setUpProperty() {
         dateTimeFormat = getBaseActivity().getString(R.string.date_format);
+
+        doses.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override public void onPropertyChanged(Observable observable, int i) {
+                drug.doses = doses.get();
+            }
+        });
+
+        dosesEveryH.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override public void onPropertyChanged(Observable observable, int i) {
+                drug.dosesEveryH = dosesEveryH.get();
+            }
+        });
 
         name.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override public void onPropertyChanged(Observable observable, int i) {
@@ -173,6 +193,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
                 enableSaveButton();
             }
         });
+
+        enableSaveButton();
     }
 
     private void enableSaveButton() {

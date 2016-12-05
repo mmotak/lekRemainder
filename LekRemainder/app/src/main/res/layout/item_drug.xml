@@ -6,9 +6,11 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
-            type="pl.com.mmotak.lekremainder.viewModels.ItemDrugViewModel" />
+            type="pl.com.mmotak.lekremainder.viewModels.ItemDrugViewModel"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -29,32 +31,147 @@
             android:onClick="@{viewModel.onItemClick}"
             android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_repo_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="12dp"
-            android:text="@{viewModel.name}"
-            android:textSize="20sp"
-            tools:text="Drug Name" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="12dp"
+                android:text="@{viewModel.name}"
+                android:textSize="20sp"
+                tools:text="Drug Name"/>
 
-        <TextView
-            android:id="@+id/text_repo_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="12dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:paddingTop="10dp"
-            android:text="@{viewModel.type}"
-            android:textColor="@color/secondary_text"
-            android:textSize="14sp"
-            tools:text="drug type" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="10dp"
+                android:text="@{viewModel.type}"
+                android:textColor="@color/secondary_text"
+                android:textSize="14sp"
+                tools:text="drug type"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="10dp"
+                android:visibility="@{viewModel.startDate ? View.VISIBLE : View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="4dp"
+                    android:text="@string/start_date"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    tools:text="@string/start_date"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@{viewModel.startDateFormatted}"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    tools:text="2014-05-12"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="10dp"
+                android:visibility="@{viewModel.endDate ? View.VISIBLE : View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="4dp"
+                    android:text="@string/end_date"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    tools:text="@string/end_date"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@{viewModel.endDateFormatted}"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    tools:text="2019-05-12"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="4dp"
+                    android:text="@string/drug_doses"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    tools:text="@string/drug_doses"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@{viewModel.doses}"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    tools:text="3"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingRight="4dp"
+                    android:text="@string/drug_hours"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    tools:text="@string/drug_hours"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@{viewModel.dosesEveryH}"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    tools:text="4"/>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+
+    </android.support.v7.widget.CardView>
 </layout>
