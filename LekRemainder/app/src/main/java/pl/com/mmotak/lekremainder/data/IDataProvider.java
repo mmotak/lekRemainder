@@ -1,6 +1,6 @@
 package pl.com.mmotak.lekremainder.data;
 
-import pl.com.mmotak.lekremainder.models.Drug;
+import pl.com.mmotak.lekremainder.models.DrugOld;
 
 /**
  * Created by mmotak on 25.11.2016.
@@ -10,7 +10,7 @@ public interface IDataProvider {
 
     String getName();
 
-    void addNewDrug(Drug drug);
+    void addNewDrug(DrugOld drug);
 
-    rx.Observable<Drug> getObservable();
+    rx.Observable<DrugOld> getObservable();
 }

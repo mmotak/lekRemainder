@@ -60,6 +60,10 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.3'
 
+    // requerry
+    compile 'io.requery:requery:1.0.2'
+    compile 'io.requery:requery-android:1.0.2'
+    apt 'io.requery:requery-processor:1.0.2'
 
     testCompile 'junit:junit:4.12'
 }

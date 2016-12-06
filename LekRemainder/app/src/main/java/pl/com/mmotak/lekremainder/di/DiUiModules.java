@@ -9,9 +9,11 @@ import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
  * Created by mmotak on 02.12.2016.
  */
 
-@Module public class DiUiModules {
+@Module
+public class DiUiModules {
 
-    @Provides public IDateUIProvider getDateUIProvider() {
+    @Provides
+    public IDateUIProvider getDateUIProvider() {
         return new DateDialogPickerProvider();
     }
 }

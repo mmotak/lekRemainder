@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
-import pl.com.mmotak.lekremainder.models.Drug;
+import pl.com.mmotak.lekremainder.models.DrugOld;
 
 /**
  * Created by mmotak on 28.11.2016.
@@ -42,10 +42,10 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
     public ObservableBoolean enableButton;
 
-    private Drug drug;
+    private DrugOld drug;
     private String dateTimeFormat;
 
-    public NewDrugViewModel(Activity baseActivity, Drug drug) {
+    public NewDrugViewModel(Activity baseActivity, DrugOld drug) {
         super(baseActivity);
         getDiComponent().inject(this);
         this.drug = drug;
@@ -147,7 +147,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         enableSaveButton();
     }
 
-    private void clearFields(Drug drug) {
+    private void clearFields(DrugOld drug) {
 
         enableButton = new ObservableBoolean(false);
         name = new ObservableField<>(drug.name);

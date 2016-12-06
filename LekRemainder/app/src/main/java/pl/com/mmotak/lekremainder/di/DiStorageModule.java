@@ -1,9 +1,12 @@
 package pl.com.mmotak.lekremainder.di;
 
+import android.content.Context;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import pl.com.mmotak.lekremainder.data.DataBaseProvider;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.MemoryDataProvider;
 
@@ -16,7 +19,8 @@ public class DiStorageModule {
 
     @Provides
     @Singleton
-    public IDataProvider getDataProvider() {
-        return new MemoryDataProvider();
+    public IDataProvider getDataProvider(Context context) {
+        //return new MemoryDataProvider();
+        return new DataBaseProvider(context);
     }
 }

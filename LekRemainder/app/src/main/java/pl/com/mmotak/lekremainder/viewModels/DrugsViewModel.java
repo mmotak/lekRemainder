@@ -2,8 +2,6 @@ package pl.com.mmotak.lekremainder.viewModels;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.databinding.Observable;
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableInt;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,7 +11,7 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.activities.NewDrugActivity;
 import pl.com.mmotak.lekremainder.adapters.DrugsAdapter;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
-import pl.com.mmotak.lekremainder.models.Drug;
+import pl.com.mmotak.lekremainder.models.DrugOld;
 import rx.Subscriber;
 import rx.Subscription;
 
@@ -46,14 +44,14 @@ public class DrugsViewModel extends AbstractBaseViewModel {
     }
 
     private void subscribe() {
-        subscription = dataProvider.getObservable().subscribe(new Subscriber<Drug>() {
+        subscription = dataProvider.getObservable().subscribe(new Subscriber<DrugOld>() {
             @Override public void onCompleted() {
             }
 
             @Override public void onError(Throwable e) {
             }
 
-            @Override public void onNext(Drug drug) {
+            @Override public void onNext(DrugOld drug) {
                 adapter.addDrug(drug);
             }
         });

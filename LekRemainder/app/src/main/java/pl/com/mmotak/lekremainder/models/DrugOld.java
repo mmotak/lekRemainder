@@ -6,7 +6,7 @@ import org.joda.time.DateTime;
  * Created by mmotak on 28.11.2016.
  */
 
-public class Drug {
+public class DrugOld {
 
     public String name;
     public String type;
@@ -17,14 +17,14 @@ public class Drug {
     private EnableObject<DateTime> startDate;
     private EnableObject<DateTime> endDate;
 
-    public Drug(String name, String type, int doses, int dosesEveryH) {
+    public DrugOld(String name, String type, int doses, int dosesEveryH) {
         this.name = name;
         this.type = type;
         this.doses = doses;
         this.dosesEveryH = dosesEveryH;
     }
 
-    public Drug() {
+    public DrugOld() {
         name = "";
         type = "";
         doses = 3;
