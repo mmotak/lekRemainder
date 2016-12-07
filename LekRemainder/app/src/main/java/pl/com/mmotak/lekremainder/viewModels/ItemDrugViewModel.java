@@ -7,7 +7,7 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 
 import pl.com.mmotak.lekremainder.R;
-import pl.com.mmotak.lekremainder.models.DrugOld;
+import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
  * Created by mmotak on 29.11.2016.
@@ -15,11 +15,11 @@ import pl.com.mmotak.lekremainder.models.DrugOld;
 
 public class ItemDrugViewModel {
 
-    private final DrugOld drug;
+    private final Drug drug;
     private final Context context;
     private final String dateTimeFormat;
 
-    public ItemDrugViewModel(Context context, DrugOld drug) {
+    public ItemDrugViewModel(Context context, Drug drug) {
         this.drug = drug;
         this.context = context;
         this.dateTimeFormat = context.getString(R.string.date_format);
@@ -30,11 +30,11 @@ public class ItemDrugViewModel {
     }
 
     public String getName() {
-        return drug.name;
+        return drug.getName();
     }
 
     public String getType() {
-        return drug.type;
+        return drug.getType();
     }
 
     public boolean isStartDate() {
@@ -53,12 +53,12 @@ public class ItemDrugViewModel {
         return getDateTimeFormat(drug.getEndDate());
     }
 
-    public int getDoses() {
-        return drug.doses;
+    public int getDosesNo() {
+        return drug.getDosesNo();
     }
 
     public int getDosesEveryH() {
-        return drug.dosesEveryH;
+        return drug.getDosesEveryH();
     }
 
     private String getDateTimeFormat(DateTime dateTime) {

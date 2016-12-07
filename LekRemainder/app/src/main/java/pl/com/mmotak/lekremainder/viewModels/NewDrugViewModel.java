@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
-import pl.com.mmotak.lekremainder.models.DrugOld;
+import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
  * Created by mmotak on 28.11.2016.
@@ -29,7 +29,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     public ObservableField<String> name;
     public ObservableField<String> type;
 
-    public ObservableInt doses;
+    public ObservableInt dosesNo;
     public ObservableInt dosesEveryH;
 
     public ObservableField<String> startDate;
@@ -42,10 +42,10 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
     public ObservableBoolean enableButton;
 
-    private DrugOld drug;
+    private Drug drug;
     private String dateTimeFormat;
 
-    public NewDrugViewModel(Activity baseActivity, DrugOld drug) {
+    public NewDrugViewModel(Activity baseActivity, Drug drug) {
         super(baseActivity);
         getDiComponent().inject(this);
         this.drug = drug;
@@ -63,7 +63,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         if (startDateEnable.get()) {
             startDateClick(view);
         } else {
-            drug.enableStartDate(false);
+            drug.setStartDateEnable(false);
             errorMsg.set("");
         }
 
@@ -78,7 +78,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
                         @Override public void onSuccess(DateTime dateTime) {
                             drug.setStartDate(dateTime);
-                            drug.enableStartDate(true);
+                            drug.setStartDateEnable(true);
                             startDate.set(getFormattedDate(dateTime));
                             startDateEnable.set(true);
                             validateDates();
@@ -86,7 +86,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
                         @Override public void onFail() {
                             startDateEnable.set(false);
-                            drug.enableStartDate(false);
+                            drug.setStartDateEnable(false);
                             errorMsg.set("");
                         }
                     });
@@ -97,7 +97,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         if (endDateEnable.get()) {
             endDateClick(view);
         } else {
-            drug.enableEndDate(false);
+            drug.setEndDateEnable(false);
             errorMsg.set("");
         }
 
@@ -112,7 +112,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
                         @Override public void onSuccess(DateTime dateTime) {
                             drug.setEndDate(dateTime);
-                            drug.enableEndDate(true);
+                            drug.setEndDateEnable(true);
                             endDate.set(getFormattedDate(dateTime));
                             endDateEnable.set(true);
                             validateDates();
@@ -120,7 +120,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
                         @Override public void onFail() {
                             endDateEnable.set(false);
-                            drug.enableEndDate(false);
+                            drug.setEndDateEnable(false);
                             errorMsg.set("");
                         }
                     });
@@ -147,11 +147,11 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         enableSaveButton();
     }
 
-    private void clearFields(DrugOld drug) {
+    private void clearFields(Drug drug) {
 
         enableButton = new ObservableBoolean(false);
-        name = new ObservableField<>(drug.name);
-        type = new ObservableField<>(drug.type);
+        name = new ObservableField<>(drug.getName());
+        type = new ObservableField<>(drug.getType());
 
         startDateEnable = new ObservableBoolean(drug.isStartDateEnable());
         endDateEnable = new ObservableBoolean(drug.isEndDateEnable());
@@ -159,8 +159,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         startDate = new ObservableField<>(getFormattedDate(drug.getStartDate()));
         endDate = new ObservableField<>(getFormattedDate(drug.getEndDate()));
 
-        doses = new ObservableInt(drug.doses);
-        dosesEveryH = new ObservableInt(drug.dosesEveryH);
+        dosesNo = new ObservableInt(drug.getDosesNo());
+        dosesEveryH = new ObservableInt(drug.getDosesEveryH());
 
         errorMsg = new ObservableField<>("");
     }
@@ -168,28 +168,28 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     private void setUpProperty() {
         dateTimeFormat = getBaseActivity().getString(R.string.date_format);
 
-        doses.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        dosesNo.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override public void onPropertyChanged(Observable observable, int i) {
-                drug.doses = doses.get();
+                drug.setDosesNo(dosesNo.get());
             }
         });
 
         dosesEveryH.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override public void onPropertyChanged(Observable observable, int i) {
-                drug.dosesEveryH = dosesEveryH.get();
+                drug.setDosesEveryH(dosesEveryH.get());
             }
         });
 
         name.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override public void onPropertyChanged(Observable observable, int i) {
-                drug.name = name.get();
+                drug.setName(name.get());
                 enableSaveButton();
             }
         });
 
         type.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override public void onPropertyChanged(Observable observable, int i) {
-                drug.type = type.get();
+                drug.setType(type.get());
                 enableSaveButton();
             }
         });

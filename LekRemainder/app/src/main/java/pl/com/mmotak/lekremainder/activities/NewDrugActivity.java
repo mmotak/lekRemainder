@@ -5,7 +5,8 @@ import android.os.Bundle;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.ActivityNewDrugBinding;
-import pl.com.mmotak.lekremainder.models.DrugOld;
+import pl.com.mmotak.lekremainder.entities.DbDrugEntity;
+import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel;
 
 public class NewDrugActivity extends BaseNavDrawerActivity {
@@ -16,8 +17,12 @@ public class NewDrugActivity extends BaseNavDrawerActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_drug);
-        viewModel = new NewDrugViewModel(this, new DrugOld());
+        viewModel = new NewDrugViewModel(this, createNewDrug());
         binding.setDrugViewModel(viewModel);
+    }
+
+    private Drug createNewDrug() {
+        return new Drug();
     }
 
 }

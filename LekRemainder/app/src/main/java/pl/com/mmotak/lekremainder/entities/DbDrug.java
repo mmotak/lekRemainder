@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 
 import java.util.Set;
 
+import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
@@ -19,35 +20,24 @@ import io.requery.Persistable;
  */
 
 @Entity
-public interface Drug extends Observable, Parcelable, Persistable {
+public interface DbDrug extends Observable, Parcelable, Persistable {
 
     @Key @Generated
     int getId();
 
-    @Bindable
     String getName();
-
-    @Bindable
     String getType();
-
-    @Bindable
     int getDosesNo();
-
-    @Bindable
     int getDosesEveryH();
 
-    @Bindable
-    DateTime getStartDate();
-
-    @Bindable
+    @Column(nullable = true, length = 8)
+    String getStartDate();
     boolean isStartDateEnable();
 
-    @Bindable
-    DateTime getEndDate();
-
-    @Bindable
+    @Column(nullable = true, length = 8)
+    String getEndDate();
     boolean isEndDateEnable();
 
 //    @OneToMany(mappedBy = "alarms")
-//    Set<Dose> getDoses();
+//    Set<DbDose> getDosesNo();
 }

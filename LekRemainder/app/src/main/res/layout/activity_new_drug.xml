@@ -44,7 +44,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
-                <!-- DrugOld Name -->
+                <!-- DbDrug Name -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:inputType="textPersonName"
                     android:text="@={drugViewModel.name}"/>
 
-                <!-- DrugOld Type -->
+                <!-- DbDrug Type -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
                         android:layout_marginBottom="@dimen/activity_vertical_margin"
                         android:inputType="numberSigned"
                         android:maxLength="3"
-                        android:text="@={drugViewModel.doses}"/>
+                        android:text="@={drugViewModel.dosesNo}"/>
                 </LinearLayout>
 
                 <LinearLayout

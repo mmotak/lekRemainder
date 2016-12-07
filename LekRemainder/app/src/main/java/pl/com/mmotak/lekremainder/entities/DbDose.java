@@ -17,7 +17,7 @@ import io.requery.Persistable;
  */
 
 @Entity
-public interface Dose extends Observable, Parcelable, Persistable {
+public interface DbDose extends Observable, Parcelable, Persistable {
 
     @Key @Generated
     int getId();
@@ -27,5 +27,5 @@ public interface Dose extends Observable, Parcelable, Persistable {
 
 //    @Bindable
 //    @ManyToOne
-//    Drug getDrug();
+//    DbDrug getDrug();
 }
