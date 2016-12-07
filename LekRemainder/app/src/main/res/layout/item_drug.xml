@@ -46,10 +46,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="12dp"
+                android:paddingBottom="4dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="10dp"
                 android:text="@{viewModel.type}"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp"
@@ -60,10 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="10dp"
                 android:visibility="@{viewModel.startDate ? View.VISIBLE : View.GONE}">
 
                 <TextView
@@ -88,10 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="10dp"
                 android:visibility="@{viewModel.endDate ? View.VISIBLE : View.GONE}">
 
                 <TextView
@@ -117,10 +112,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
+                android:paddingTop="4dp"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="10dp">
+                android:paddingRight="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -145,10 +139,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="10dp">
+                android:paddingRight="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
