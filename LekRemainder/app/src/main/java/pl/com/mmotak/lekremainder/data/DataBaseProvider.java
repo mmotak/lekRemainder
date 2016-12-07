@@ -11,7 +11,6 @@ import io.requery.rx.RxSupport;
 import io.requery.rx.SingleEntityStore;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
-import io.requery.sql.TableCreationMode;
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.converters.DrugConverter;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
@@ -67,7 +66,7 @@ public class DataBaseProvider implements IDataProvider {
     public Observable<List<Drug>> getObservable() {
         return getData()
                 .select(DbDrug.class)
-                //.orderBy(DbDrug.getName().asc)
+                .orderBy(DbDrugEntity.NAME.asc())
                 .get()
                 .toSelfObservable()
                 .map(Result::toList)
@@ -76,7 +75,19 @@ public class DataBaseProvider implements IDataProvider {
                 .toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .asObservable(); //?
+                ; //?
+    }
+
+    public Observable<List<DbDrug>> getO() {
+        return getData()
+                .select(DbDrug.class)
+                .orderBy(DbDrugEntity.NAME.asc())
+                .get()
+                .toSelfObservable()
+                .map(Result::toList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                ;
     }
 
     private SingleEntityStore<Persistable> getData() {

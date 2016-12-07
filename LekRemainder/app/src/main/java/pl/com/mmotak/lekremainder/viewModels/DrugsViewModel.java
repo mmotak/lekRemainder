@@ -4,15 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.ObservableInt;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.requery.query.Result;
 import pl.com.mmotak.lekremainder.activities.NewDrugActivity;
 import pl.com.mmotak.lekremainder.adapters.DrugsAdapter;
+import pl.com.mmotak.lekremainder.converters.DrugConverter;
+import pl.com.mmotak.lekremainder.data.DataBaseProvider;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
+import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Drug;
 import rx.Subscriber;
 import rx.Subscription;
@@ -23,7 +28,8 @@ import rx.Subscription;
 
 public class DrugsViewModel extends AbstractBaseViewModel {
 
-    @Inject IDataProvider dataProvider;
+    @Inject
+    IDataProvider dataProvider;
 
     public ObservableInt recyclerViewVisibility = new ObservableInt(View.VISIBLE);
 
@@ -49,6 +55,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
         subscription = dataProvider.getObservable()
                 .subscribe(new Subscriber<List<Drug>>() {
             @Override public void onCompleted() {
+                Log.d("XXX", "onCompleted");
             }
 
             @Override public void onError(Throwable e) {
@@ -60,6 +67,37 @@ public class DrugsViewModel extends AbstractBaseViewModel {
                 //adapter.addDrug(drug);
             }
         });
+
+
+//        subscription = ((DataBaseProvider) dataProvider)
+//                .getO()
+//                .subscribe(new Subscriber<List<DbDrug>>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        Log.d("XXX", "onCompleted");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<DbDrug> dbDrugResult) {
+//
+//                        adapter.setDrugList(null);
+//
+//                        //List<DbDrug> x = dbDrugResult.toList();
+//                        for (DbDrug item : dbDrugResult) {
+//                            adapter.addDrug(DrugConverter.toDrug(item));
+//                        }
+//
+//                        //adapter.setDrugList(drugs);
+//                        //adapter.addDrug(drug);
+//                    }
+//                });
+
+
     }
 
     public void onDestroy() {

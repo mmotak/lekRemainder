@@ -43,7 +43,9 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
 
     public void setDrugList(List<Drug> inputList) {
         list.clear();
-        list.addAll(inputList);
+        if (inputList != null) {
+            list.addAll(inputList);
+        }
         notifyDataSetChanged();
     }
 
