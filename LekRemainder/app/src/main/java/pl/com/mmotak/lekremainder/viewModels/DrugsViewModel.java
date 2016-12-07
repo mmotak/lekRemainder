@@ -53,7 +53,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
 
     private void subscribe() {
         subscription = dataProvider.getObservable()
-                .subscribe(new Subscriber<List<Drug>>() {
+                .subscribe(new Subscriber<List<DbDrug>>() {
             @Override public void onCompleted() {
                 Log.d("XXX", "onCompleted");
             }
@@ -62,42 +62,11 @@ public class DrugsViewModel extends AbstractBaseViewModel {
                 e.printStackTrace();
             }
 
-            @Override public void onNext(List<Drug> drugs) {
+            @Override public void onNext(List<DbDrug> drugs) {
                 adapter.setDrugList(drugs);
                 //adapter.addDrug(drug);
             }
         });
-
-
-//        subscription = ((DataBaseProvider) dataProvider)
-//                .getO()
-//                .subscribe(new Subscriber<List<DbDrug>>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        Log.d("XXX", "onCompleted");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<DbDrug> dbDrugResult) {
-//
-//                        adapter.setDrugList(null);
-//
-//                        //List<DbDrug> x = dbDrugResult.toList();
-//                        for (DbDrug item : dbDrugResult) {
-//                            adapter.addDrug(DrugConverter.toDrug(item));
-//                        }
-//
-//                        //adapter.setDrugList(drugs);
-//                        //adapter.addDrug(drug);
-//                    }
-//                });
-
-
     }
 
     public void onDestroy() {

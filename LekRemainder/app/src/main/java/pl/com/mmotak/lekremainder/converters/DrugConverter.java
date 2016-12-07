@@ -30,8 +30,10 @@ public class DrugConverter {
         drug.setDosesEveryH(dbDrug.getDosesEveryH());
         drug.setDosesNo(dbDrug.getDosesNo());
 
-        drug.setStartDate(parse(dbDrug.getStartDate()));
-        drug.setEndDate(parse(dbDrug.getEndDate()));
+        //drug.setStartDate(parse(dbDrug.getStartDate()));
+        //drug.setEndDate(parse(dbDrug.getEndDate()));
+        drug.setStartDate(dbDrug.getStartDate());
+        drug.setEndDate(dbDrug.getEndDate());
 
         drug.setStartDateEnable(dbDrug.isStartDateEnable());
         drug.setEndDateEnable(dbDrug.isEndDateEnable());
@@ -54,8 +56,11 @@ public class DrugConverter {
         dbDrugEntity.setStartDateEnable(drug.isStartDateEnable());
         dbDrugEntity.setEndDateEnable(drug.isEndDateEnable());
 
-        dbDrugEntity.setStartDate(parse(drug.getStartDate()));
-        dbDrugEntity.setEndDate(parse(drug.getEndDate()));
+//        dbDrugEntity.setStartDate(parse(drug.getStartDate()));
+//        dbDrugEntity.setEndDate(parse(drug.getEndDate()));
+
+        dbDrugEntity.setStartDate((drug.getStartDate()));
+        dbDrugEntity.setEndDate((drug.getEndDate()));
 
         return dbDrugEntity;
     }

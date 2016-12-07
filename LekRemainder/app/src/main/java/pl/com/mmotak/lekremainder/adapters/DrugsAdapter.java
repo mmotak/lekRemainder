@@ -11,6 +11,7 @@ import java.util.List;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.ItemDrugBinding;
+import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.viewModels.ItemDrugViewModel;
 
@@ -20,7 +21,7 @@ import pl.com.mmotak.lekremainder.viewModels.ItemDrugViewModel;
 
 public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHolder> {
 
-    private List<Drug> list = new ArrayList<>();
+    private List<DbDrug> list = new ArrayList<>();
     private Context context;
 
     public DrugsAdapter(Context context) {
@@ -41,7 +42,7 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
         return list.size();
     }
 
-    public void setDrugList(List<Drug> inputList) {
+    public void setDrugList(List<DbDrug> inputList) {
         list.clear();
         if (inputList != null) {
             list.addAll(inputList);
@@ -49,7 +50,7 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
         notifyDataSetChanged();
     }
 
-    public void addDrug(Drug drug) {
+    public void addDrug(DbDrug drug) {
         list.add(drug);
         notifyDataSetChanged();
     }

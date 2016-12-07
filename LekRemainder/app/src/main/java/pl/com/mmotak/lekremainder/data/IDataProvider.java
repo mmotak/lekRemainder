@@ -2,6 +2,7 @@ package pl.com.mmotak.lekremainder.data;
 
 import java.util.List;
 
+import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
@@ -12,7 +13,7 @@ public interface IDataProvider {
 
     String getName();
 
-    void addNewDrug(Drug drug);
+    void addNewDrug(DbDrug drug);
 
-    rx.Observable<List<Drug>> getObservable();
+    rx.Observable<List<DbDrug>> getObservable();
 }

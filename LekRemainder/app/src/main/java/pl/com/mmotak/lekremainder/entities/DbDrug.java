@@ -9,11 +9,13 @@ import org.joda.time.DateTime;
 import java.util.Set;
 
 import io.requery.Column;
+import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import io.requery.OneToMany;
 import io.requery.Persistable;
+import pl.com.mmotak.lekremainder.converters.DateTimeConverter;
 
 /**
  * Created by mmotak on 06.12.2016.
@@ -31,11 +33,13 @@ public interface DbDrug extends Observable, Parcelable, Persistable {
     int getDosesEveryH();
 
     @Column(nullable = true, length = 8)
-    String getStartDate();
+    @Convert(DateTimeConverter.class)
+    DateTime getStartDate();
     boolean isStartDateEnable();
 
     @Column(nullable = true, length = 8)
-    String getEndDate();
+    @Convert(DateTimeConverter.class)
+    DateTime getEndDate();
     boolean isEndDateEnable();
 
 //    @OneToMany(mappedBy = "alarms")

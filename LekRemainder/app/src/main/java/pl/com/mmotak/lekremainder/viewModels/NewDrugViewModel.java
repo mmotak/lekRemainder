@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
+import pl.com.mmotak.lekremainder.entities.DbDrug;
+import pl.com.mmotak.lekremainder.entities.DbDrugEntity;
 import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
@@ -42,13 +44,13 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
     public ObservableBoolean enableButton;
 
-    private Drug drug;
+    private DbDrugEntity drug;
     private String dateTimeFormat;
 
-    public NewDrugViewModel(Activity baseActivity, Drug drug) {
+    public NewDrugViewModel(Activity baseActivity, DbDrug drug) {
         super(baseActivity);
         getDiComponent().inject(this);
-        this.drug = drug;
+        this.drug = (DbDrugEntity) drug;
         clearFields(this.drug);
         setUpProperty();
     }
@@ -147,7 +149,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         enableSaveButton();
     }
 
-    private void clearFields(Drug drug) {
+    private void clearFields(DbDrug drug) {
 
         enableButton = new ObservableBoolean(false);
         name = new ObservableField<>(drug.getName());

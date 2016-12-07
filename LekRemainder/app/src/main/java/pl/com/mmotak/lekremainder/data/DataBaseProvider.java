@@ -41,7 +41,7 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
-    public void addNewDrug(Drug drug) {
+    public void addNewDrug(DbDrug drug) {
 
 //        getData().findByKey(DbDrug.class, drug.getId())
 //                .subscribeOn(Schedulers.newThread())
@@ -56,29 +56,14 @@ public class DataBaseProvider implements IDataProvider {
             throw new NullPointerException("New DbDrug cannot be NULL!");
         }
         if (drug.getId() == 0) {
-            getData().insert(DrugConverter.toDbDrug(drug)).subscribe();
+            getData().insert(drug).subscribe();
         } else {
-            getData().update(DrugConverter.toDbDrug(drug)).subscribe();
+            getData().update(drug).subscribe();
         }
     }
 
     @Override
-    public Observable<List<Drug>> getObservable() {
-        return getData()
-                .select(DbDrug.class)
-                .orderBy(DbDrugEntity.NAME.asc())
-                .get()
-                .toSelfObservable()
-                .map(Result::toList)
-                .flatMapIterable(dbDrugs -> dbDrugs)
-                .map(dbDrug -> DrugConverter.toDrug(dbDrug))
-                .toList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                ; //?
-    }
-
-    public Observable<List<DbDrug>> getO() {
+    public Observable<List<DbDrug>> getObservable() {
         return getData()
                 .select(DbDrug.class)
                 .orderBy(DbDrugEntity.NAME.asc())
