@@ -15,5 +15,7 @@ public interface IDataProvider {
 
     void addNewDrug(DbDrug drug);
 
+    DbDrug getDbDrugById(Integer id);
+
     rx.Observable<List<DbDrug>> getObservable();
 }

@@ -65,5 +65,12 @@ dependencies {
     compile 'io.requery:requery-android:1.0.2'
     apt 'io.requery:requery-processor:1.0.2'
 
+    // dart + Henson
+    compile 'com.f2prateek.dart:dart:2.0.1'
+    apt 'com.f2prateek.dart:dart-processor:2.0.1'
+
+    compile 'com.f2prateek.dart:henson:2.0.1'
+    apt 'com.f2prateek.dart:henson-processor:2.0.1'
+
     testCompile 'junit:junit:4.12'
 }

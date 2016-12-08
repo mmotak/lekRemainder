@@ -24,6 +24,11 @@ public class MemoryDataProvider implements IDataProvider {
         //drugBehaviorSubject.onNext(drug);
     }
 
+    @Override
+    public DbDrug getDbDrugById(Integer id) {
+        return drugs.get(id);
+    }
+
     @Override public rx.Observable<List<DbDrug>> getObservable() {
         //return drugBehaviorSubject.asObservable();
         return rx.Observable.just(drugs).asObservable();

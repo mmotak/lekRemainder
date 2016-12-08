@@ -43,15 +43,6 @@ public class DataBaseProvider implements IDataProvider {
     @Override
     public void addNewDrug(DbDrug drug) {
 
-//        getData().findByKey(DbDrug.class, drug.getId())
-//                .subscribeOn(Schedulers.newThread())
-//                .flatMap(dbDrug ->
-//                {
-//                    if (dbDrug == null) {
-//                        getData().insert(dbDrug).subscribe();
-//                    }
-//                })
-//                .subscribe();
         if (drug == null) {
             throw new NullPointerException("New DbDrug cannot be NULL!");
         }
@@ -60,6 +51,19 @@ public class DataBaseProvider implements IDataProvider {
         } else {
             getData().update(drug).subscribe();
         }
+    }
+
+    @Override
+    public DbDrug getDbDrugById(Integer id) {
+
+        DbDrug dbDrug = getData()
+                .select(DbDrug.class)
+                .where(DbDrugEntity.ID.eq(id))
+                .get()
+                .firstOrNull();
+
+        return dbDrug == null ? createNewDrug() : dbDrug;
+
     }
 
     @Override
@@ -73,6 +77,17 @@ public class DataBaseProvider implements IDataProvider {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 ;
+    }
+
+    private DbDrug createNewDrug() {
+        DbDrugEntity drug = new DbDrugEntity();
+
+        drug.setName("");
+        drug.setType("");
+        drug.setDosesEveryH(4);
+        drug.setDosesNo(3);
+
+        return drug;
     }
 
     private SingleEntityStore<Persistable> getData() {

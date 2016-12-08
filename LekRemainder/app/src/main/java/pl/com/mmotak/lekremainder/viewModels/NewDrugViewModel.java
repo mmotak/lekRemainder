@@ -47,10 +47,10 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     private DbDrugEntity drug;
     private String dateTimeFormat;
 
-    public NewDrugViewModel(Activity baseActivity, DbDrug drug) {
+    public NewDrugViewModel(Activity baseActivity, Integer id) {
         super(baseActivity);
         getDiComponent().inject(this);
-        this.drug = (DbDrugEntity) drug;
+        this.drug = (DbDrugEntity) dataProvider.getDbDrugById(id);
         clearFields(this.drug);
         setUpProperty();
     }

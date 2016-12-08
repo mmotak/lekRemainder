@@ -7,6 +7,7 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 
 import pl.com.mmotak.lekremainder.R;
+import pl.com.mmotak.lekremainder.activities.Henson;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Drug;
 
@@ -27,7 +28,13 @@ public class ItemDrugViewModel {
     }
 
     public void onItemClick(View view) {
-        Toast.makeText(context, "You clicked on " + drug.toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "You clicked on ("+drug.getId()+") " + drug.toString(), Toast.LENGTH_LONG).show();
+
+        view.getContext().startActivity(Henson.with(view.getContext())
+                .gotoNewDrugActivity()
+                .drugID(new Integer(drug.getId()))
+                .build()
+        );
     }
 
     public String getName() {
