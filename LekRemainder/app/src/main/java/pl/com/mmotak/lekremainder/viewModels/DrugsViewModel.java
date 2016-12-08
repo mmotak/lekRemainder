@@ -12,6 +12,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.requery.query.Result;
+import pl.com.mmotak.lekremainder.activities.Henson;
 import pl.com.mmotak.lekremainder.activities.NewDrugActivity;
 import pl.com.mmotak.lekremainder.adapters.DrugsAdapter;
 import pl.com.mmotak.lekremainder.converters.DrugConverter;
@@ -44,7 +45,11 @@ public class DrugsViewModel extends AbstractBaseViewModel {
     }
 
     public void onAddNewDrugClick(View view) {
-        getBaseActivity().startActivity(new Intent(getBaseActivity(), NewDrugActivity.class));
+        view.getContext().startActivity(Henson.with(view.getContext())
+                .gotoNewDrugActivity()
+                //.drugID(0)
+                .build()
+        );
     }
 
     public RecyclerView.Adapter getAdapter() {

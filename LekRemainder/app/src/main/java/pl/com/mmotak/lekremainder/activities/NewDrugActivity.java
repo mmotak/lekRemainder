@@ -3,6 +3,7 @@ package pl.com.mmotak.lekremainder.activities;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
+import com.android.annotations.Nullable;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
 
@@ -16,6 +17,7 @@ import pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel;
 public class NewDrugActivity extends BaseNavDrawerActivity {
 
     @InjectExtra
+    @Nullable
     public Integer drugID = 0;
 
     private ActivityNewDrugBinding binding;
