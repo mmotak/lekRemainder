@@ -14,8 +14,10 @@
     <string name="save_button">Save</string>
     <string name="drug_type">Drug type:</string>
     <string name="drug_name">Drug name:</string>
-    <string name="drug_doses">Doses:</string>
-    <string name="drug_hours">Doses every:</string>
+    <string name="drug_doses">Doses per day:</string>
+    <string name="drug_break_hours">Doses every hour:</string>
+    <string name="drug_at_hours">Doses at hours:</string>
 
     <string name="date_format">yyyy-MM-dd</string>
+    <string name="time_format">HH:mm</string>
 </resources>

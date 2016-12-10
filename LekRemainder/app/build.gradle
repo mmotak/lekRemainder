@@ -73,4 +73,5 @@ dependencies {
     apt 'com.f2prateek.dart:henson-processor:2.0.1'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.6.1'
 }

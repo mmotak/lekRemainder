@@ -25,14 +25,17 @@ import pl.com.mmotak.lekremainder.models.Drug;
 
 public class NewDrugViewModel extends AbstractBaseViewModel {
 
-    @Inject IDataProvider dataProvider;
-    @Inject IDateUIProvider dateUIProvider;
+    @Inject
+    IDataProvider dataProvider;
+    @Inject
+    IDateUIProvider dateUIProvider;
 
     public ObservableField<String> name;
     public ObservableField<String> type;
 
     public ObservableInt dosesNo;
     public ObservableInt dosesEveryH;
+    public ObservableField<String> dosesHours;
 
     public ObservableField<String> startDate;
     public ObservableField<String> endDate;
@@ -41,15 +44,20 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     public ObservableBoolean endDateEnable;
 
     public ObservableField<String> errorMsg;
+    public ObservableField<String> dosesNoErrorMsg;
 
     public ObservableBoolean enableButton;
 
     private DbDrugEntity drug;
     private String dateTimeFormat;
+    private String localTimeFormat;
 
     public NewDrugViewModel(Activity baseActivity, Integer id) {
         super(baseActivity);
         getDiComponent().inject(this);
+
+        dateTimeFormat = getBaseActivity().getString(R.string.date_format);
+        localTimeFormat = getBaseActivity().getString(R.string.time_format);
         this.drug = (DbDrugEntity) dataProvider.getDbDrugById(id);
         clearFields(this.drug);
         setUpProperty();
@@ -78,7 +86,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
                     drug.getStartDate(),
                     new IDateUIProvider.IResult() {
 
-                        @Override public void onSuccess(DateTime dateTime) {
+                        @Override
+                        public void onSuccess(DateTime dateTime) {
                             drug.setStartDate(dateTime);
                             drug.setStartDateEnable(true);
                             startDate.set(getFormattedDate(dateTime));
@@ -86,7 +95,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
                             validateDates();
                         }
 
-                        @Override public void onFail() {
+                        @Override
+                        public void onFail() {
                             startDateEnable.set(false);
                             drug.setStartDateEnable(false);
                             errorMsg.set("");
@@ -112,7 +122,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
                     drug.getEndDate(),
                     new IDateUIProvider.IResult() {
 
-                        @Override public void onSuccess(DateTime dateTime) {
+                        @Override
+                        public void onSuccess(DateTime dateTime) {
                             drug.setEndDate(dateTime);
                             drug.setEndDateEnable(true);
                             endDate.set(getFormattedDate(dateTime));
@@ -120,7 +131,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
                             validateDates();
                         }
 
-                        @Override public void onFail() {
+                        @Override
+                        public void onFail() {
                             endDateEnable.set(false);
                             drug.setEndDateEnable(false);
                             errorMsg.set("");
@@ -164,33 +176,44 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         dosesNo = new ObservableInt(drug.getDosesNo());
         dosesEveryH = new ObservableInt(drug.getDosesEveryH());
 
+        dosesHours = new ObservableField<>(drug.getTakingTime().toString());
+
         errorMsg = new ObservableField<>("");
+        dosesNoErrorMsg = new ObservableField<>("");
     }
 
     private void setUpProperty() {
-        dateTimeFormat = getBaseActivity().getString(R.string.date_format);
 
         dosesNo.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override public void onPropertyChanged(Observable observable, int i) {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
                 drug.setDosesNo(dosesNo.get());
+                if (dosesNo.get() == 0) {
+                    dosesNoErrorMsg.set("Cannot be 0!");
+                } else {
+                    dosesNoErrorMsg.set("");
+                }
             }
         });
 
         dosesEveryH.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override public void onPropertyChanged(Observable observable, int i) {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
                 drug.setDosesEveryH(dosesEveryH.get());
             }
         });
 
         name.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override public void onPropertyChanged(Observable observable, int i) {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
                 drug.setName(name.get());
                 enableSaveButton();
             }
         });
 
         type.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override public void onPropertyChanged(Observable observable, int i) {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
                 drug.setType(type.get());
                 enableSaveButton();
             }
@@ -200,7 +223,8 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     }
 
     private void enableSaveButton() {
-        boolean isNoErrorMsg = !(errorMsg.get().length() > 0);
+        boolean isNoErrorMsg = !(errorMsg.get().length() > 0)
+                && !(dosesNoErrorMsg.get().length() > 0);
         enableButton.set(name.get().length() > 0 && type.get().length() > 0 && isNoErrorMsg);
     }
 }

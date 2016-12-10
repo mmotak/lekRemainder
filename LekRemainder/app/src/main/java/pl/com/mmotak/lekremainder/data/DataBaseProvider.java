@@ -2,6 +2,8 @@ package pl.com.mmotak.lekremainder.data;
 
 import android.content.Context;
 
+import org.joda.time.LocalTime;
+
 import java.util.List;
 
 import io.requery.Persistable;
@@ -86,6 +88,8 @@ public class DataBaseProvider implements IDataProvider {
         drug.setType("");
         drug.setDosesEveryH(4);
         drug.setDosesNo(3);
+
+        drug.setTakingTime(new LocalTime(8,0,0));
 
         return drug;
     }

@@ -22,7 +22,6 @@ public interface DbDose extends Observable, Parcelable, Persistable {
     @Key @Generated
     int getId();
 
-    @Bindable
     LocalTime getTime();
 
 //    @Bindable

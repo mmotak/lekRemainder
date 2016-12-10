@@ -5,6 +5,7 @@ import android.databinding.Observable;
 import android.os.Parcelable;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import io.requery.Key;
 import io.requery.OneToMany;
 import io.requery.Persistable;
 import pl.com.mmotak.lekremainder.converters.DateTimeConverter;
+import pl.com.mmotak.lekremainder.converters.LocalTimeConverter;
 
 /**
  * Created by mmotak on 06.12.2016.
@@ -41,6 +43,10 @@ public interface DbDrug extends Observable, Parcelable, Persistable {
     @Convert(DateTimeConverter.class)
     DateTime getEndDate();
     boolean isEndDateEnable();
+
+    @Column(length = 6)
+    @Convert(LocalTimeConverter.class)
+    LocalTime getTakingTime();
 
 //    @OneToMany(mappedBy = "alarms")
 //    Set<DbDose> getDosesNo();

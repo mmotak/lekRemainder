@@ -25,8 +25,7 @@ public class DialogBindings {
     public static void setErrorMessage(TextView tv, CharSequence error) {
         if (error.length() > 0) {
             tv.setError(error);
-        }
-        else tv.setError(null);
+        } else tv.setError(null);
     }
 
     @BindingAdapter("android:text")
@@ -36,7 +35,12 @@ public class DialogBindings {
 
     @InverseBindingAdapter(attribute = "android:text")
     public static int getText(TextView view) {
-        return Integer.parseInt(view.getText().toString());
+        try {
+            return Integer.parseInt(view.getText().toString());
+        } catch (NumberFormatException e) {
+            view.setText("0");
+            return 0;
+        }
     }
 
 //    @BindingAdapter(value={"dialogOnClick", "dialogResult"})
