@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        tools:context="pl.com.mmotak.lekremainder.activities.NewDrugActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="drugViewModel"
-            type="pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel"/>
+            type="pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel" />
 
-        <import type="pl.com.mmotak.lekremainder.bindings.DialogManager"/>
+        <import type="pl.com.mmotak.lekremainder.bindings.DialogManager" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:context="pl.com.mmotak.lekremainder.activities.NewDrugActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -28,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.AppBarLayout>
 
@@ -49,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="@string/drug_name"/>
+                    android:text="@string/drug_name" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -57,14 +58,14 @@
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="@={drugViewModel.name}"/>
+                    android:text="@={drugViewModel.name}" />
 
                 <!-- DbDrug Type -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="@string/drug_type"/>
+                    android:text="@string/drug_type" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -72,7 +73,7 @@
                     android:layout_marginBottom="@dimen/activity_vertical_margin"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="@={drugViewModel.type}"/>
+                    android:text="@={drugViewModel.type}" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -90,7 +91,7 @@
                         android:checked="@={drugViewModel.startDateEnable}"
                         android:onClick="@{drugViewModel.startDateCheckClick}"
                         android:text="@string/start_date"
-                        android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}"/>
+                        android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -100,7 +101,7 @@
                         android:gravity="center_vertical"
                         android:onClick="@{drugViewModel.startDateClick}"
                         android:text="@{drugViewModel.startDate}"
-                        android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}"/>
+                        android:textColor="@{drugViewModel.startDateEnable ? @color/primary_text : @color/secondary_text}" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -111,7 +112,7 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:gravity="center_vertical"
-                        app:errorMessage="@{drugViewModel.errorMsg}"/>
+                        app:errorMessage="@{drugViewModel.errorMsg}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -130,7 +131,7 @@
                         android:checked="@={drugViewModel.endDateEnable}"
                         android:onClick="@{drugViewModel.endDateCheckClick}"
                         android:text="@string/end_date"
-                        android:textColor="@{drugViewModel.endDateEnable ? @color/primary_text : @color/secondary_text}"/>
+                        android:textColor="@{drugViewModel.endDateEnable ? @color/primary_text : @color/secondary_text}" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -140,7 +141,7 @@
                         android:gravity="center_vertical"
                         android:onClick="@{drugViewModel.endDateClick}"
                         android:text="@{drugViewModel.endDate}"
-                        android:textColor="@{drugViewModel.endDateEnable ? @color/primary_text : @color/secondary_text}"/>
+                        android:textColor="@{drugViewModel.endDateEnable ? @color/primary_text : @color/secondary_text}" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -151,7 +152,7 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:gravity="center_vertical"
-                        app:errorMessage="@{drugViewModel.errorMsg}"/>
+                        app:errorMessage="@{drugViewModel.errorMsg}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -165,7 +166,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
-                        android:text="@string/drug_doses"/>
+                        android:text="@string/drug_doses" />
 
                     <EditText
                         android:layout_width="0dp"
@@ -174,7 +175,7 @@
                         android:inputType="number"
                         android:maxLength="3"
                         android:text="@={drugViewModel.dosesNo}"
-                        app:errorMessage="@{drugViewModel.dosesNoErrorMsg}"/>
+                        app:errorMessage="@{drugViewModel.dosesNoErrorMsg}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -187,15 +188,15 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
-                        android:text="@string/drug_break_hours"/>
+                        android:text="@string/drug_break_hours" />
 
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="7"
-                        android:maxLength="3"
                         android:inputType="number"
-                        android:text="@={drugViewModel.dosesEveryH}"/>
+                        android:maxLength="3"
+                        android:text="@={drugViewModel.dosesEveryH}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -209,7 +210,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
-                        android:text="@string/drug_at_hours"/>
+                        android:text="@string/drug_at_hours" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -217,7 +218,7 @@
                         android:layout_weight="7"
                         android:lines="2"
                         android:text="@{drugViewModel.dosesHours}"
-                        tools:text="8:00 12:00 16:00"/>
+                        tools:text="8:00 12:00 16:00" />
                 </LinearLayout>
 
                 <Button
@@ -225,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:enabled="@{drugViewModel.enableButton}"
                     android:onClick="@{drugViewModel.onSaveClick}"
-                    android:text="@string/save_button"/>
+                    android:text="@string/save_button" />
 
             </LinearLayout>
         </ScrollView>
