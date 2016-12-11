@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.com.mmotak.lekremainder.fragments.TodayDrugsFragment">
+    tools:context="pl.com.mmotak.lekremainder.fragments.SettingsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,11 +15,8 @@
             android:textSize="24sp"
             android:textColor="@color/colorAccent"
             android:layout_centerInParent="true"
-            android:text="@string/hello_blank_fragment" />
+            android:text="@string/to_do" />
 
     </RelativeLayout>
-
-    <!-- TODO: Update blank fragment layout -->
-
 
 </FrameLayout>

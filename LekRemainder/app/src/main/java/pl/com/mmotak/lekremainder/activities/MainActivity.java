@@ -1,10 +1,8 @@
 package pl.com.mmotak.lekremainder.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,64 +10,55 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
-import javax.inject.Inject;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import pl.com.mmotak.lekremainder.R;
-import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
-import pl.com.mmotak.lekremainder.data.IDataProvider;
+import pl.com.mmotak.lekremainder.fragments.DrugsFragment;
+import pl.com.mmotak.lekremainder.fragments.HistoryFragment;
+import pl.com.mmotak.lekremainder.fragments.MyFragmentsLoader;
+import pl.com.mmotak.lekremainder.fragments.SettingsFragment;
+import pl.com.mmotak.lekremainder.fragments.TodayDrugsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @Inject
-    IDataProvider dataProvider;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+    private DrawerLayout drawer;
+    private FrameLayout fragmentLayout;
 
-    @BindView(R.id.textView)
-    TextView textView;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawer;
-    @BindView(R.id.nav_view)
-    NavigationView navigationView;
+    private MyFragmentsLoader fragmentsLoader = new MyFragmentsLoader();
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ButterKnife.bind(this);
-        ((LekRemainderApplication) getApplication()).getDiComponent().inject(this);
-
         setUpViews();
+        fragmentsLoader.addFragment(this, new TodayDrugsFragment());
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     private void setUpViews() {
-        setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        fragmentLayout = (FrameLayout) findViewById(R.id.fragment_layout);
 
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show());
+        setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        textView.setText(dataProvider.getName());
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
-        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
-    @Override public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -77,13 +66,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -97,19 +88,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody") @Override
+    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_today_drugs) {
-            // Handle the camera action
+            fragmentsLoader.replaceFragment(this, new TodayDrugsFragment());
+            //TodayDrugsFragment
         } else if (id == R.id.nav_drugs) {
-            startActivity(new Intent(this, DrugsActivity.class));
+            fragmentsLoader.replaceFragment(this, new DrugsFragment());
+            // DrugsFragment
+            //startActivity(new Intent(this, DrugsActivity.class));
         } else if (id == R.id.nav_history) {
-
+            fragmentsLoader.replaceFragment(this, new HistoryFragment());
+            //HistoryFragmet
         } else if (id == R.id.nav_settings) {
-
+            fragmentsLoader.replaceFragment(this, new SettingsFragment());
+            //SettingsFragment
         }
 
         drawer.closeDrawer(GravityCompat.START);

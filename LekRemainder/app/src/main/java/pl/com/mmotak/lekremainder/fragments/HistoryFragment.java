@@ -1,6 +1,5 @@
 package pl.com.mmotak.lekremainder.fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,12 +9,13 @@ import android.view.ViewGroup;
 import pl.com.mmotak.lekremainder.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by Maciej on 2016-12-11.
  */
-public class DrugsFragment extends Fragment implements IFragment {
+
+public class HistoryFragment extends Fragment implements IFragment {
 
 
-    public DrugsFragment() {
+    public HistoryFragment() {
         // Required empty public constructor
     }
 
@@ -24,12 +24,12 @@ public class DrugsFragment extends Fragment implements IFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_drugs, container, false);
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
     public String getTagName() {
-        return DrugsFragment.class.getSimpleName();
+        return HistoryFragment.class.getSimpleName();
     }
 
     @Override
