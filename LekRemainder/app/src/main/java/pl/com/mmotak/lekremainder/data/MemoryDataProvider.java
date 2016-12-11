@@ -3,9 +3,8 @@ package pl.com.mmotak.lekremainder.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Drug;
-import rx.subjects.BehaviorSubject;
-import rx.subjects.Subject;
 
 /**
  * Created by mmotak on 25.11.2016.
@@ -13,20 +12,26 @@ import rx.subjects.Subject;
 
 public class MemoryDataProvider implements IDataProvider {
 
-    private List<Drug> drugs = new ArrayList<>();
-    private BehaviorSubject<Drug> drugBehaviorSubject = BehaviorSubject.create();
+    private List<DbDrug> drugs = new ArrayList<>();
+    //private BehaviorSubject<DbDrug> drugBehaviorSubject = BehaviorSubject.create();
 
     @Override public String getName() {
         return MemoryDataProvider.class.getName();
     }
 
-    @Override public void addNewDrug(Drug drug) {
+    @Override public void addNewDrug(DbDrug drug) {
         drugs.add(drug);
-        drugBehaviorSubject.onNext(drug);
+        //drugBehaviorSubject.onNext(drug);
     }
 
-    @Override public rx.Observable<Drug> getObservable() {
-        return drugBehaviorSubject.asObservable();
+    @Override
+    public DbDrug getDbDrugById(Integer id) {
+        return drugs.get(id);
+    }
+
+    @Override public rx.Observable<List<DbDrug>> getObservable() {
+        //return drugBehaviorSubject.asObservable();
+        return rx.Observable.just(drugs).asObservable();
     }
 
 }

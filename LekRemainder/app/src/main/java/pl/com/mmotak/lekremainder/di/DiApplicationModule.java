@@ -1,5 +1,7 @@
 package pl.com.mmotak.lekremainder.di;
 
+import android.content.Context;
+
 import dagger.Module;
 import dagger.Provides;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
@@ -20,5 +22,10 @@ public class DiApplicationModule {
     @Provides
     public LekRemainderApplication provideApplication() {
         return app;
+    }
+
+    @Provides
+    public Context getContext() {
+        return app.getApplicationContext();
     }
 }

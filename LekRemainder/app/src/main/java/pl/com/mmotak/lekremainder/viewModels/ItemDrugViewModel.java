@@ -7,6 +7,8 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 
 import pl.com.mmotak.lekremainder.R;
+import pl.com.mmotak.lekremainder.activities.Henson;
+import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
@@ -15,26 +17,32 @@ import pl.com.mmotak.lekremainder.models.Drug;
 
 public class ItemDrugViewModel {
 
-    private final Drug drug;
+    private final DbDrug drug;
     private final Context context;
     private final String dateTimeFormat;
 
-    public ItemDrugViewModel(Context context, Drug drug) {
+    public ItemDrugViewModel(Context context, DbDrug drug) {
         this.drug = drug;
         this.context = context;
         this.dateTimeFormat = context.getString(R.string.date_format);
     }
 
     public void onItemClick(View view) {
-        Toast.makeText(context, "You clicked on " + drug.toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "You clicked on ("+drug.getId()+") " + drug.toString(), Toast.LENGTH_LONG).show();
+
+        view.getContext().startActivity(Henson.with(view.getContext())
+                .gotoNewDrugActivity()
+                .drugID(new Integer(drug.getId()))
+                .build()
+        );
     }
 
     public String getName() {
-        return drug.name;
+        return drug.getName();
     }
 
     public String getType() {
-        return drug.type;
+        return drug.getType();
     }
 
     public boolean isStartDate() {
@@ -53,12 +61,12 @@ public class ItemDrugViewModel {
         return getDateTimeFormat(drug.getEndDate());
     }
 
-    public int getDoses() {
-        return drug.doses;
+    public int getDosesNo() {
+        return drug.getDosesNo();
     }
 
     public int getDosesEveryH() {
-        return drug.dosesEveryH;
+        return drug.getDosesEveryH();
     }
 
     private String getDateTimeFormat(DateTime dateTime) {

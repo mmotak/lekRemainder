@@ -8,37 +8,70 @@ import org.joda.time.DateTime;
 
 public class Drug {
 
-    public String name;
-    public String type;
+    private String name;
+    private String type;
 
-    public int doses;
-    public int dosesEveryH;
+    private int dosesNo;
+    private int dosesEveryH;
 
     private EnableObject<DateTime> startDate;
     private EnableObject<DateTime> endDate;
-
-    public Drug(String name, String type, int doses, int dosesEveryH) {
-        this.name = name;
-        this.type = type;
-        this.doses = doses;
-        this.dosesEveryH = dosesEveryH;
-    }
+    private int id;
 
     public Drug() {
         name = "";
         type = "";
-        doses = 3;
+        dosesNo = 3;
         dosesEveryH = 4;
 
         startDate = new EnableObject<>();
         endDate = new EnableObject<>();
     }
 
-    public void enableStartDate(boolean enable) {
+    public Drug(String name, String type, int dosesNo, int dosesEveryH) {
+        this.name = name;
+        this.type = type;
+        this.dosesNo = dosesNo;
+        this.dosesEveryH = dosesEveryH;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getDosesNo() {
+        return dosesNo;
+    }
+
+    public void setDosesNo(int dosesNo) {
+        this.dosesNo = dosesNo;
+    }
+
+    public int getDosesEveryH() {
+        return dosesEveryH;
+    }
+
+    public void setDosesEveryH(int dosesEveryH) {
+        this.dosesEveryH = dosesEveryH;
+    }
+
+    public void setStartDateEnable(boolean enable) {
         startDate.setEnable(enable);
     }
 
-    public void enableEndDate(boolean enable) {
+    public void setEndDateEnable(boolean enable) {
         endDate.setEnable(enable);
     }
 
@@ -64,6 +97,14 @@ public class Drug {
 
     public DateTime getEndDate() {
         return endDate.getValue();
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }
 

@@ -46,24 +46,21 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="12dp"
+                android:paddingBottom="4dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="10dp"
                 android:text="@{viewModel.type}"
                 android:textColor="@color/secondary_text"
                 android:textSize="14sp"
-                tools:text="drug type"/>
+                tools:text="dbDrug type"/>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="10dp"
                 android:visibility="@{viewModel.startDate ? View.VISIBLE : View.GONE}">
 
                 <TextView
@@ -88,10 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="10dp"
                 android:visibility="@{viewModel.endDate ? View.VISIBLE : View.GONE}">
 
                 <TextView
@@ -117,10 +112,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
+                android:paddingTop="4dp"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="10dp">
+                android:paddingRight="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -134,7 +128,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@{viewModel.doses}"
+                    android:text="@{viewModel.dosesNo}"
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
                     tools:text="3"/>
@@ -145,19 +139,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
                 android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:paddingTop="10dp">
+                android:paddingRight="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingRight="4dp"
-                    android:text="@string/drug_hours"
+                    android:text="@string/drug_break_hours"
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
-                    tools:text="@string/drug_hours"/>
+                    tools:text="@string/drug_break_hours"/>
 
                 <TextView
                     android:layout_width="wrap_content"
