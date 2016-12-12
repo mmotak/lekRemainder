@@ -1,5 +1,6 @@
 package pl.com.mmotak.lekremainder.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -108,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_history) {
             fragmentsLoader.replaceFragment(this, new HistoryFragment());
         } else if (id == R.id.nav_settings) {
-            fragmentsLoader.replaceFragment(this, new SettingsFragment());
+            //fragmentsLoader.replaceFragment(this, new SettingsFragment());
+            startActivity(new Intent(this, EditNewDrugActivity.class));
         }
 
         drawer.closeDrawer(GravityCompat.START);

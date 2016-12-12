@@ -50,8 +50,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
                 //.drugID(0)
                 .build()
         );
-
-        view.getContext().startActivity(new Intent(view.getContext(), NewDrugActivity.class));
+        //view.getContext().startActivity(new Intent(view.getContext(), NewDrugActivity.class));
     }
 
     public RecyclerView.Adapter getAdapter() {

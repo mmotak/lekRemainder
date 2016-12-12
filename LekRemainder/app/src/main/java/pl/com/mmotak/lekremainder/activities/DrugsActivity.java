@@ -4,15 +4,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 
-import butterknife.BindView;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.ActivityDrugsBinding;
 import pl.com.mmotak.lekremainder.viewModels.DrugsViewModel;
 
 public class DrugsActivity extends BaseNavDrawerActivity {
 
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
     private ActivityDrugsBinding binding;
     private DrugsViewModel viewModel;
 
