@@ -14,4 +14,8 @@ public interface BaseViewModel {
     DiComponent getDiComponent();
 
     Activity getBaseActivity();
+
+    void subscribeOnResume();
+
+    void unSubscribeOnPause();
 }

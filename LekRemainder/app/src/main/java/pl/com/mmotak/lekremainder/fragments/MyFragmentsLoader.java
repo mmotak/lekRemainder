@@ -28,8 +28,9 @@ public class MyFragmentsLoader {
             FragmentTransaction fragmentTransaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             fragmentTransaction.replace(R.id.fragment_layout, fragment.asFragment(), fragment.getTagName());
-            fragmentTransaction.addToBackStack(null);
+            //fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+            //fragmentTransaction.disallowAddToBackStack();
         }
     }
 

@@ -50,6 +50,8 @@ public class DrugsViewModel extends AbstractBaseViewModel {
                 //.drugID(0)
                 .build()
         );
+
+        view.getContext().startActivity(new Intent(view.getContext(), NewDrugActivity.class));
     }
 
     public RecyclerView.Adapter getAdapter() {
@@ -60,7 +62,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
         subscription = dataProvider.getObservable()
                 .subscribe(new Subscriber<List<DbDrug>>() {
             @Override public void onCompleted() {
-                Log.d("XXX", "onCompleted");
+                Log.d("DrugsViewModel", "onCompleted");
             }
 
             @Override public void onError(Throwable e) {
@@ -75,6 +77,18 @@ public class DrugsViewModel extends AbstractBaseViewModel {
     }
 
     public void onDestroy() {
+        if (subscription != null && subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
+    }
+
+    @Override
+    public void subscribeOnResume() {
+        subscribe();
+    }
+
+    @Override
+    public void unSubscribeOnPause() {
         if (subscription != null && subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }

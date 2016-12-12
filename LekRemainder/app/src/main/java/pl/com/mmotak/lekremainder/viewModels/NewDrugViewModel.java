@@ -227,4 +227,14 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
                 && !(dosesNoErrorMsg.get().length() > 0);
         enableButton.set(name.get().length() > 0 && type.get().length() > 0 && isNoErrorMsg);
     }
+
+    @Override
+    public void subscribeOnResume() {
+
+    }
+
+    @Override
+    public void unSubscribeOnPause() {
+
+    }
 }

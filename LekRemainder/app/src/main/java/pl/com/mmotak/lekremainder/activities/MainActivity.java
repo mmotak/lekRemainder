@@ -2,7 +2,6 @@ package pl.com.mmotak.lekremainder.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.fragments.DrugsFragment;
@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FrameLayout fragmentLayout;
 
     private MyFragmentsLoader fragmentsLoader = new MyFragmentsLoader();
+
+    private static final int TIME_DELAY = 2000;
+    private static long backPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (backPressedTime + TIME_DELAY > System.currentTimeMillis()) {
+                super.onBackPressed();
+            } else {
+                Toast.makeText(getBaseContext(), R.string.backspace_exit_message, Toast.LENGTH_SHORT).show();
+            }
+            backPressedTime = System.currentTimeMillis();
         }
     }
 
@@ -95,17 +103,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_today_drugs) {
             fragmentsLoader.replaceFragment(this, new TodayDrugsFragment());
-            //TodayDrugsFragment
         } else if (id == R.id.nav_drugs) {
             fragmentsLoader.replaceFragment(this, new DrugsFragment());
-            // DrugsFragment
-            //startActivity(new Intent(this, DrugsActivity.class));
         } else if (id == R.id.nav_history) {
             fragmentsLoader.replaceFragment(this, new HistoryFragment());
-            //HistoryFragmet
         } else if (id == R.id.nav_settings) {
             fragmentsLoader.replaceFragment(this, new SettingsFragment());
-            //SettingsFragment
         }
 
         drawer.closeDrawer(GravityCompat.START);
