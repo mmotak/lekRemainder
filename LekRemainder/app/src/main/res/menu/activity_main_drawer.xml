@@ -13,11 +13,11 @@
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_menu_history"
-            android:title="Slideshow" />
+            android:title="@string/history" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="@string/settings" />
     </group>
 
 </menu>

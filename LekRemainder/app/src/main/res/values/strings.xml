@@ -26,4 +26,6 @@
     <string name="today_drugs_menu">Today</string>
     <string name="drugs">Drugs</string>
     <string name="to_do">to do</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
 </resources>
