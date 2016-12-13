@@ -2,6 +2,7 @@ package pl.com.mmotak.lekremainder.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -17,26 +18,54 @@ import pl.com.mmotak.lekremainder.R;
 public class EditNewDrugActivity extends BaseNavDrawerActivity {
 
     private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private List<Integer> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_new_drug);
+
+        this.list = new ArrayList<>();
+        for (int i = 1; i <=3 ; i++) {
+            list.add(new Integer(i));
+        }
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyViewPagerAdapter(this));
+
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        for (int i: list) {
+            tabLayout.addTab(tabLayout.newTab().setText("Tab "+i));
+        }
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private class MyViewPagerAdapter extends PagerAdapter {
 
         private Context context;
-        private List<Integer> list;
+
 
         public MyViewPagerAdapter(Context context) {
             this.context = context;
-            this.list = new ArrayList<>();
-            for (int i = 1; i <=9 ; i++) {
-                list.add(new Integer(i));
-            }
         }
 
         @Override
