@@ -101,8 +101,8 @@
                     android:maxLength="3"
                     android:text="@={viewModel.dosesEveryH}"
                     android:textColor="@color/primary_text"
-                    app:dialogOnClick="@{DialogManager.toast()}"
-                    app:dialogData="@{viewModel.dialogData}"
+                    app:dialogOnClick="@{DialogManager.numberDialog()}"
+
                     tools:text="3" />
             </LinearLayout>
 

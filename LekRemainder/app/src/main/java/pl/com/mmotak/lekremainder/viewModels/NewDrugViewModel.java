@@ -84,7 +84,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         if (startDateEnable.get()) {
             dateUIProvider.showDialog(getBaseActivity(),
                     drug.getStartDate(),
-                    new IDateUIProvider.IResult() {
+                    new IDateUIProvider.IResult<DateTime>() {
 
                         @Override
                         public void onSuccess(DateTime dateTime) {
@@ -120,7 +120,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         if (endDateEnable.get()) {
             dateUIProvider.showDialog(getBaseActivity(),
                     drug.getEndDate(),
-                    new IDateUIProvider.IResult() {
+                    new IDateUIProvider.IResult<DateTime>() {
 
                         @Override
                         public void onSuccess(DateTime dateTime) {
