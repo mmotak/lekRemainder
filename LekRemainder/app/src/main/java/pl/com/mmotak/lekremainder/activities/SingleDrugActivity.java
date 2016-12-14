@@ -1,23 +1,13 @@
 package pl.com.mmotak.lekremainder.activities;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.PagerAdapter;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.adapters.SingleDrugViewPagerAdapter;
 import pl.com.mmotak.lekremainder.databinding.ActivitySingleDrugBinding;
-import pl.com.mmotak.lekremainder.databinding.SingleDrugLeftTabBinding;
-import pl.com.mmotak.lekremainder.databinding.SingleDrugRightTabBinding;
-import pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel;
 import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
 
 /**

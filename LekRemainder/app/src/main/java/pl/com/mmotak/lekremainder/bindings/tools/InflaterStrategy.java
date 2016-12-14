@@ -1,20 +1,17 @@
 package pl.com.mmotak.lekremainder.bindings.tools;
 
-import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import pl.com.mmotak.lekremainder.R;
-import pl.com.mmotak.lekremainder.databinding.SingleDrugLeftTabBinding;
-import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
+import pl.com.mmotak.lekremainder.viewModels.BaseViewModel;
 
 /**
  * Created by mmotak on 14.12.2016.
  */
 public class InflaterStrategy {
 
-    private static IViewDataBinding create(int position) {
+    private static AbstractViewDataBinder create(int position) {
         switch (position) {
             case 0:
                 return new MainDrugView();
@@ -25,8 +22,12 @@ public class InflaterStrategy {
         }
     }
 
-    public static ViewDataBinding inflate(LayoutInflater inflater, ViewGroup container, SingleDrugViewModel viewModel, int position) {
-        IViewDataBinding dataBinding = InflaterStrategy.create(position);
+    public static int getCount() {
+        return 2;
+    }
+
+    public static ViewDataBinding inflate(LayoutInflater inflater, ViewGroup container, BaseViewModel viewModel, int position) {
+        AbstractViewDataBinder<?,?> dataBinding = InflaterStrategy.create(position);
         dataBinding.inflate(inflater, container);
         dataBinding.setViewModel(viewModel);
         return dataBinding.getViewDataBinding();
