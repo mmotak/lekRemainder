@@ -8,6 +8,9 @@
         <variable
             name="viewModel"
             type="pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel" />
+
+        <import type="pl.com.mmotak.lekremainder.bindings.DialogManager"/>
+<!--        <import type="pl.com.mmotak.lekremainder.bindings.DialogBindings"/> -->
     </data>
 
     <ScrollView
@@ -98,6 +101,8 @@
                     android:maxLength="3"
                     android:text="@={viewModel.dosesEveryH}"
                     android:textColor="@color/primary_text"
+                    app:dialogOnClick="@{DialogManager.toast()}"
+                    app:dialogData="@{viewModel.dialogData}"
                     tools:text="3" />
             </LinearLayout>
 

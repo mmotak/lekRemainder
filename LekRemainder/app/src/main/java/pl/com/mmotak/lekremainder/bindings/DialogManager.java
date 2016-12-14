@@ -12,29 +12,41 @@ import android.widget.Toast;
 
 public class DialogManager {
 
+    public interface IDialogData {
+        Object load();
+        void save(Object o);
+    }
+
     protected DialogManager() {
     }
 
     public interface Factory {
-        View.OnClickListener create(View view, BaseObservable result);
+        View.OnClickListener create(View view, IDialogData data);
     }
 
     public static Factory toast() {
         return new Factory() {
-            @Override public View.OnClickListener create(View view, BaseObservable result) {
+            @Override public View.OnClickListener create(View view, final IDialogData data) {
                 return new View.OnClickListener() {
                     @Override public void onClick(View view) {
 
-                        if (result != null &&  result instanceof ObservableField) {
-                            ObservableField<String> x = (ObservableField<String>) result;
-                            x.set(view.toString());
-                        }
+                        String msg = data == null ? view.toString() :
+                                data.load() == null ? view.toString() : data.load().toString();
 
-                        Toast.makeText(view.getContext(), view.toString(), Toast.LENGTH_LONG)
+                        Toast.makeText(view.getContext(), msg, Toast.LENGTH_LONG)
                                 .show();
                     }
                 };
             }
         };
     }
+
+//    public static Factory dateTimePicker() {
+//        return new Factory() {
+//            @Override
+//            public View.OnClickListener create(View view, IDialogData data) {
+//                return null;
+//            }
+//        }
+//    }
 }

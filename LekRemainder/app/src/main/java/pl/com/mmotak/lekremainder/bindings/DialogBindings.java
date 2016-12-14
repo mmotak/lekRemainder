@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 public class DialogBindings {
 
-    @BindingAdapter("dialogOnClick")
-    public static void setDialogOnClick(View view, DialogManager.Factory factory) {
-        view.setOnClickListener(factory.create(view, null));
+    @BindingAdapter({"dialogOnClick", "dialogData"})
+    public static void setDialogOnClick(View view, DialogManager.Factory factory, DialogManager.IDialogData data) {
+        view.setOnClickListener(factory.create(view, data));
     }
 
     @BindingAdapter("errorMessage")
