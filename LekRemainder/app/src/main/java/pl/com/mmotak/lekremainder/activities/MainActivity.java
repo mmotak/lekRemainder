@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentsLoader.replaceFragment(this, new HistoryFragment());
         } else if (id == R.id.nav_settings) {
             //fragmentsLoader.replaceFragment(this, new SettingsFragment());
-            startActivity(new Intent(this, EditNewDrugActivity.class));
+            startActivity(new Intent(this, SingleDrugActivity.class));
         }
 
         drawer.closeDrawer(GravityCompat.START);
