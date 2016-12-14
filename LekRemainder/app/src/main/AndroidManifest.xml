@@ -34,6 +34,7 @@
 
         <activity
             android:name=".activities.SingleDrugActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_edit_new_drug"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

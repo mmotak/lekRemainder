@@ -16,6 +16,7 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     public ObservableField<String> type = new ObservableField<>("");
 
     public ObservableInt dosesNo = new ObservableInt(1);
+    public ObservableInt dosesEveryH = new ObservableInt(1);;
 
 
     public SingleDrugViewModel(Activity baseActivity) {
