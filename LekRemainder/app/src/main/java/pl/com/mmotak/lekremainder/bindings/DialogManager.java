@@ -7,10 +7,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 import pl.com.mmotak.lekremainder.dialog.DateDialogPickerProvider;
 import pl.com.mmotak.lekremainder.dialog.IDialogResult;
 import pl.com.mmotak.lekremainder.dialog.NumberSeekDialog;
+import pl.com.mmotak.lekremainder.dialog.TimeDialog;
 
 /**
  * Created by mmotak on 02.12.2016.
@@ -84,6 +86,23 @@ public class DialogManager {
                     }
                 };
             }
+        };
+    }
+
+    public static Factory timeDialog() {
+        return (v, data) -> view -> {
+
+            TimeDialog.show((FragmentActivity) view.getContext(), (LocalTime) data.load(), new IDialogResult<LocalTime>() {
+                @Override
+                public void onSuccess(LocalTime time) {
+                    data.save(time);
+                }
+
+                @Override
+                public void onFail() {
+
+                }
+            });
         };
     }
 

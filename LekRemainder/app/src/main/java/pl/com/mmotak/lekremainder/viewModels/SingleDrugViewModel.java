@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.com.mmotak.lekremainder.adapters.SingleDrugDosesAdapter;
+import pl.com.mmotak.lekremainder.bindings.DialogData;
+import pl.com.mmotak.lekremainder.dialog.IDialogResult;
+import pl.com.mmotak.lekremainder.dialog.TimeDialog;
 
 /**
  * Created by mmotak on 13.12.2016.
@@ -26,6 +30,8 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
     public ObservableInt dosesNo = new ObservableInt(1);
     public ObservableInt dosesEveryH = new ObservableInt(1);
+
+    public DialogData<LocalTime> startTime = new DialogData<>(new LocalTime(8,0));
 
     private Observable.OnPropertyChangedCallback dosesPropertyChangedCallback;
 
@@ -48,6 +54,14 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
         dosesNo.addOnPropertyChangedCallback(dosesPropertyChangedCallback);
         dosesEveryH.addOnPropertyChangedCallback(dosesPropertyChangedCallback);
+
+
+        startTime.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                createList();
+            }
+        });
     }
 
     public RecyclerView.Adapter  getAdapter() {
@@ -69,9 +83,9 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     }
 
     private void createList() {
-        list = new ArrayList<LocalTime>();
+        list = new ArrayList<>();
 
-        LocalTime time = new LocalTime(8,0);
+        LocalTime time = startTime.getObject();
         for (int i = 0 ; i < dosesNo.get(); i++) {
             list.add(time.plusHours(i * dosesEveryH.get()));
         }
