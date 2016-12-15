@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import org.joda.time.DateTime;
 
 import pl.com.mmotak.lekremainder.bindings.DialogData;
+import pl.com.mmotak.lekremainder.dialog.NumberSeekDialog;
 
 /**
  * Created by mmotak on 13.12.2016.
@@ -53,6 +55,7 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
     public void onSaveButtonClick(View view) {
         Toast.makeText(getBaseActivity(), "Clicked", Toast.LENGTH_SHORT).show();
+        //NumberSeekDialog.show((FragmentActivity) getBaseActivity(), null);
     }
 
     @Override

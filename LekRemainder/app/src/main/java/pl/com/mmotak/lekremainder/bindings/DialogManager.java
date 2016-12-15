@@ -1,9 +1,7 @@
 package pl.com.mmotak.lekremainder.bindings;
 
 import android.app.Activity;
-import android.database.Observable;
-import android.databinding.BaseObservable;
-import android.databinding.ObservableField;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,8 +9,8 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 
 import pl.com.mmotak.lekremainder.dialog.DateDialogPickerProvider;
-import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
-import pl.com.mmotak.lekremainder.dialog.MyNumberDialog;
+import pl.com.mmotak.lekremainder.dialog.IDialogResult;
+import pl.com.mmotak.lekremainder.dialog.NumberSeekDialog;
 
 /**
  * Created by mmotak on 02.12.2016.
@@ -67,7 +65,7 @@ public class DialogManager {
                             dt = (DateTime) data.load();
                         }
 
-                        p.showDialog((Activity) view.getContext(), dt, new IDateUIProvider.IResult<DateTime>() {
+                        p.showDialog((Activity) view.getContext(), dt, new IDialogResult<DateTime>() {
                             @SuppressWarnings("unchecked")
                             @Override
                             public void onSuccess(DateTime dateTime) {
@@ -89,41 +87,40 @@ public class DialogManager {
         };
     }
 
-    public static Factory numberDialog() {
+    public static Factory numberSeekDialog(int max) {
         return new Factory() {
             @Override
             public View.OnClickListener create(View view, IDialogData data) {
                 return new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Integer no = null;
+                        Integer number = null;
+                        String title = null;
 
                         if (data == null) {
                             if (view instanceof TextView) {
                                 String text = ((TextView) view).getText().toString();
-                                no = Integer.parseInt(text);
+                                title = ((TextView) view).getHint().toString();
+                                number = Integer.parseInt(text);
                             }
                         } else {
-                            no = (Integer) data.load();
+                            number = (Integer) data.load();
                         }
 
 
-                        MyNumberDialog.show(view.getContext(), no, new IDateUIProvider.IResult<Integer>() {
+                        NumberSeekDialog.show((FragmentActivity) view.getContext(), number, max, title, new IDialogResult<Integer>() {
                             @Override
                             public void onSuccess(Integer number) {
-                                if (view instanceof TextView) {
-                                    ((TextView) view).setText(number.toString());
-                                }
                                 if (data != null) {
                                     data.save(number);
+                                } else if (view instanceof TextView) {
+                                    ((TextView) view).setText(number.toString());
                                 }
                             }
 
                             @Override
                             public void onFail() {
-                                if (data != null) {
-                                    data.notify();
-                                }
+
                             }
                         });
                     }

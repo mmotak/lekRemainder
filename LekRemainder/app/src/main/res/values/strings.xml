@@ -36,4 +36,7 @@
     <string name="drug_tab">Drug</string>
     <string name="dose_tab">Doses</string>
 
+    <string name="dialog_positive">OK</string>
+    <string name="dialog_negative">Cancel</string>
+
 </resources>

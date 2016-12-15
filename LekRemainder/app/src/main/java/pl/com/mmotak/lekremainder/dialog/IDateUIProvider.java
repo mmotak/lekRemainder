@@ -10,12 +10,6 @@ import org.joda.time.DateTime;
 
 public interface IDateUIProvider {
 
-    void showDialog(Activity activity, DateTime endDate, IResult<DateTime> iResult);
+    void showDialog(Activity activity, DateTime endDate, IDialogResult<DateTime> iResult);
 
-    interface IResult<T> {
-
-        void onSuccess(T data);
-
-        void onFail();
-    }
 }

@@ -13,7 +13,7 @@ public class DateDialogPickerProvider implements IDateUIProvider {
 
     private static final String TAG = "MyDatePickerFragment";
 
-    @Override public void showDialog(Activity activity, DateTime dateTime, IResult iResult) {
+    @Override public void showDialog(Activity activity, DateTime dateTime, IDialogResult<DateTime> iResult) {
         MyDateDialog dialog = new MyDateDialog();
         dialog.setDate(dateTime);
         dialog.setListener(new MyDateDialog.OnMyDateDialogResult() {

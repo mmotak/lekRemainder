@@ -15,9 +15,9 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
+import pl.com.mmotak.lekremainder.dialog.IDialogResult;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.DbDrugEntity;
-import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
  * Created by mmotak on 28.11.2016.
@@ -84,7 +84,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         if (startDateEnable.get()) {
             dateUIProvider.showDialog(getBaseActivity(),
                     drug.getStartDate(),
-                    new IDateUIProvider.IResult<DateTime>() {
+                    new IDialogResult<DateTime>() {
 
                         @Override
                         public void onSuccess(DateTime dateTime) {
@@ -120,7 +120,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         if (endDateEnable.get()) {
             dateUIProvider.showDialog(getBaseActivity(),
                     drug.getEndDate(),
-                    new IDateUIProvider.IResult<DateTime>() {
+                    new IDialogResult<DateTime>() {
 
                         @Override
                         public void onSuccess(DateTime dateTime) {
