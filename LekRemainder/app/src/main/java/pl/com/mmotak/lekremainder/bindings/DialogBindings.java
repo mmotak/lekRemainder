@@ -27,24 +27,4 @@ public class DialogBindings {
             tv.setError(error);
         } else tv.setError(null);
     }
-
-    @BindingAdapter("android:text")
-    public static void setText(TextView view, int value) {
-        view.setText(Integer.toString(value));
-    }
-
-    @InverseBindingAdapter(attribute = "android:text")
-    public static int getText(TextView view) {
-        try {
-            return Integer.parseInt(view.getText().toString());
-        } catch (NumberFormatException e) {
-            view.setText("0");
-            return 0;
-        }
-    }
-
-//    @BindingAdapter(value={"dialogOnClick", "dialogResult"})
-//    public static void setDialogOnClick(View view, DialogManager.Factory factory, BaseObservable result) {
-//        view.setOnClickListener(factory.create(view, result));
-//    }
 }

@@ -4,14 +4,16 @@ import android.app.Activity;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
-import pl.com.mmotak.lekremainder.bindings.DialogData;
-import pl.com.mmotak.lekremainder.dialog.NumberSeekDialog;
+import java.util.ArrayList;
+import java.util.List;
+
+import pl.com.mmotak.lekremainder.adapters.SingleDrugDosesAdapter;
 
 /**
  * Created by mmotak on 13.12.2016.
@@ -25,37 +27,35 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     public ObservableInt dosesNo = new ObservableInt(1);
     public ObservableInt dosesEveryH = new ObservableInt(1);
 
-    public DialogData<Integer> dialogData = new DialogData<>(new Integer(1));
+    private Observable.OnPropertyChangedCallback dosesPropertyChangedCallback;
 
-//    public ObservableField<DialogManager.IDialogData> dialogData = new ObservableField<>(new DialogManager.IDialogData() {
-//        Object o = null;
-//
-//        @Override
-//        public Object load() {
-//            return o;
-//        }
-//
-//        @Override
-//        public void save(Object o) {
-//            this.o = o;
-//        }
-//    });
+    private SingleDrugDosesAdapter adapter;
+    private List<LocalTime> list = new ArrayList<>();
 
     public SingleDrugViewModel(Activity baseActivity) {
         super(baseActivity);
 
-        dialogData.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        list.add(new LocalTime(8,0));
+        adapter = new SingleDrugDosesAdapter();
+        adapter.setList(list);
+
+        dosesPropertyChangedCallback = new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                // ?
-                int x = propertyId;
+                createList();
             }
-        });
+        };
+
+        dosesNo.addOnPropertyChangedCallback(dosesPropertyChangedCallback);
+        dosesEveryH.addOnPropertyChangedCallback(dosesPropertyChangedCallback);
+    }
+
+    public RecyclerView.Adapter  getAdapter() {
+        return adapter;
     }
 
     public void onSaveButtonClick(View view) {
         Toast.makeText(getBaseActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-        //NumberSeekDialog.show((FragmentActivity) getBaseActivity(), null);
     }
 
     @Override
@@ -66,5 +66,16 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     @Override
     public void unSubscribeOnPause() {
 
+    }
+
+    private void createList() {
+        list = new ArrayList<LocalTime>();
+
+        LocalTime time = new LocalTime(8,0);
+        for (int i = 0 ; i < dosesNo.get(); i++) {
+            list.add(time.plusHours(i * dosesEveryH.get()));
+        }
+
+        adapter.setList(list);
     }
 }

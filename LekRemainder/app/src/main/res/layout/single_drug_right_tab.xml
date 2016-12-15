@@ -8,16 +8,16 @@
         <variable
             name="viewModel"
             type="pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel" />
+
+        <import type="pl.com.mmotak.lekremainder.bindings.LayoutManagers"/>
     </data>
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.name}" />
-    </LinearLayout>
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        app:layoutManager="@{LayoutManagers.linear()}"
+        app:adapter="@{viewModel.adapter}"
+        tools:listitem="@layout/item_single_drug_dose"/>
 </layout>

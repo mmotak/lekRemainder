@@ -7,8 +7,7 @@
 
         <variable
             name="drugsViewModel"
-            type="pl.com.mmotak.lekremainder.viewModels.DrugsViewModel"
-            />
+            type="pl.com.mmotak.lekremainder.viewModels.DrugsViewModel"/>
 
         <import type="pl.com.mmotak.lekremainder.bindings.LayoutManagers"/>
     </data>
