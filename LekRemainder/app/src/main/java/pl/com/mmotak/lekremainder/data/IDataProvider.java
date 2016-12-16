@@ -13,9 +13,9 @@ public interface IDataProvider {
 
     String getName();
 
-    void addNewDrug(DbDrug drug);
+    void addNewDrug(Drug drug);
 
-    DbDrug getDbDrugById(Integer id);
+    Drug getDrugById(Integer id);
 
-    rx.Observable<List<DbDrug>> getObservable();
+    rx.Observable<List<Drug>> getObservable();
 }

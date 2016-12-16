@@ -2,7 +2,6 @@ package pl.com.mmotak.lekremainder.activities;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.ActivityDrugsBinding;

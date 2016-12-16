@@ -12,24 +12,24 @@ import pl.com.mmotak.lekremainder.models.Drug;
 
 public class MemoryDataProvider implements IDataProvider {
 
-    private List<DbDrug> drugs = new ArrayList<>();
+    private List<Drug> drugs = new ArrayList<>();
     //private BehaviorSubject<DbDrug> drugBehaviorSubject = BehaviorSubject.create();
 
     @Override public String getName() {
         return MemoryDataProvider.class.getName();
     }
 
-    @Override public void addNewDrug(DbDrug drug) {
+    @Override public void addNewDrug(Drug drug) {
         drugs.add(drug);
         //drugBehaviorSubject.onNext(drug);
     }
 
     @Override
-    public DbDrug getDbDrugById(Integer id) {
+    public Drug getDrugById(Integer id) {
         return drugs.get(id);
     }
 
-    @Override public rx.Observable<List<DbDrug>> getObservable() {
+    @Override public rx.Observable<List<Drug>> getObservable() {
         //return drugBehaviorSubject.asObservable();
         return rx.Observable.just(drugs).asObservable();
     }

@@ -4,6 +4,9 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.DbDrugEntity;
 import pl.com.mmotak.lekremainder.models.Drug;
@@ -16,6 +19,16 @@ public class DrugConverter {
 
     private static String DbDateTimeFormat = "MMddyyyy";
     private static DateTimeFormatter DateTimeFormatter = DateTimeFormat.forPattern(DbDateTimeFormat);
+
+    public static List<Drug> toDrugs(List<DbDrug> dbDrugs){
+        List<Drug> drugs = new ArrayList<Drug>();
+
+        for (DbDrug dbDrug : dbDrugs) {
+            drugs.add(toDrug(dbDrug));
+        }
+
+        return drugs;
+    }
 
     public static Drug toDrug(DbDrug dbDrug) {
         if (dbDrug == null) {

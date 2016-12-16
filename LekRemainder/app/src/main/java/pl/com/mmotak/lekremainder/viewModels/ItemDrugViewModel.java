@@ -17,11 +17,11 @@ import pl.com.mmotak.lekremainder.models.Drug;
 
 public class ItemDrugViewModel {
 
-    private final DbDrug drug;
+    private final Drug drug;
     private final Context context;
     private final String dateTimeFormat;
 
-    public ItemDrugViewModel(Context context, DbDrug drug) {
+    public ItemDrugViewModel(Context context, Drug drug) {
         this.drug = drug;
         this.context = context;
         this.dateTimeFormat = context.getString(R.string.date_format);

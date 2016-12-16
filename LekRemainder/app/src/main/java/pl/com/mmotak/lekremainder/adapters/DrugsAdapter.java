@@ -21,7 +21,7 @@ import pl.com.mmotak.lekremainder.viewModels.ItemDrugViewModel;
 
 public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHolder> {
 
-    private List<DbDrug> list = new ArrayList<>();
+    private List<Drug> list = new ArrayList<>();
     private Context context;
 
     public DrugsAdapter(Context context) {
@@ -42,7 +42,7 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
         return list.size();
     }
 
-    public void setDrugList(List<DbDrug> inputList) {
+    public void setDrugList(List<Drug> inputList) {
         list.clear();
         if (inputList != null) {
             list.addAll(inputList);
@@ -50,7 +50,7 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
         notifyDataSetChanged();
     }
 
-    public void addDrug(DbDrug drug) {
+    public void addDrug(Drug drug) {
         list.add(drug);
         notifyDataSetChanged();
     }

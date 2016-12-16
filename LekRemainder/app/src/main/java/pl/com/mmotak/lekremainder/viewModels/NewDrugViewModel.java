@@ -18,6 +18,7 @@ import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
 import pl.com.mmotak.lekremainder.dialog.IDialogResult;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.DbDrugEntity;
+import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
  * Created by mmotak on 28.11.2016.
@@ -48,7 +49,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
     public ObservableBoolean enableButton;
 
-    private DbDrugEntity drug;
+    private Drug drug;
     private String dateTimeFormat;
     private String localTimeFormat;
 
@@ -58,7 +59,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
 
         dateTimeFormat = getBaseActivity().getString(R.string.date_format);
         localTimeFormat = getBaseActivity().getString(R.string.time_format);
-        this.drug = (DbDrugEntity) dataProvider.getDbDrugById(id);
+        this.drug = dataProvider.getDrugById(id);
         clearFields(this.drug);
         setUpProperty();
     }
@@ -161,7 +162,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         enableSaveButton();
     }
 
-    private void clearFields(DbDrug drug) {
+    private void clearFields(Drug drug) {
 
         enableButton = new ObservableBoolean(false);
         name = new ObservableField<>(drug.getName());
@@ -176,7 +177,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         dosesNo = new ObservableInt(drug.getDosesNo());
         dosesEveryH = new ObservableInt(drug.getDosesEveryH());
 
-        dosesHours = new ObservableField<>(drug.getTakingTime().toString());
+        dosesHours = new ObservableField<>("8:00");
 
         errorMsg = new ObservableField<>("");
         dosesNoErrorMsg = new ObservableField<>("");
