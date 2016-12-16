@@ -1,7 +1,6 @@
 package pl.com.mmotak.lekremainder.viewModels;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.databinding.ObservableInt;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,14 +10,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.requery.query.Result;
 import pl.com.mmotak.lekremainder.activities.Henson;
-import pl.com.mmotak.lekremainder.activities.NewDrugActivity;
 import pl.com.mmotak.lekremainder.adapters.DrugsAdapter;
-import pl.com.mmotak.lekremainder.converters.DrugConverter;
-import pl.com.mmotak.lekremainder.data.DataBaseProvider;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
-import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Drug;
 import rx.Subscriber;
 import rx.Subscription;
@@ -46,7 +40,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
 
     public void onAddNewDrugClick(View view) {
         view.getContext().startActivity(Henson.with(view.getContext())
-                .gotoNewDrugActivity()
+                .gotoSingleDrugActivity()
                 //.drugID(0)
                 .build()
         );

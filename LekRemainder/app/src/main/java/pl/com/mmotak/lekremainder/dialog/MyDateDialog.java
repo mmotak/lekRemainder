@@ -10,10 +10,6 @@ import android.widget.DatePicker;
 
 import org.joda.time.DateTime;
 
-import java.util.Date;
-
-import pl.com.mmotak.lekremainder.models.EnableObject;
-
 /**
  * Created by mmotak on 30.11.2016.
  */

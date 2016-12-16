@@ -9,9 +9,6 @@ import com.f2prateek.dart.InjectExtra;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.ActivityNewDrugBinding;
-import pl.com.mmotak.lekremainder.entities.DbDrug;
-import pl.com.mmotak.lekremainder.entities.DbDrugEntity;
-import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel;
 
 public class NewDrugActivity extends BaseNavDrawerActivity {

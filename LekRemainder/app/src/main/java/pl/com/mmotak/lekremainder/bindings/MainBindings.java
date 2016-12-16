@@ -1,7 +1,8 @@
-package pl.com.mmotak.lekremainder.bindings.tools;
+package pl.com.mmotak.lekremainder.bindings;
 
 import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
+import android.view.View;
 import android.widget.TextView;
 
 import org.joda.time.LocalTime;
@@ -34,4 +35,16 @@ public class MainBindings {
         String format = view.getContext().getString(R.string.time_format);
         view.setText(value.toString(format));
     }
+
+    @BindingAdapter("android:visibility")
+    public static void setVisibility(View view, boolean value) {
+        view.setVisibility(value ? View.VISIBLE : View.GONE);
+    }
+
+    @InverseBindingAdapter(attribute = "android:visibility")
+    public static boolean getVisibility(View view) {
+        int visibility = view.getVisibility();
+        return visibility == View.VISIBLE;
+    }
+
 }

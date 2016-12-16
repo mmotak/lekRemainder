@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_history) {
             fragmentsLoader.replaceFragment(this, new HistoryFragment());
         } else if (id == R.id.nav_settings) {
-            //fragmentsLoader.replaceFragment(this, new SettingsFragment());
-            startActivity(new Intent(this, SingleDrugActivity.class));
+            fragmentsLoader.replaceFragment(this, new SettingsFragment());
+            //startActivity(new Intent(this, SingleDrugActivity.class));
         }
 
         drawer.closeDrawer(GravityCompat.START);

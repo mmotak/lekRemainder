@@ -2,8 +2,6 @@ package pl.com.mmotak.lekremainder.data;
 
 import android.content.Context;
 
-import org.joda.time.LocalTime;
-
 import java.util.List;
 
 import io.requery.Persistable;
@@ -15,8 +13,8 @@ import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.converters.DrugConverter;
+import pl.com.mmotak.lekremainder.entities.AbstractDbDrug;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
-import pl.com.mmotak.lekremainder.entities.DbDrugEntity;
 import pl.com.mmotak.lekremainder.entities.Models;
 import pl.com.mmotak.lekremainder.models.Drug;
 import rx.Observable;
@@ -45,7 +43,7 @@ public class DataBaseProvider implements IDataProvider {
     @Override
     public void addNewDrug(Drug drug) {
         if (drug == null) {
-            throw new NullPointerException("New DbDrug cannot be NULL!");
+            throw new NullPointerException("New AbstractDbDrug cannot be NULL!");
         }
 
         if (drug.getId() == 0) {
@@ -60,7 +58,7 @@ public class DataBaseProvider implements IDataProvider {
 
         DbDrug dbDrug = getData()
                 .select(DbDrug.class)
-                .where(DbDrugEntity.ID.eq(id))
+                .where(DbDrug.ID.eq(id))
                 .get()
                 .firstOrNull();
 
@@ -72,7 +70,7 @@ public class DataBaseProvider implements IDataProvider {
     public Observable<List<Drug>> getObservable() {
         return getData()
                 .select(DbDrug.class)
-                .orderBy(DbDrugEntity.NAME.asc())
+                .orderBy(DbDrug.NAME.asc())
                 .get()
                 .toSelfObservable()
                 .map(Result::toList)

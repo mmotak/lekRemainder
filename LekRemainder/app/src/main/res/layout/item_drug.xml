@@ -59,59 +59,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:visibility="@{viewModel.startDate ? View.VISIBLE : View.GONE}">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingRight="4dp"
-                    android:text="@string/start_date"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="14sp"
-                    tools:text="@string/start_date"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@{viewModel.startDateFormatted}"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="14sp"
-                    tools:text="2014-05-12"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:visibility="@{viewModel.endDate ? View.VISIBLE : View.GONE}">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingRight="4dp"
-                    android:text="@string/end_date"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="14sp"
-                    tools:text="@string/end_date"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@{viewModel.endDateFormatted}"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="14sp"
-                    tools:text="2019-05-12"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:paddingTop="4dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp">

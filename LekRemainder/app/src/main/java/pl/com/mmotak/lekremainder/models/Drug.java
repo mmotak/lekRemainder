@@ -1,6 +1,9 @@
 package pl.com.mmotak.lekremainder.models;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+
+import java.util.List;
 
 /**
  * Created by mmotak on 28.11.2016.
@@ -8,15 +11,15 @@ import org.joda.time.DateTime;
 
 public class Drug {
 
+    private int id;
+
     private String name;
     private String type;
 
     private int dosesNo;
     private int dosesEveryH;
 
-    private EnableObject<DateTime> startDate;
-    private EnableObject<DateTime> endDate;
-    private int id;
+    private List<LocalTime> doses;
 
     public Drug() {
         name = "";
@@ -24,15 +27,15 @@ public class Drug {
         dosesNo = 3;
         dosesEveryH = 4;
 
-        startDate = new EnableObject<>();
-        endDate = new EnableObject<>();
+        doses = DosesTimesGenerator.generate(null, dosesNo, dosesEveryH);
     }
 
-    public Drug(String name, String type, int dosesNo, int dosesEveryH) {
+    public Drug(String name, String type, int dosesNo, int dosesEveryH, List<LocalTime> doses) {
         this.name = name;
         this.type = type;
         this.dosesNo = dosesNo;
         this.dosesEveryH = dosesEveryH;
+        this.doses = doses;
     }
 
     public String getName() {
@@ -67,44 +70,28 @@ public class Drug {
         this.dosesEveryH = dosesEveryH;
     }
 
-    public void setStartDateEnable(boolean enable) {
-        startDate.setEnable(enable);
-    }
-
-    public void setEndDateEnable(boolean enable) {
-        endDate.setEnable(enable);
-    }
-
-    public void setStartDate(DateTime dateTime) {
-        startDate.setValue(dateTime);
-    }
-
-    public void setEndDate(DateTime dateTime) {
-        endDate.setValue(dateTime);
-    }
-
-    public boolean isStartDateEnable() {
-        return startDate.isEnable();
-    }
-
-    public boolean isEndDateEnable() {
-        return endDate.isEnable();
-    }
-
-    public DateTime getStartDate() {
-        return startDate.getValue();
-    }
-
-    public DateTime getEndDate() {
-        return endDate.getValue();
-    }
-
     public void setId(int id) {
         this.id = id;
     }
 
     public int getId() {
         return id;
+    }
+
+    public List<LocalTime> getDoses() {
+        return doses;
+    }
+
+    public void setDoses(List<LocalTime> doses) {
+        this.doses = doses;
+    }
+
+    public void update(String name, String type, int dosesNo, int dosesEveryH, List<LocalTime> doses) {
+        this.name = name;
+        this.type = type;
+        this.dosesEveryH = dosesEveryH;
+        this.dosesNo = dosesNo;
+        this.doses = doses;
     }
 }
 

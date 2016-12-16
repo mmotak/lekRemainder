@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 
+import com.f2prateek.dart.Dart;
+import com.f2prateek.dart.InjectExtra;
+
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.adapters.SingleDrugViewPagerAdapter;
 import pl.com.mmotak.lekremainder.databinding.ActivitySingleDrugBinding;
@@ -16,6 +19,10 @@ import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
 
 public class SingleDrugActivity extends BaseNavDrawerActivity {
 
+    @InjectExtra
+    @Nullable
+    public Integer drugID = 0;
+
     private ActivitySingleDrugBinding binding;
     private SingleDrugViewPagerAdapter adapter;
     private SingleDrugViewModel viewModel;
@@ -23,8 +30,10 @@ public class SingleDrugActivity extends BaseNavDrawerActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Dart.inject(this);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_single_drug);
-        viewModel = new SingleDrugViewModel(this);
+        viewModel = new SingleDrugViewModel(this, drugID);
         binding.setViewModel(viewModel);
 
         adapter = new SingleDrugViewPagerAdapter(this, viewModel);
@@ -47,16 +56,4 @@ public class SingleDrugActivity extends BaseNavDrawerActivity {
             }
         });
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        binding.button.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                binding.button.animate().translationY(-binding.button.getHeight());
-//                binding.button.setVisibility(View.INVISIBLE);
-//            }
-//        },1300);
-//    }
 }

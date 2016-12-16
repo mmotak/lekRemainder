@@ -15,9 +15,6 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
-import pl.com.mmotak.lekremainder.dialog.IDialogResult;
-import pl.com.mmotak.lekremainder.entities.DbDrug;
-import pl.com.mmotak.lekremainder.entities.DbDrugEntity;
 import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
@@ -74,7 +71,7 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         if (startDateEnable.get()) {
             startDateClick(view);
         } else {
-            drug.setStartDateEnable(false);
+            //drug.setStartDateEnable(false);
             errorMsg.set("");
         }
 
@@ -82,35 +79,35 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     }
 
     public void startDateClick(View view) {
-        if (startDateEnable.get()) {
-            dateUIProvider.showDialog(getBaseActivity(),
-                    drug.getStartDate(),
-                    new IDialogResult<DateTime>() {
-
-                        @Override
-                        public void onSuccess(DateTime dateTime) {
-                            drug.setStartDate(dateTime);
-                            drug.setStartDateEnable(true);
-                            startDate.set(getFormattedDate(dateTime));
-                            startDateEnable.set(true);
-                            validateDates();
-                        }
-
-                        @Override
-                        public void onFail() {
-                            startDateEnable.set(false);
-                            drug.setStartDateEnable(false);
-                            errorMsg.set("");
-                        }
-                    });
-        }
+//        if (startDateEnable.get()) {
+//            dateUIProvider.showDialog(getBaseActivity(),
+//                    //drug.getStartDate(),
+//                    new IDialogResult<DateTime>() {
+//
+//                        @Override
+//                        public void onSuccess(DateTime dateTime) {
+//                            //drug.setStartDate(dateTime);
+//                            //drug.setStartDateEnable(true);
+//                            startDate.set(getFormattedDate(dateTime));
+//                            startDateEnable.set(true);
+//                            validateDates();
+//                        }
+//
+//                        @Override
+//                        public void onFail() {
+//                            startDateEnable.set(false);
+//                            //drug.setStartDateEnable(false);
+//                            errorMsg.set("");
+//                        }
+//                    });
+//        }
     }
 
     public void endDateCheckClick(View view) {
         if (endDateEnable.get()) {
             endDateClick(view);
         } else {
-            drug.setEndDateEnable(false);
+            //drug.setEndDateEnable(false);
             errorMsg.set("");
         }
 
@@ -118,28 +115,28 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     }
 
     public void endDateClick(View view) {
-        if (endDateEnable.get()) {
-            dateUIProvider.showDialog(getBaseActivity(),
-                    drug.getEndDate(),
-                    new IDialogResult<DateTime>() {
-
-                        @Override
-                        public void onSuccess(DateTime dateTime) {
-                            drug.setEndDate(dateTime);
-                            drug.setEndDateEnable(true);
-                            endDate.set(getFormattedDate(dateTime));
-                            endDateEnable.set(true);
-                            validateDates();
-                        }
-
-                        @Override
-                        public void onFail() {
-                            endDateEnable.set(false);
-                            drug.setEndDateEnable(false);
-                            errorMsg.set("");
-                        }
-                    });
-        }
+//        if (endDateEnable.get()) {
+//            dateUIProvider.showDialog(getBaseActivity(),
+//                    //drug.getEndDate(),
+//                    new IDialogResult<DateTime>() {
+//
+//                        @Override
+//                        public void onSuccess(DateTime dateTime) {
+//                            //drug.setEndDate(dateTime);
+//                           //drug.setEndDateEnable(true);
+//                            endDate.set(getFormattedDate(dateTime));
+//                            endDateEnable.set(true);
+//                            validateDates();
+//                        }
+//
+//                        @Override
+//                        public void onFail() {
+//                            endDateEnable.set(false);
+//                            //drug.setEndDateEnable(false);
+//                            errorMsg.set("");
+//                        }
+//                    });
+//        }
     }
 
     private String getFormattedDate(DateTime dateTime) {
@@ -147,17 +144,19 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     }
 
     private void validateDates() {
-        if (startDateEnable.get() && endDateEnable.get()) {
-            DateTime start = drug.getStartDate();
-            DateTime end = drug.getEndDate();
-            if (start.isAfter(end)) {
-                errorMsg.set("Start Date is after end date!");
-            } else {
-                errorMsg.set("");
-            }
-        } else {
-            errorMsg.set("");
-        }
+//        if (startDateEnable.get() && endDateEnable.get()) {
+//            //DateTime start = drug.getStartDate();
+//            //DateTime end = drug.getEndDate();
+//            if (start.isAfter(end)) {
+//                errorMsg.set("Start Date is after end date!");
+//            } else {
+//                errorMsg.set("");
+//            }
+//        } else {
+//
+//        }
+
+        errorMsg.set("");
 
         enableSaveButton();
     }
@@ -168,11 +167,11 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
         name = new ObservableField<>(drug.getName());
         type = new ObservableField<>(drug.getType());
 
-        startDateEnable = new ObservableBoolean(drug.isStartDateEnable());
-        endDateEnable = new ObservableBoolean(drug.isEndDateEnable());
+        startDateEnable = new ObservableBoolean(false);
+        endDateEnable = new ObservableBoolean(false);
 
-        startDate = new ObservableField<>(getFormattedDate(drug.getStartDate()));
-        endDate = new ObservableField<>(getFormattedDate(drug.getEndDate()));
+        startDate = new ObservableField<>("");
+        endDate = new ObservableField<>("");
 
         dosesNo = new ObservableInt(drug.getDosesNo());
         dosesEveryH = new ObservableInt(drug.getDosesEveryH());

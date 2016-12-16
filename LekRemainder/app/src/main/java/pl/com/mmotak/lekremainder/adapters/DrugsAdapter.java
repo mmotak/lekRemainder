@@ -11,7 +11,6 @@ import java.util.List;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.ItemDrugBinding;
-import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.viewModels.ItemDrugViewModel;
 
@@ -35,7 +34,7 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
 
     @Override public void onBindViewHolder(DrugViewHolder holder, int position) {
         ItemDrugBinding itemDrugBinding = holder.binding;
-        itemDrugBinding.setViewModel(new ItemDrugViewModel(context, list.get(position)));
+        itemDrugBinding.setViewModel(new ItemDrugViewModel(list.get(position)));
     }
 
     @Override public int getItemCount() {
@@ -63,7 +62,7 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
             this.binding = binding;
         }
 
-//        void bindDrug(DbDrug drug) {
+//        void bindDrug(AbstractDbDrug drug) {
 //            if (binding.getViewModel() == null) {
 //                binding.setViewModel(new ItemDrugViewModel(itemView.getContext(), drug));
 //            } else {
