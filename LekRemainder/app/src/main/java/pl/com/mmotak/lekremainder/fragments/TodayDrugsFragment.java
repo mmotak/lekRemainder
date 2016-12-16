@@ -2,6 +2,8 @@ package pl.com.mmotak.lekremainder.fragments;
 
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,12 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pl.com.mmotak.lekremainder.R;
+import pl.com.mmotak.lekremainder.databinding.FragmentTodayDrugsBinding;
+import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class TodayDrugsFragment extends Fragment implements IFragment {
 
+
+    private FragmentTodayDrugsBinding binding;
+    private TodayDoseViewModel viewModel;
 
     public TodayDrugsFragment() {
         // Required empty public constructor
@@ -29,19 +36,30 @@ public class TodayDrugsFragment extends Fragment implements IFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_today_drugs, container, false);
-        return view;
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_today_drugs, container, false);
+        viewModel = new TodayDoseViewModel(getActivity()); // TODO REMOVE!
+        binding.setViewModel(viewModel);
+
+        return binding.getRoot();
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onResume() {
+        super.onResume();
+        viewModel.subscribeOnResume();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onPause() {
+        super.onPause();
+        viewModel.unSubscribeOnPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
     }
 
     @Override

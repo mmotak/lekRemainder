@@ -1,25 +1,33 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="pl.com.mmotak.lekremainder.fragments.TodayDrugsFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <data>
+        <variable
+            name="viewModel"
+            type="pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel"/>
+        <import type="pl.com.mmotak.lekremainder.bindings.LayoutManagers"/>
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context="pl.com.mmotak.lekremainder.fragments.TodayDrugsFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="@color/colorAccent"
-            android:layout_centerInParent="true"
-            android:text="@string/hello_blank_fragment" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                app:adapter="@{viewModel.adapter}"
+                app:layoutManager="@{LayoutManagers.linear()}"
+                tools:listitem="@layout/item_today_dose" />
 
-    <!-- TODO: Update blank fragment layout -->
-
-
-</FrameLayout>
+        </RelativeLayout>
+    </FrameLayout>
+</layout>

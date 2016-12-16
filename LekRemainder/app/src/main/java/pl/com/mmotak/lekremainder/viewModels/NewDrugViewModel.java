@@ -237,4 +237,9 @@ public class NewDrugViewModel extends AbstractBaseViewModel {
     public void unSubscribeOnPause() {
 
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

@@ -8,6 +8,7 @@ import pl.com.mmotak.lekremainder.activities.MainActivity;
 import pl.com.mmotak.lekremainder.viewModels.DrugsViewModel;
 import pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel;
 import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
+import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 
 /**
  * Created by mmotak on 25.11.2016.
@@ -25,4 +26,6 @@ public interface DiComponent {
     void inject(DrugsViewModel drugsViewModel);
 
     void inject(SingleDrugViewModel singleDrugViewModel);
+
+    void inject(TodayDoseViewModel todayDoseViewModel);
 }

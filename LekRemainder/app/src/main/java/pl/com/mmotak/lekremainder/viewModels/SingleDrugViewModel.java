@@ -115,6 +115,11 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
     }
 
+    @Override
+    public void onDestroy() {
+
+    }
+
     private void enableSaveButton() {
         enableButton.set(name.get().length() > 0 && type.get().length() > 0);
     }

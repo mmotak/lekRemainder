@@ -17,7 +17,6 @@
         tools:context="pl.com.mmotak.lekremainder.fragments.DrugsFragment">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/repos_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"

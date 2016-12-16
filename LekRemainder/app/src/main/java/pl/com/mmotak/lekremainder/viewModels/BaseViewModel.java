@@ -18,4 +18,6 @@ public interface BaseViewModel {
     void subscribeOnResume();
 
     void unSubscribeOnPause();
+
+    void onDestroy();
 }

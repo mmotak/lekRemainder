@@ -12,11 +12,14 @@ import io.requery.rx.SingleEntityStore;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 import pl.com.mmotak.lekremainder.BuildConfig;
+import pl.com.mmotak.lekremainder.converters.DoseConverter;
 import pl.com.mmotak.lekremainder.converters.DrugConverter;
 import pl.com.mmotak.lekremainder.entities.AbstractDbDrug;
+import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.Models;
 import pl.com.mmotak.lekremainder.models.Drug;
+import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -67,7 +70,7 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
-    public Observable<List<Drug>> getObservable() {
+    public Observable<List<Drug>> getDrugsObservable() {
         return getData()
                 .select(DbDrug.class)
                 .orderBy(DbDrug.NAME.asc())
@@ -75,6 +78,20 @@ public class DataBaseProvider implements IDataProvider {
                 .toSelfObservable()
                 .map(Result::toList)
                 .map(DrugConverter::toDrugs)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                ;
+    }
+
+    @Override
+    public Observable<List<TodayDose>> getTodayDosesObservable() {
+        return getData()
+                .select(DbDose.class)
+                .orderBy(DbDose.TIME.asc())
+                .get()
+                .toSelfObservable()
+                .map(Result::toList)
+                .map(DoseConverter::toTodayDoses)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 ;
