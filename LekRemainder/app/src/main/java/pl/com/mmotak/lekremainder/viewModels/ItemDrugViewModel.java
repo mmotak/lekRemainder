@@ -5,6 +5,7 @@ import android.view.View;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.activities.Henson;
+import pl.com.mmotak.lekremainder.models.DosesTimesGenerator;
 import pl.com.mmotak.lekremainder.models.Drug;
 
 /**
@@ -14,14 +15,14 @@ import pl.com.mmotak.lekremainder.models.Drug;
 public class ItemDrugViewModel {
 
     private final Drug drug;
+    private final String dosesMessage;
 
     public ItemDrugViewModel(Drug drug) {
         this.drug = drug;
+        this.dosesMessage = DosesTimesGenerator.generateString(drug.getDoses());
     }
 
     public void onItemClick(View view) {
-        //Toast.makeText(context, "You clicked on ("+drug.getId()+") " + drug.toString(), Toast.LENGTH_LONG).show();
-
         view.getContext().startActivity(Henson.with(view.getContext())
                 .gotoSingleDrugActivity()
                 .drugID(drug.getId())
@@ -43,6 +44,10 @@ public class ItemDrugViewModel {
 
     public int getDosesEveryH() {
         return drug.getDosesEveryH();
+    }
+
+    public String getDosesMessage() {
+        return dosesMessage;
     }
 }
 
