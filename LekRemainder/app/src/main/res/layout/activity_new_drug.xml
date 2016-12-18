@@ -44,7 +44,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
 
-                <!-- AbstractDbDrug Name -->
+                <!-- IDbDrug Name -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:inputType="textPersonName"
                     android:text="@={drugViewModel.name}" />
 
-                <!-- AbstractDbDrug Type -->
+                <!-- IDbDrug Type -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

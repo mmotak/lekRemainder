@@ -19,7 +19,7 @@ public class TodayDose {
     }
 
     public String getDrugName() {
-        return drug.getName();
+        return drug != null ? drug.getName() : "";
     }
 
     public LocalTime getTime() {

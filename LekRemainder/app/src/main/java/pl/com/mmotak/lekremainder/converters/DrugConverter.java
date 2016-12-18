@@ -7,7 +7,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.com.mmotak.lekremainder.entities.AbstractDbDose;
+import pl.com.mmotak.lekremainder.entities.IDbDose;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Dose;
@@ -36,7 +36,7 @@ public class DrugConverter {
 
     public static Drug toDrug(DbDrug dbDrug) {
         if (dbDrug == null) {
-            throw new IllegalArgumentException("AbstractDbDrug cannot be NULL!");
+            throw new IllegalArgumentException("DbDrug cannot be NULL!");
         }
 
         Drug drug = new Drug();
@@ -78,7 +78,7 @@ public class DrugConverter {
         } else {
             int size = drug.getDoses().size();
             int dbSize = dbDrug.getDbDoses().size();
-            List<AbstractDbDose> dbDoses = dbDrug.getDbDoses();
+            List<IDbDose> dbDoses = dbDrug.getDbDoses();
             List<Dose> doses = drug.getDoses();
             for (int i = 0; i < size; i++) {
                 if (i < dbSize) {
@@ -87,6 +87,13 @@ public class DrugConverter {
                 } else {
                     dbDoses.add(DoseConverter.toDbDose(drug.getDoses().get(i), dbDrug));
                 }
+            }
+
+            // delete
+            int itemsToRemove = dbSize - doses.size();
+            for (int i = dbSize - itemsToRemove;i < dbSize;i++) {
+                // get last and remove
+                dbDoses.remove(dbDoses.size() - 1 );
             }
         }
 

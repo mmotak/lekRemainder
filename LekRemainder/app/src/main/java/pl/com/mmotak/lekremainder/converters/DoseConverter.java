@@ -1,12 +1,10 @@
 package pl.com.mmotak.lekremainder.converters;
 
-import org.joda.time.LocalTime;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.com.mmotak.lekremainder.entities.AbstractDbDose;
-import pl.com.mmotak.lekremainder.entities.AbstractDbDrug;
+import pl.com.mmotak.lekremainder.entities.IDbDose;
+import pl.com.mmotak.lekremainder.entities.IDbDrug;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.models.Dose;
@@ -34,18 +32,17 @@ public class DoseConverter {
 
     }
 
-    public static List<Dose> toDoses(List<AbstractDbDose> dbDoseList, Drug drug) {
+    public static List<Dose> toDoses(List<IDbDose> dbDoseList, Drug drug) {
         List<Dose> outputList = new ArrayList<>();
 
-        for (AbstractDbDose dbDose : dbDoseList) {
-            DbDose dbDoseObject = (DbDose) dbDose;
-            outputList.add(new Dose(dbDoseObject.getId(), drug, dbDoseObject.getTime()));
+        for (IDbDose dbDose : dbDoseList) {
+            outputList.add(new Dose(dbDose.getId(), drug, dbDose.getTime()));
         }
 
         return outputList;
     }
 
-    public static List<DbDose> toDbDoses(List<Dose> doses, AbstractDbDrug dbDrug) {
+    public static List<DbDose> toDbDoses(List<Dose> doses, IDbDrug dbDrug) {
         List<DbDose> outputList = new ArrayList<>();
 
         for (Dose dose : doses) {
@@ -59,7 +56,7 @@ public class DoseConverter {
         return outputList;
     }
 
-    public static AbstractDbDose toDbDose(Dose dose, AbstractDbDrug dbDrug) {
+    public static IDbDose toDbDose(Dose dose, IDbDrug dbDrug) {
         DbDose dbDose = new DbDose();
         dbDose.setTime(dose.getTime());
         dbDose.setDbDrug(dbDrug);

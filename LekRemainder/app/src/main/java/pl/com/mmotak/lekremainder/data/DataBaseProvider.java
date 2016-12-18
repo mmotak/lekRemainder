@@ -14,9 +14,9 @@ import io.requery.sql.EntityDataStore;
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.converters.DoseConverter;
 import pl.com.mmotak.lekremainder.converters.DrugConverter;
-import pl.com.mmotak.lekremainder.entities.AbstractDbDrug;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
+import pl.com.mmotak.lekremainder.entities.IDbDose;
 import pl.com.mmotak.lekremainder.entities.Models;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -47,11 +47,11 @@ public class DataBaseProvider implements IDataProvider {
     @Override
     public void addNewDrug(Drug drug) {
         if (drug == null) {
-            throw new NullPointerException("New AbstractDbDrug cannot be NULL!");
+            throw new NullPointerException("New IDbDrug cannot be NULL!");
         }
 
         getData().findByKey(DbDrug.class, drug.getId())
-                .subscribeOn(Schedulers.io())
+
                 .flatMap(dbDrug ->
                 {
                     if (dbDrug == null) {
@@ -60,31 +60,58 @@ public class DataBaseProvider implements IDataProvider {
                     } else {
                         // update existing
                         DbDrug dbDrugToUpdate = DrugConverter.toDbDrug(drug, dbDrug);
+                        for (IDbDose idbDose: dbDrugToUpdate.getDbDoses()) {
+                            if (idbDose.getId() == 0) {
+                                getData().insert(idbDose).subscribe();
+                            }else {
+                                getData().update(idbDose).subscribe();
+                            }
+                        }
+
+                        removeDbDoses(dbDrug, dbDrugToUpdate);
+
                         //dbDrugToUpdate;
                         return getData().update(dbDrugToUpdate);
                     }
-                }).subscribe();
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<DbDrug>() {
+                    @Override
+                    public void onCompleted() {
+                        getData()
+                                .select(DbDose.class)
+                                .where(DbDose.DB_DRUG.isNull())
+                                .get()
+                                .each(dbDose -> getData()
+                                        .delete(dbDose)
+                                        .subscribeOn(Schedulers.io())
+                                        .subscribe()
+                                )
+                        ;
+                    }
 
-//        if (drug.getId() == 0) {
-//            getData().insert(DrugConverter.toDbDrug(drug)).subscribe();
-//        } else {
-//            getData().update(DrugConverter.toDbDrug(drug)).subscribe(new Subscriber<DbDrug>() {
-//                @Override
-//                public void onCompleted() {
-//
-//                }
-//
-//                @Override
-//                public void onError(Throwable e) {
-//                    e.printStackTrace();
-//                }
-//
-//                @Override
-//                public void onNext(DbDrug dbDrug) {
-//
-//                }
-//            });
-//        }
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(DbDrug dbDrug) {
+
+                    }
+                });
+    }
+
+    private void removeDbDoses(DbDrug dbDrug, DbDrug dbDrugToUpdate) {
+        int itemsToRemove = dbDrug.getDbDoses().size() - dbDrugToUpdate.getDbDoses().size();
+        if (itemsToRemove > 0 ) {
+            // delete some from end
+            int size = dbDrug.getDbDoses().size();
+            for (int i = size - itemsToRemove ; i < size ; i++) {
+                IDbDose itmp = dbDrug.getDbDoses().get(i);
+                getData().delete(itmp).subscribe();
+            }
+        }
     }
 
     @Override

@@ -62,7 +62,7 @@ public class DrugsAdapter extends RecyclerView.Adapter<DrugsAdapter.DrugViewHold
             this.binding = binding;
         }
 
-//        void bindDrug(AbstractDbDrug drug) {
+//        void bindDrug(IDbDrug drug) {
 //            if (binding.getViewModel() == null) {
 //                binding.setViewModel(new ItemDrugViewModel(itemView.getContext(), drug));
 //            } else {

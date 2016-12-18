@@ -128,6 +128,9 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     private void createList() {
         List<LocalTime> times = DosesTimesGenerator.generate(startTime.getObject(), dosesNo.get(), dosesEveryH.get());
         int i = 0;
+        if (times.size() < doses.size()) {
+            doses.clear();
+        }
         for (; i< doses.size() ; i++)
         {
             doses.get(i).setTime(times.get(i));

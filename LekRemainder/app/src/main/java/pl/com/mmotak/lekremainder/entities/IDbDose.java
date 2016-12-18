@@ -19,15 +19,15 @@ import pl.com.mmotak.lekremainder.converters.LocalTimeConverter;
  */
 
 @Entity
-public abstract class AbstractDbDose implements Parcelable {
+public interface IDbDose extends Observable, Parcelable, Persistable {
 
     @Key @Generated
-    int id;
+    int getId();
 
     @Column(length = 6)
     @Convert(LocalTimeConverter.class)
-    LocalTime time;
+    LocalTime getTime();
 
     @ManyToOne
-    AbstractDbDrug dbDrug;
+    IDbDrug getDbDrug();
 }
