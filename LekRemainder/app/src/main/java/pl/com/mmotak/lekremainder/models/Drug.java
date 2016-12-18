@@ -1,8 +1,8 @@
 package pl.com.mmotak.lekremainder.models;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ public class Drug {
     private int dosesNo;
     private int dosesEveryH;
 
-    private List<LocalTime> doses;
+    private List<Dose> doses = new ArrayList<>();
 
     public Drug() {
         name = "";
@@ -27,10 +27,13 @@ public class Drug {
         dosesNo = 3;
         dosesEveryH = 4;
 
-        doses = DosesTimesGenerator.generate(null, dosesNo, dosesEveryH);
+        List<LocalTime> times = DosesTimesGenerator.generate(null, dosesNo, dosesEveryH);
+        for (LocalTime time: times) {
+            doses.add(new Dose(0, this, time));
+        }
     }
 
-    public Drug(String name, String type, int dosesNo, int dosesEveryH, List<LocalTime> doses) {
+    public Drug(String name, String type, int dosesNo, int dosesEveryH, List<Dose> doses) {
         this.name = name;
         this.type = type;
         this.dosesNo = dosesNo;
@@ -78,15 +81,15 @@ public class Drug {
         return id;
     }
 
-    public List<LocalTime> getDoses() {
+    public List<Dose> getDoses() {
         return doses;
     }
 
-    public void setDoses(List<LocalTime> doses) {
+    public void setDoses(List<Dose> doses) {
         this.doses = doses;
     }
 
-    public void update(String name, String type, int dosesNo, int dosesEveryH, List<LocalTime> doses) {
+    public void update(String name, String type, int dosesNo, int dosesEveryH, List<Dose> doses) {
         this.name = name;
         this.type = type;
         this.dosesEveryH = dosesEveryH;

@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.adapters.SingleDrugDosesAdapter;
 import pl.com.mmotak.lekremainder.bindings.DialogData;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
+import pl.com.mmotak.lekremainder.models.Dose;
 import pl.com.mmotak.lekremainder.models.DosesTimesGenerator;
 import pl.com.mmotak.lekremainder.models.Drug;
 
@@ -38,7 +39,7 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     public DialogData<LocalTime> startTime = new DialogData<>(new LocalTime(8, 0));
 
     private SingleDrugDosesAdapter adapter;
-    private List<LocalTime> doses = new ArrayList<>();
+    private List<Dose> doses = new ArrayList<>();
 
     private Drug drug;
 
@@ -57,7 +58,7 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
         type.set(drug.getType());
         dosesNo.set(drug.getDosesNo());
         dosesEveryH.set(drug.getDosesEveryH());
-        startTime.setObject(drug.getDoses().get(0)); // the first item
+        startTime.setObject(drug.getDoses().get(0).getTime()); // the first item
         doses.clear();
         doses.addAll(drug.getDoses());
 
@@ -125,7 +126,17 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     }
 
     private void createList() {
-        doses = DosesTimesGenerator.generate(startTime.getObject(), dosesNo.get(), dosesEveryH.get());
+        List<LocalTime> times = DosesTimesGenerator.generate(startTime.getObject(), dosesNo.get(), dosesEveryH.get());
+        int i = 0;
+        for (; i< doses.size() ; i++)
+        {
+            doses.get(i).setTime(times.get(i));
+        }
+        for (; i< times.size() ; i++)
+        {
+            doses.add(new Dose(0, drug, times.get(i)));
+        }
+
         adapter.setList(doses);
     }
 }

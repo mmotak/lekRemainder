@@ -21,6 +21,7 @@ import pl.com.mmotak.lekremainder.entities.Models;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -49,11 +50,41 @@ public class DataBaseProvider implements IDataProvider {
             throw new NullPointerException("New AbstractDbDrug cannot be NULL!");
         }
 
-        if (drug.getId() == 0) {
-            getData().insert(DrugConverter.toDbDrug(drug)).subscribe();
-        } else {
-            getData().update(DrugConverter.toDbDrug(drug)).subscribe();
-        }
+        getData().findByKey(DbDrug.class, drug.getId())
+                .subscribeOn(Schedulers.io())
+                .flatMap(dbDrug ->
+                {
+                    if (dbDrug == null) {
+                        // new one
+                        return getData().insert(DrugConverter.toDbDrug(drug));
+                    } else {
+                        // update existing
+                        DbDrug dbDrugToUpdate = DrugConverter.toDbDrug(drug, dbDrug);
+                        //dbDrugToUpdate;
+                        return getData().update(dbDrugToUpdate);
+                    }
+                }).subscribe();
+
+//        if (drug.getId() == 0) {
+//            getData().insert(DrugConverter.toDbDrug(drug)).subscribe();
+//        } else {
+//            getData().update(DrugConverter.toDbDrug(drug)).subscribe(new Subscriber<DbDrug>() {
+//                @Override
+//                public void onCompleted() {
+//
+//                }
+//
+//                @Override
+//                public void onError(Throwable e) {
+//                    e.printStackTrace();
+//                }
+//
+//                @Override
+//                public void onNext(DbDrug dbDrug) {
+//
+//                }
+//            });
+//        }
     }
 
     @Override

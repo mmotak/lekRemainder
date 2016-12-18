@@ -29,14 +29,14 @@ public class DosesTimesGenerator {
         return list;
     }
 
-    public static String generateString(List<LocalTime> list) {
+    public static String generateString(List<Dose> list) {
         //String timeFormat = context.getString(R.string.time_format);
         String timeFormat = "HH:mm";
 
         StringBuilder sb = new StringBuilder();
 
-        for (LocalTime time: list) {
-            sb.append(" ").append(time.toString(timeFormat));
+        for (Dose dose: list) {
+            sb.append(" ").append(dose.getTime().toString(timeFormat));
         }
 
         return sb.toString();

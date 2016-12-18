@@ -9,6 +9,8 @@ import pl.com.mmotak.lekremainder.entities.AbstractDbDose;
 import pl.com.mmotak.lekremainder.entities.AbstractDbDrug;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
+import pl.com.mmotak.lekremainder.models.Dose;
+import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 
 /**
@@ -32,27 +34,36 @@ public class DoseConverter {
 
     }
 
-    public static List<LocalTime> toDoses(List<AbstractDbDose> dbDoseList) {
-        List<LocalTime> outputList = new ArrayList<>();
+    public static List<Dose> toDoses(List<AbstractDbDose> dbDoseList, Drug drug) {
+        List<Dose> outputList = new ArrayList<>();
 
         for (AbstractDbDose dbDose : dbDoseList) {
-            outputList.add(((DbDose)dbDose).getTime());
+            DbDose dbDoseObject = (DbDose) dbDose;
+            outputList.add(new Dose(dbDoseObject.getId(), drug, dbDoseObject.getTime()));
         }
 
         return outputList;
     }
 
-    public static List<DbDose> toDbDoses(List<LocalTime> doses, AbstractDbDrug dbDrug) {
+    public static List<DbDose> toDbDoses(List<Dose> doses, AbstractDbDrug dbDrug) {
         List<DbDose> outputList = new ArrayList<>();
 
-        for (LocalTime time : doses) {
+        for (Dose dose : doses) {
             DbDose dbDose = new DbDose();
-            dbDose.setTime(time);
+            dbDose.setTime(dose.getTime());
             dbDose.setDbDrug(dbDrug);
 
             outputList.add(dbDose);
         }
 
         return outputList;
+    }
+
+    public static AbstractDbDose toDbDose(Dose dose, AbstractDbDrug dbDrug) {
+        DbDose dbDose = new DbDose();
+        dbDose.setTime(dose.getTime());
+        dbDose.setDbDrug(dbDrug);
+
+        return dbDose;
     }
 }

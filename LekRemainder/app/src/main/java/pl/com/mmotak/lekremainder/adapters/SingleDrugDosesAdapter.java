@@ -13,6 +13,7 @@ import java.util.List;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.ItemSingleDrugDoseBinding;
+import pl.com.mmotak.lekremainder.models.Dose;
 import pl.com.mmotak.lekremainder.viewModels.ItemDoseViewModel;
 
 /**
@@ -21,7 +22,7 @@ import pl.com.mmotak.lekremainder.viewModels.ItemDoseViewModel;
 
 public class SingleDrugDosesAdapter extends RecyclerView.Adapter<SingleDrugDosesAdapter.DoseViewHolder> {
 
-    private List<LocalTime> times = new ArrayList<>();
+    private List<Dose> times = new ArrayList<>();
 
     @Override
     public DoseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -31,7 +32,7 @@ public class SingleDrugDosesAdapter extends RecyclerView.Adapter<SingleDrugDoses
 
     @Override
     public void onBindViewHolder(DoseViewHolder holder, int position) {
-        holder.binding.setViewModel(new ItemDoseViewModel(times.get(position)));
+        holder.binding.setViewModel(new ItemDoseViewModel(times.get(position).getTime()));
     }
 
     @Override
@@ -39,7 +40,7 @@ public class SingleDrugDosesAdapter extends RecyclerView.Adapter<SingleDrugDoses
         return times.size();
     }
 
-    public void setList(List<LocalTime> list) {
+    public void setList(List<Dose> list) {
         times.clear();
         times.addAll(list);
         notifyDataSetChanged();
