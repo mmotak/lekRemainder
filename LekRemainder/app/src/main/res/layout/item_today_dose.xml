@@ -16,6 +16,7 @@
         android:orientation="horizontal"
         android:layout_margin="2dp"
         android:padding="2dp"
+        android:onClick="@{viewModel::onItemClick}"
         android:weightSum="10">
 
         <ImageView

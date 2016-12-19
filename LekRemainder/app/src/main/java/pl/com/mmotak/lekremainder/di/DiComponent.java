@@ -3,10 +3,7 @@ package pl.com.mmotak.lekremainder.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import pl.com.mmotak.lekremainder.activities.DrugsActivity;
-import pl.com.mmotak.lekremainder.activities.MainActivity;
 import pl.com.mmotak.lekremainder.viewModels.DrugsViewModel;
-import pl.com.mmotak.lekremainder.viewModels.NewDrugViewModel;
 import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
 import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 
@@ -17,12 +14,6 @@ import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 @Singleton
 @Component(modules = {DiStorageModule.class,DiApplicationModule.class,DiUiModules.class})
 public interface DiComponent {
-    void inject(MainActivity mainActivity);
-
-    void inject(DrugsActivity addDrugActivity);
-
-    void inject(NewDrugViewModel newDrugViewModel);
-
     void inject(DrugsViewModel drugsViewModel);
 
     void inject(SingleDrugViewModel singleDrugViewModel);

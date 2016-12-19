@@ -28,7 +28,7 @@ public class TodayDoseViewModel extends AbstractBaseViewModel {
     public TodayDoseViewModel(Activity baseActivity) {
         super(baseActivity);
         getDiComponent().inject(this);
-        adapter = new TodayDoseAdapter();
+        adapter = new TodayDoseAdapter(dataProvider);
         subscribe();
     }
 
@@ -37,6 +37,9 @@ public class TodayDoseViewModel extends AbstractBaseViewModel {
     }
 
     private void subscribe() {
+        if (subscription != null) {
+            return;
+        }
         subscription = dataProvider.getTodayDosesObservable()
                 .subscribe(new Subscriber<List<TodayDose>>() {
                     @Override

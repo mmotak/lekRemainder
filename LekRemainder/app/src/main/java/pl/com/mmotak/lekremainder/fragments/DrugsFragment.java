@@ -17,14 +17,12 @@ import pl.com.mmotak.lekremainder.viewModels.DrugsViewModel;
  */
 public class DrugsFragment extends Fragment implements IFragment {
 
-
     private FragmentDrugsBinding binding;
     private DrugsViewModel viewModel;
 
     public DrugsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

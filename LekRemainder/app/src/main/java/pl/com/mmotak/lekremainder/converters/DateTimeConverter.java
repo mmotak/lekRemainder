@@ -14,10 +14,7 @@ import io.requery.Nullable;
  * Created by mmotak on 07.12.2016.
  */
 
-public class DateTimeConverter implements Converter<DateTime,String> {
-
-    private static String DbDateTimeFormat = "MMddyyyy";
-    private static org.joda.time.format.DateTimeFormatter DateTimeFormatter = DateTimeFormat.forPattern(DbDateTimeFormat);
+public class DateTimeConverter implements Converter<DateTime,Long> {
 
     @Override
     public Class<DateTime> getMappedType() {
@@ -25,8 +22,8 @@ public class DateTimeConverter implements Converter<DateTime,String> {
     }
 
     @Override
-    public Class<String> getPersistedType() {
-        return String.class;
+    public Class<Long> getPersistedType() {
+        return Long.class;
     }
 
     @Nullable
@@ -36,23 +33,12 @@ public class DateTimeConverter implements Converter<DateTime,String> {
     }
 
     @Override
-    public String convertToPersisted(DateTime value) {
-        return parse(value);
+    public Long convertToPersisted(DateTime value) {
+        return value.getMillis();
     }
 
     @Override
-    public DateTime convertToMapped(Class<? extends DateTime> type, String value) {
-        return parse(value);
-    }
-
-    private static String parse(DateTime dateTime) {
-        return dateTime == null ? null : dateTime.toString(DbDateTimeFormat);
-    }
-
-    private static DateTime parse(String dateTime) {
-        if (dateTime == null || dateTime.length() == 0) {
-            return null;
-        }
-        return DateTimeFormatter.parseDateTime(dateTime);
+    public DateTime convertToMapped(Class<? extends DateTime> type, Long value) {
+        return new DateTime(value);
     }
 }

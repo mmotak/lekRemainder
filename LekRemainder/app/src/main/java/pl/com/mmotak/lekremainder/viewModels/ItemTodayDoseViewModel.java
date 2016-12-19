@@ -1,7 +1,11 @@
 package pl.com.mmotak.lekremainder.viewModels;
 
+import android.view.View;
+
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
+import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 
 /**
@@ -10,14 +14,26 @@ import pl.com.mmotak.lekremainder.models.TodayDose;
 
 public class ItemTodayDoseViewModel {
 
+    private IDataProvider dataProvider;
     private final TodayDose todayDose;
 
-    public ItemTodayDoseViewModel(TodayDose todayDose) {
+    public ItemTodayDoseViewModel(TodayDose todayDose, IDataProvider dataProvider) {
+        this.dataProvider = dataProvider;
         this.todayDose = todayDose;
     }
 
+    public void onItemClick(View view) {
+        if (!todayDose.wasTaken()) {
+            DateTime now = DateTime.now();
+            todayDose.setTaken(now);
+
+            dataProvider.saveHistory(todayDose.getDrugName(), todayDose.getId(), now);
+            dataProvider.updateTodayDose(todayDose);
+        }
+    }
+
     public String getName() {
-    return todayDose.getDrugName();
+        return todayDose.getDrugName();
     }
 
     public LocalTime getTime() {
@@ -25,6 +41,16 @@ public class ItemTodayDoseViewModel {
     }
 
     public String getEstimatedTime() {
-        return "??";
+
+        if (todayDose.wasTaken()) {
+            // show taken time
+            return todayDose.getTakenTime().toLocalTime().toString();
+        } else {
+            // show estimated time
+            int shift = todayDose.getShift();
+            LocalTime time = todayDose.getTime();
+            time.plusSeconds(shift);
+            return time.toString();
+        }
     }
 }

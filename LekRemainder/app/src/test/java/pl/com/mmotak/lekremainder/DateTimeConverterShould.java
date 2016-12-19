@@ -15,17 +15,17 @@ public class DateTimeConverterShould {
     private DateTimeConverter converter = new DateTimeConverter();
 
     @Test
-    public void convertToString() {
+    public void convertToMillis() {
         DateTime dateTime = new DateTime(2017,11,28, 0, 0);
-        String string = "11282017";
-        String parsed = converter.convertToPersisted(dateTime);
-        assertThat(parsed).isEqualTo(string);
+        Long millis = dateTime.getMillis();
+        Long parsed = converter.convertToPersisted(dateTime);
+        assertThat(parsed).isEqualTo(millis);
     }
 
     @Test
     public void parseCorrectToDateTime() {
-        String string = "11282017";
-        DateTime dateTime = converter.convertToMapped(converter.getMappedType(),string);
+        Long millis = 1511827200000L;
+        DateTime dateTime = converter.convertToMapped(converter.getMappedType(),millis);
         assertThat(dateTime.getYear()).isEqualTo(2017);
         assertThat(dateTime.getMonthOfYear()).isEqualTo(11);
         assertThat(dateTime.getDayOfMonth()).isEqualTo(28);

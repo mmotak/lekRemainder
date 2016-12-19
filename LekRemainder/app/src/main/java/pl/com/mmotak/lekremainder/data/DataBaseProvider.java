@@ -2,6 +2,8 @@ package pl.com.mmotak.lekremainder.data;
 
 import android.content.Context;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import io.requery.Persistable;
@@ -16,13 +18,17 @@ import pl.com.mmotak.lekremainder.converters.DoseConverter;
 import pl.com.mmotak.lekremainder.converters.DrugConverter;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
+import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.entities.IDbDose;
+import pl.com.mmotak.lekremainder.entities.IDbTakeDose;
 import pl.com.mmotak.lekremainder.entities.Models;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -51,7 +57,6 @@ public class DataBaseProvider implements IDataProvider {
         }
 
         getData().findByKey(DbDrug.class, drug.getId())
-
                 .flatMap(dbDrug ->
                 {
                     if (dbDrug == null) {
@@ -60,17 +65,13 @@ public class DataBaseProvider implements IDataProvider {
                     } else {
                         // update existing
                         DbDrug dbDrugToUpdate = DrugConverter.toDbDrug(drug, dbDrug);
-                        for (IDbDose idbDose: dbDrugToUpdate.getDbDoses()) {
+                        for (IDbDose idbDose : dbDrugToUpdate.getDbDoses()) {
                             if (idbDose.getId() == 0) {
                                 getData().insert(idbDose).subscribe();
-                            }else {
+                            } else {
                                 getData().update(idbDose).subscribe();
                             }
                         }
-
-                        removeDbDoses(dbDrug, dbDrugToUpdate);
-
-                        //dbDrugToUpdate;
                         return getData().update(dbDrugToUpdate);
                     }
                 })
@@ -78,7 +79,7 @@ public class DataBaseProvider implements IDataProvider {
                 .subscribe(new Subscriber<DbDrug>() {
                     @Override
                     public void onCompleted() {
-                        getData()
+                        getData() // remove doses with no parent
                                 .select(DbDose.class)
                                 .where(DbDose.DB_DRUG.isNull())
                                 .get()
@@ -92,7 +93,7 @@ public class DataBaseProvider implements IDataProvider {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
 
                     @Override
@@ -100,18 +101,6 @@ public class DataBaseProvider implements IDataProvider {
 
                     }
                 });
-    }
-
-    private void removeDbDoses(DbDrug dbDrug, DbDrug dbDrugToUpdate) {
-        int itemsToRemove = dbDrug.getDbDoses().size() - dbDrugToUpdate.getDbDoses().size();
-        if (itemsToRemove > 0 ) {
-            // delete some from end
-            int size = dbDrug.getDbDoses().size();
-            for (int i = size - itemsToRemove ; i < size ; i++) {
-                IDbDose itmp = dbDrug.getDbDoses().get(i);
-                getData().delete(itmp).subscribe();
-            }
-        }
     }
 
     @Override
@@ -153,6 +142,78 @@ public class DataBaseProvider implements IDataProvider {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 ;
+    }
+
+    @Override
+    public void saveHistory(String name, int doseId, DateTime time) {
+        DbHistory dbHistory = new DbHistory();
+        dbHistory.setName(name);
+        dbHistory.setDoseId(doseId);
+        dbHistory.setTime(time);
+
+        getData().insert(dbHistory).subscribe(new Subscriber<DbHistory>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(DbHistory dbHistory) {
+
+            }
+        });
+    }
+
+    @Override
+    public void updateTodayDose(TodayDose todayDose) {
+
+        getData().findByKey(DbDose.class, todayDose.getId())
+                .flatMap(dbDose ->
+                {
+                    DbDose dbDoseToUpdate = DoseConverter.toDbFullDose(todayDose, dbDose);
+                    IDbTakeDose dbTakeDose = dbDoseToUpdate.getDbTakeDose();
+
+                    //getData().insert(dbTakeDose).subscribe();
+                    return getData().update(dbDoseToUpdate);
+                }).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<DbDose>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(DbDose dbDose) {
+
+                    }
+                });
+
+//        Observable<DbDose> doseObservable = getData().findByKey(DbDose.class, todayDose.getId()).toObservable();
+//        Observable<DbDrug> drugObservable = getData().findByKey(DbDrug.class, todayDose.getDrug().getId()).toObservable();
+//
+//        Subscription obs = Observable.zip(doseObservable, drugObservable,
+//                new Func2<DbDose, DbDrug, Subscription>() {
+//            @Override
+//            public Subscription call(DbDose dbDose, DbDrug dbDrug) {
+//
+//                DbDose dbDoseToUpdate = DoseConverter.toDbFullDose(todayDose, dbDose, dbDrug);
+//
+//                getData().insert(dbDoseToUpdate.getDbTakeDose()).subscribe();
+//
+//                return getData().update(dbDoseToUpdate).subscribe();
+//            }
+//        }).subscribeOn(Schedulers.io())
+//                .subscribe();
     }
 
     private Drug createNewDrug() {

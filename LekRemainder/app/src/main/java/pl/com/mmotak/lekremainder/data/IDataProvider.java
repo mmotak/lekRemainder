@@ -1,5 +1,7 @@
 package pl.com.mmotak.lekremainder.data;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import pl.com.mmotak.lekremainder.models.Drug;
@@ -20,4 +22,8 @@ public interface IDataProvider {
     rx.Observable<List<Drug>> getDrugsObservable();
 
     rx.Observable<List<TodayDose>> getTodayDosesObservable();
+
+    void saveHistory(String name, int doseId, DateTime time);
+
+    void updateTodayDose(TodayDose todayDose);
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.com.mmotak.lekremainder.R;
+import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.databinding.ItemTodayDoseBinding;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import pl.com.mmotak.lekremainder.viewModels.ItemTodayDoseViewModel;
@@ -19,7 +20,12 @@ import pl.com.mmotak.lekremainder.viewModels.ItemTodayDoseViewModel;
 
 public class TodayDoseAdapter extends RecyclerView.Adapter<TodayDoseAdapter.DoseViewHolder> {
 
+    private final IDataProvider dataProvider;
     private List<TodayDose> times = new ArrayList<>();
+
+    public TodayDoseAdapter(IDataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
     @Override
     public DoseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -29,7 +35,7 @@ public class TodayDoseAdapter extends RecyclerView.Adapter<TodayDoseAdapter.Dose
 
     @Override
     public void onBindViewHolder(DoseViewHolder holder, int position) {
-        holder.binding.setViewModel(new ItemTodayDoseViewModel(times.get(position)));
+        holder.binding.setViewModel(new ItemTodayDoseViewModel(times.get(position),dataProvider));
     }
 
     @Override
