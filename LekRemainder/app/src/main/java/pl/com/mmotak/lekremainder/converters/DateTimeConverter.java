@@ -14,7 +14,7 @@ import io.requery.Nullable;
  * Created by mmotak on 07.12.2016.
  */
 
-public class DateTimeConverter implements Converter<DateTime,Long> {
+public class DateTimeConverter implements Converter<DateTime, Long> {
 
     @Override
     public Class<DateTime> getMappedType() {
@@ -34,11 +34,11 @@ public class DateTimeConverter implements Converter<DateTime,Long> {
 
     @Override
     public Long convertToPersisted(DateTime value) {
-        return value.getMillis();
+        return value != null ? value.getMillis() : null;
     }
 
     @Override
     public DateTime convertToMapped(Class<? extends DateTime> type, Long value) {
-        return new DateTime(value);
+        return value != null ? new DateTime(value) : null;
     }
 }

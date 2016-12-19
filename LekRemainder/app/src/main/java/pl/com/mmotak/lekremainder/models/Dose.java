@@ -24,4 +24,8 @@ public class Dose {
     public void setTime(LocalTime time) {
         this.time = time;
     }
+
+    public int getId() {
+        return id;
+    }
 }

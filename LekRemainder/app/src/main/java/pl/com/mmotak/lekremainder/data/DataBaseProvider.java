@@ -19,9 +19,11 @@ import pl.com.mmotak.lekremainder.converters.DrugConverter;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.DbHistory;
+import pl.com.mmotak.lekremainder.entities.DbTakeDose;
 import pl.com.mmotak.lekremainder.entities.IDbDose;
 import pl.com.mmotak.lekremainder.entities.IDbTakeDose;
 import pl.com.mmotak.lekremainder.entities.Models;
+import pl.com.mmotak.lekremainder.models.Dose;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
@@ -184,7 +186,18 @@ public class DataBaseProvider implements IDataProvider {
                 .subscribe(new Subscriber<DbDose>() {
                     @Override
                     public void onCompleted() {
+                        getData().select(DbDose.class)
+                                .where(DbDose.DB_DRUG_ID.eq(todayDose.getDrug().getId()))
+                                .and(DbDose.ID.greaterThan(todayDose.getId()))
+                                .get()
+                                .each(dbDose ->
+                                {
+                                    DbTakeDose dbTakeDose = new DbTakeDose();
+                                    dbTakeDose.setShift(todayDose.getShift());
+                                    dbDose.setDbTakeDose(dbTakeDose);
 
+                                    getData().update(dbDose).subscribe();
+                                });
                     }
 
                     @Override

@@ -3,6 +3,7 @@ package pl.com.mmotak.lekremainder.viewModels;
 import android.view.View;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
 import pl.com.mmotak.lekremainder.data.IDataProvider;
@@ -24,7 +25,7 @@ public class ItemTodayDoseViewModel {
 
     public void onItemClick(View view) {
         if (!todayDose.wasTaken()) {
-            DateTime now = DateTime.now();
+            DateTime now = DateTime.now(); // use LocalDateTime
             todayDose.setTaken(now);
 
             dataProvider.saveHistory(todayDose.getDrugName(), todayDose.getId(), now);
@@ -49,8 +50,7 @@ public class ItemTodayDoseViewModel {
             // show estimated time
             int shift = todayDose.getShift();
             LocalTime time = todayDose.getTime();
-            time.plusSeconds(shift);
-            return time.toString();
+            return time.plusSeconds(shift).toString();
         }
     }
 }
