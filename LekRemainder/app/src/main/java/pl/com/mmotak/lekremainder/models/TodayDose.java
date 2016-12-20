@@ -54,7 +54,7 @@ public class TodayDose {
     }
 
     public void setTaken(DateTime takenTime) {
-        Seconds seconds = Seconds.secondsBetween(takenTime.toLocalTime(), time);
+        Seconds seconds = Seconds.secondsBetween(time, takenTime.toLocalTime());
         int shift = seconds.getSeconds();
 
         takeDose = new TakeDose(

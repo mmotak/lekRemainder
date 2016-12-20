@@ -2,6 +2,8 @@ package pl.com.mmotak.lekremainder.lekapp;
 
 import android.app.Application;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import pl.com.mmotak.lekremainder.di.DaggerDiComponent;
 import pl.com.mmotak.lekremainder.di.DiApplicationModule;
 import pl.com.mmotak.lekremainder.di.DiComponent;
@@ -19,6 +21,7 @@ public class LekRemainderApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        JodaTimeAndroid.init(this);
         diComponent = DaggerDiComponent.builder()
                 .diApplicationModule(new DiApplicationModule(this))
                 .diStorageModule(new DiStorageModule())

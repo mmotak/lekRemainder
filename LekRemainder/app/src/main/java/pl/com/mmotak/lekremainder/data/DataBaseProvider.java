@@ -1,6 +1,7 @@
 package pl.com.mmotak.lekremainder.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -16,6 +17,7 @@ import io.requery.sql.EntityDataStore;
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.converters.DoseConverter;
 import pl.com.mmotak.lekremainder.converters.DrugConverter;
+import pl.com.mmotak.lekremainder.converters.TakenDoseConverter;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.DbHistory;
@@ -174,59 +176,81 @@ public class DataBaseProvider implements IDataProvider {
     @Override
     public void updateTodayDose(TodayDose todayDose) {
 
-        getData().findByKey(DbDose.class, todayDose.getId())
-                .flatMap(dbDose ->
-                {
-                    DbDose dbDoseToUpdate = DoseConverter.toDbFullDose(todayDose, dbDose);
-                    IDbTakeDose dbTakeDose = dbDoseToUpdate.getDbTakeDose();
+        List<DbDose> list = getData().select(DbDose.class)
+                .where(DbDose.DB_DRUG_ID.eq(todayDose.getDrug().getId()))
+                .and(DbDose.ID.greaterThan(todayDose.getId() - 1))
+                .get()
+                .toList();
 
-                    //getData().insert(dbTakeDose).subscribe();
-                    return getData().update(dbDoseToUpdate);
-                }).subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<DbDose>() {
-                    @Override
-                    public void onCompleted() {
-                        getData().select(DbDose.class)
-                                .where(DbDose.DB_DRUG_ID.eq(todayDose.getDrug().getId()))
-                                .and(DbDose.ID.greaterThan(todayDose.getId()))
-                                .get()
-                                .each(dbDose ->
-                                {
-                                    DbTakeDose dbTakeDose = new DbTakeDose();
-                                    dbTakeDose.setShift(todayDose.getShift());
-                                    dbDose.setDbTakeDose(dbTakeDose);
+        if (list != null && list.size() > 0) {
 
-                                    getData().update(dbDose).subscribe();
-                                });
-                    }
+            list.get(0).setDbTakeDose(TakenDoseConverter.toDbTakeDose(todayDose.getTakeDose()));
 
-                    @Override
-                    public void onError(Throwable e) {
-e.printStackTrace();
-                    }
+            for (int i = 1; i<list.size();i++)
+            {
+                DbTakeDose dbTakeDose = new DbTakeDose();
+                dbTakeDose.setShift(todayDose.getShift());
+                list.get(i).setDbTakeDose(dbTakeDose);
+            }
 
-                    @Override
-                    public void onNext(DbDose dbDose) {
+            getData().update(list).subscribe();
+        }
+        // update list
+        // save list in database
 
-                    }
-                });
+        //getData().insert(list).subscribe();
 
-//        Observable<DbDose> doseObservable = getData().findByKey(DbDose.class, todayDose.getId()).toObservable();
-//        Observable<DbDrug> drugObservable = getData().findByKey(DbDrug.class, todayDose.getDrug().getId()).toObservable();
+//        getData().findByKey(DbDose.class, todayDose.getId())
+//                .flatMap(dbDose ->
+//                {
+//                    DbDose dbDoseToUpdate = DoseConverter.toDbFullDose(todayDose, dbDose);
+//                    return getData().update(dbDoseToUpdate);
+//                }).subscribeOn(Schedulers.io())
+//                .subscribe(new Subscriber<DbDose>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        getData().select(DbDose.class)
+//                                .where(DbDose.DB_DRUG_ID.eq(todayDose.getDrug().getId()))
+//                                .and(DbDose.ID.greaterThan(todayDose.getId()))
+//                                .get()
+//                                .each(dbDose -> {
+//                                    Log.d("DataBase", dbDose.toString());
 //
-//        Subscription obs = Observable.zip(doseObservable, drugObservable,
-//                new Func2<DbDose, DbDrug, Subscription>() {
-//            @Override
-//            public Subscription call(DbDose dbDose, DbDrug dbDrug) {
+//                                    DbTakeDose dbTakeDose = new DbTakeDose();
+//                                    dbTakeDose.setShift(todayDose.getShift());
+//                                    dbDose.setDbTakeDose(dbTakeDose);
+//                                    Log.d("DataBase", dbTakeDose.toString());
+//                                    getData().update(dbDose)
+//                                            .subscribeOn(Schedulers.io())
+//                                            .subscribe(new Subscriber<DbDose>() {
+//                                        @Override
+//                                        public void onCompleted() {
 //
-//                DbDose dbDoseToUpdate = DoseConverter.toDbFullDose(todayDose, dbDose, dbDrug);
+//                                        }
 //
-//                getData().insert(dbDoseToUpdate.getDbTakeDose()).subscribe();
+//                                        @Override
+//                                        public void onError(Throwable e) {
+//                                            e.printStackTrace();
+//                                        }
 //
-//                return getData().update(dbDoseToUpdate).subscribe();
-//            }
-//        }).subscribeOn(Schedulers.io())
-//                .subscribe();
+//                                        @Override
+//                                        public void onNext(DbDose dbDose) {
+//                                            Log.d("DataBase", dbDose.toString() + " " + dbDose.getDbTakeDose());
+//                                        }
+//                                    });
+//                                });
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onNext(DbDose dbDose) {
+//
+//                    }
+//                });
     }
 
     private Drug createNewDrug() {

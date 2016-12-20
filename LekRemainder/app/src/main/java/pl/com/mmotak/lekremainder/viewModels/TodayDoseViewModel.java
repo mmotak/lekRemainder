@@ -55,6 +55,7 @@ public class TodayDoseViewModel extends AbstractBaseViewModel {
                     @Override
                     public void onNext(List<TodayDose> doses) {
                         adapter.setList(doses);
+                        //unsubscribe();
                     }
                 });
     }
