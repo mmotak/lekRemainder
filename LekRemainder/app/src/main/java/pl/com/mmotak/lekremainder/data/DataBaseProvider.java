@@ -160,6 +160,21 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
+    public Observable<List<DbHistory>> getAllHistory() {
+        return getData()
+                .select(DbHistory.class)
+                .where(DbHistory.TIME.between(DateTime.now().minusDays(7),DateTime.now().plusSeconds(30)))
+                .orderBy(DbHistory.TIME.desc())
+                .get()
+                .toSelfObservable()
+                .map(Result::toList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                ;
+
+    }
+
+    @Override
     public void updateTodayDose(TodayDose todayDose) {
 
         List<DbDose> list = getData().select(DbDose.class)

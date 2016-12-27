@@ -5,6 +5,7 @@ import android.databinding.InverseBindingAdapter;
 import android.view.View;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import pl.com.mmotak.lekremainder.R;
@@ -33,6 +34,12 @@ public class MainBindings {
     @BindingAdapter("android:text")
     public static void setText(TextView view, LocalTime value) {
         String format = view.getContext().getString(R.string.time_format);
+        view.setText(value.toString(format));
+    }
+
+    @BindingAdapter("android:text")
+    public static void setText(TextView view, DateTime value) {
+        String format = view.getContext().getString(R.string.datetime_format);
         view.setText(value.toString(format));
     }
 

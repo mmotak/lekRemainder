@@ -1,5 +1,7 @@
 package pl.com.mmotak.lekremainder.fragments;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pl.com.mmotak.lekremainder.R;
+import pl.com.mmotak.lekremainder.databinding.FragmentHistoryBinding;
+import pl.com.mmotak.lekremainder.viewModels.HistoryFragmentViewModel;
+import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 
 /**
  * Created by Maciej on 2016-12-11.
@@ -15,16 +20,39 @@ import pl.com.mmotak.lekremainder.R;
 public class HistoryFragment extends Fragment implements IFragment {
 
 
+    private HistoryFragmentViewModel viewModel;
+    private FragmentHistoryBinding binding;
+
     public HistoryFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false);
+        viewModel = new HistoryFragmentViewModel(getActivity()); // TODO REMOVE!
+        binding.setViewModel(viewModel);
+
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.subscribeOnResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        viewModel.unSubscribeOnPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.onDestroy();
     }
 
     @Override

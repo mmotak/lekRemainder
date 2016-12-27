@@ -1,23 +1,36 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="pl.com.mmotak.lekremainder.fragments.HistoryFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="pl.com.mmotak.lekremainder.viewModels.HistoryFragmentViewModel"/>
+        <import type="pl.com.mmotak.lekremainder.bindings.LayoutManagers"/>
+    </data>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context="pl.com.mmotak.lekremainder.fragments.HistoryFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="@color/colorAccent"
-            android:layout_centerHorizontal="true"
-            android:text="@string/to_do" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                app:adapter="@{viewModel.adapter}"
+                app:layoutManager="@{LayoutManagers.grid(2)}"
+                tools:listitem="@layout/item_history"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
 
-</FrameLayout>
+        </RelativeLayout>
+    </FrameLayout>
+</layout>

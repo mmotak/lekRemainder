@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
+import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 
@@ -28,4 +29,6 @@ public interface IDataProvider {
     void updateTodayDose(TodayDose todayDose);
 
     void RemoveDrug(int id);
+
+    rx.Observable<List<DbHistory>> getAllHistory();
 }

@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import pl.com.mmotak.lekremainder.viewModels.DrugsViewModel;
+import pl.com.mmotak.lekremainder.viewModels.HistoryFragmentViewModel;
 import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
 import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 
@@ -19,4 +20,6 @@ public interface DiComponent {
     void inject(SingleDrugViewModel singleDrugViewModel);
 
     void inject(TodayDoseViewModel todayDoseViewModel);
+
+    void inject(HistoryFragmentViewModel historyFragmentViewModel);
 }
