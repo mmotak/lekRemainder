@@ -26,4 +26,6 @@ public interface IDataProvider {
     void saveHistory(String name, int doseId, DateTime time);
 
     void updateTodayDose(TodayDose todayDose);
+
+    void RemoveDrug(int id);
 }

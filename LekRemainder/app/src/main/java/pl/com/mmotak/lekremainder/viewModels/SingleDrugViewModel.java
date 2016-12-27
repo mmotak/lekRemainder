@@ -121,6 +121,10 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
     }
 
+    public void Remove() {
+        dataProvider.RemoveDrug(this.drug.getId());
+    }
+
     private void enableSaveButton() {
         enableButton.set(name.get().length() > 0 && type.get().length() > 0);
     }
@@ -142,4 +146,5 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
         adapter.setList(doses);
     }
+
 }

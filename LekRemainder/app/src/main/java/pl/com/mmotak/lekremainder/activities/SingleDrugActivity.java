@@ -4,6 +4,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
@@ -11,13 +13,15 @@ import com.f2prateek.dart.InjectExtra;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.adapters.SingleDrugViewPagerAdapter;
 import pl.com.mmotak.lekremainder.databinding.ActivitySingleDrugBinding;
+import pl.com.mmotak.lekremainder.dialog.ConfirmDialog;
+import pl.com.mmotak.lekremainder.dialog.IDialogResult;
 import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
 
 /**
  * Created by mmotak on 13.12.2016.
  */
 
-public class SingleDrugActivity extends BaseNavDrawerActivity {
+public class SingleDrugActivity extends BaseNavDrawerActivity implements IDialogResult<Boolean> {
 
     @InjectExtra
     @Nullable
@@ -55,5 +59,44 @@ public class SingleDrugActivity extends BaseNavDrawerActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.single_drug_menu, menu);
+
+        MenuItem item = menu.findItem(R.id.menu_delete);
+        item.setVisible(drugID != 0);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.menu_delete) {
+
+            ConfirmDialog.show(this, getString(R.string.dialog_remove_title), getString(R.string.dialog_remove_message), this);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    @Override
+    public void onSuccess(Boolean data) {
+        viewModel.Remove();
+        finish();
+    }
+
+    @Override
+    public void onFail() {
+
     }
 }

@@ -29,6 +29,7 @@ import pl.com.mmotak.lekremainder.models.Dose;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
+import rx.Single;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -155,22 +156,7 @@ public class DataBaseProvider implements IDataProvider {
         dbHistory.setDoseId(doseId);
         dbHistory.setTime(time);
 
-        getData().insert(dbHistory).subscribe(new Subscriber<DbHistory>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onNext(DbHistory dbHistory) {
-
-            }
-        });
+        getData().insert(dbHistory).subscribe();
     }
 
     @Override
@@ -186,14 +172,13 @@ public class DataBaseProvider implements IDataProvider {
 
             list.get(0).setDbTakeDose(TakenDoseConverter.toDbTakeDose(todayDose.getTakeDose()));
 
-            for (int i = 1; i<list.size();i++)
-            {
+            for (int i = 1; i < list.size(); i++) {
                 DbTakeDose dbTakeDose = new DbTakeDose();
                 dbTakeDose.setShift(todayDose.getShift());
                 list.get(i).setDbTakeDose(dbTakeDose);
             }
 
-            getData().update(list).subscribe();
+            getData().update(list).subscribeOn(Schedulers.io()).subscribe();
         }
         // update list
         // save list in database
@@ -251,6 +236,17 @@ public class DataBaseProvider implements IDataProvider {
 //
 //                    }
 //                });
+    }
+
+    @Override
+    public void RemoveDrug(int id) {
+        getData().findByKey(DbDrug.class, id)
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        dbDrug -> getData().delete(dbDrug)
+                                .subscribeOn(Schedulers.io())
+                                .subscribe()
+                );
     }
 
     private Drug createNewDrug() {
