@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
+import java.util.List;
+
 import pl.com.mmotak.lekremainder.R;
 
 /**
@@ -16,7 +18,7 @@ public class MyFragmentsLoader {
     }
 
     public void addFragment(FragmentActivity fragmentActivity, IFragment fragment) {
-        if (!isFragmentOnScreen(fragmentActivity, fragment)) {
+        if (!isNoFragment(fragmentActivity)) {
             FragmentTransaction fragmentTransaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.fragment_layout, fragment.asFragment(), fragment.getTagName()).commit();
         }
@@ -32,6 +34,11 @@ public class MyFragmentsLoader {
             fragmentTransaction.commit();
             //fragmentTransaction.disallowAddToBackStack();
         }
+    }
+
+    private boolean isNoFragment(FragmentActivity fragmentActivity) {
+        List<Fragment> fragments = fragmentActivity.getSupportFragmentManager().getFragments();
+        return fragments != null && !fragments.isEmpty();
     }
 
     private boolean isFragmentOnScreen(FragmentActivity fragmentActivity, IFragment fragment) {
