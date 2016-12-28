@@ -14,6 +14,7 @@ import io.requery.rx.RxSupport;
 import io.requery.rx.SingleEntityStore;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
+import io.requery.sql.TableCreationMode;
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.converters.DoseConverter;
 import pl.com.mmotak.lekremainder.converters.DrugConverter;
@@ -163,7 +164,7 @@ public class DataBaseProvider implements IDataProvider {
     public Observable<List<DbHistory>> getAllHistoryObservable() {
         return getData()
                 .select(DbHistory.class)
-                .where(DbHistory.TIME.between(DateTime.now().minusDays(7),DateTime.now().plusSeconds(30)))
+                .where(DbHistory.TIME.between(DateTime.now().minusDays(7), DateTime.now().plusSeconds(30)))
                 .orderBy(DbHistory.TIME.desc())
                 .get()
                 .toSelfObservable()
@@ -172,6 +173,24 @@ public class DataBaseProvider implements IDataProvider {
                 .observeOn(AndroidSchedulers.mainThread())
                 ;
 
+    }
+
+    @Override
+    public void removeAllTodayDoses() {
+        List<DbDose> dbDoses = getData().select(DbDose.class).get().toList();
+        for (DbDose item : dbDoses) {
+            item.setDbTakeDose(null);
+        }
+
+        getData().update(dbDoses)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+
+        List<DbTakeDose> dbTakeDoses = getData().select(DbTakeDose.class).get().toList();
+
+        getData().delete(dbTakeDoses)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     @Override

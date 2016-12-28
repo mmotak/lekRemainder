@@ -6,6 +6,9 @@ import android.util.Log;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import org.joda.time.DateTime;
+
+import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.di.DaggerDiComponent;
 import pl.com.mmotak.lekremainder.di.DiApplicationModule;
 import pl.com.mmotak.lekremainder.di.DiComponent;
@@ -23,6 +26,9 @@ public class LekRemainderApplication extends Application {
     public void onCreate() {
         super.onCreate();
         init();
+
+        DateTime time = DateTime.now().plusMinutes(1);
+        TodayDoseResetAlarmManager.setNextAlarm(this, time);
     }
 
     private void init() {
