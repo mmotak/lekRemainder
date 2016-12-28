@@ -160,7 +160,7 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
-    public Observable<List<DbHistory>> getAllHistory() {
+    public Observable<List<DbHistory>> getAllHistoryObservable() {
         return getData()
                 .select(DbHistory.class)
                 .where(DbHistory.TIME.between(DateTime.now().minusDays(7),DateTime.now().plusSeconds(30)))
@@ -195,62 +195,6 @@ public class DataBaseProvider implements IDataProvider {
 
             getData().update(list).subscribeOn(Schedulers.io()).subscribe();
         }
-        // update list
-        // save list in database
-
-        //getData().insert(list).subscribe();
-
-//        getData().findByKey(DbDose.class, todayDose.getId())
-//                .flatMap(dbDose ->
-//                {
-//                    DbDose dbDoseToUpdate = DoseConverter.toDbFullDose(todayDose, dbDose);
-//                    return getData().update(dbDoseToUpdate);
-//                }).subscribeOn(Schedulers.io())
-//                .subscribe(new Subscriber<DbDose>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        getData().select(DbDose.class)
-//                                .where(DbDose.DB_DRUG_ID.eq(todayDose.getDrug().getId()))
-//                                .and(DbDose.ID.greaterThan(todayDose.getId()))
-//                                .get()
-//                                .each(dbDose -> {
-//                                    Log.d("DataBase", dbDose.toString());
-//
-//                                    DbTakeDose dbTakeDose = new DbTakeDose();
-//                                    dbTakeDose.setShift(todayDose.getShift());
-//                                    dbDose.setDbTakeDose(dbTakeDose);
-//                                    Log.d("DataBase", dbTakeDose.toString());
-//                                    getData().update(dbDose)
-//                                            .subscribeOn(Schedulers.io())
-//                                            .subscribe(new Subscriber<DbDose>() {
-//                                        @Override
-//                                        public void onCompleted() {
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onError(Throwable e) {
-//                                            e.printStackTrace();
-//                                        }
-//
-//                                        @Override
-//                                        public void onNext(DbDose dbDose) {
-//                                            Log.d("DataBase", dbDose.toString() + " " + dbDose.getDbTakeDose());
-//                                        }
-//                                    });
-//                                });
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onNext(DbDose dbDose) {
-//
-//                    }
-//                });
     }
 
     @Override

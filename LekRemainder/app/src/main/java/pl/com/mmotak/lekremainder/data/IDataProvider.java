@@ -30,5 +30,5 @@ public interface IDataProvider {
 
     void RemoveDrug(int id);
 
-    rx.Observable<List<DbHistory>> getAllHistory();
+    rx.Observable<List<DbHistory>> getAllHistoryObservable();
 }

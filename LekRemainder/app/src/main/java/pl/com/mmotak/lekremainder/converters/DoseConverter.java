@@ -31,6 +31,7 @@ public class DoseConverter {
                     dbDose.getId(),
                     DrugConverter.toDrug((DbDrug) dbDose.getDbDrug()),
                     dbDose.getTime());
+
             todayDose.setTakeDose(TakenDoseConverter.toTakeDose(dbTakeDose));
 
             outputList.add(todayDose);

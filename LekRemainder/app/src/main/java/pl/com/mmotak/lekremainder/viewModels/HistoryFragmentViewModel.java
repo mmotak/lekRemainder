@@ -40,7 +40,7 @@ public class HistoryFragmentViewModel extends AbstractBaseViewModel {
             return;
         }
 
-        subscription = dataProvider.getAllHistory().subscribe(new Subscriber<List<DbHistory>>() {
+        subscription = dataProvider.getAllHistoryObservable().subscribe(new Subscriber<List<DbHistory>>() {
             @Override
             public void onCompleted() {
 
