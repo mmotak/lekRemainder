@@ -1,5 +1,7 @@
 package pl.com.mmotak.lekremainder.adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,9 +23,11 @@ import pl.com.mmotak.lekremainder.viewModels.ItemTodayDoseViewModel;
 public class TodayDoseAdapter extends RecyclerView.Adapter<TodayDoseAdapter.DoseViewHolder> {
 
     private final IDataProvider dataProvider;
+    private Context context;
     private List<TodayDose> times = new ArrayList<>();
 
-    public TodayDoseAdapter(IDataProvider dataProvider) {
+    public TodayDoseAdapter(Context context, IDataProvider dataProvider) {
+        this.context = context;
         this.dataProvider = dataProvider;
     }
 
@@ -35,7 +39,7 @@ public class TodayDoseAdapter extends RecyclerView.Adapter<TodayDoseAdapter.Dose
 
     @Override
     public void onBindViewHolder(DoseViewHolder holder, int position) {
-        holder.binding.setViewModel(new ItemTodayDoseViewModel(times.get(position),dataProvider));
+        holder.binding.setViewModel(new ItemTodayDoseViewModel(context, times.get(position),dataProvider));
     }
 
     @Override

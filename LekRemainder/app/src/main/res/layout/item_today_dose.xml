@@ -22,7 +22,7 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:tint="@color/colorAccent"
+            android:tint="@color/colorPrimary"
             android:layout_weight="1"
             card_view:srcCompat="@drawable/ic_menu_add_alert" />
 

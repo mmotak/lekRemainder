@@ -18,13 +18,13 @@ public class TodayDoseResetAlarmManager {
     public static void setNextAlarm(Context context, DateTime time) {
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time.getMillis(), createPendingIntent(context, createIntent(context)));
+        alarmManager.set(AlarmManager.RTC_WAKEUP, time.getMillis(),
+                createPendingIntent(context, createServiceIntent(context, TodayDoseResetService.class)));
     }
 
-    private static Intent createIntent(Context context) {
+    private static Intent createServiceIntent(Context context, Class<?> serviceClass) {
         Intent serviceIntent = new Intent(context, LekRemainderMainReceiver.class);
-        serviceIntent.putExtra("className", TodayDoseResetService.class.getName());
-
+        serviceIntent.putExtra(LekRemainderMainReceiver.KEY, serviceClass);
         return serviceIntent;
     }
 

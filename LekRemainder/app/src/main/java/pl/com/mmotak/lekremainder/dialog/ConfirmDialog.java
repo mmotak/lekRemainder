@@ -1,7 +1,7 @@
 package pl.com.mmotak.lekremainder.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
 import org.jetbrains.annotations.NotNull;
@@ -14,14 +14,14 @@ import pl.com.mmotak.lekremainder.R;
 
 public class ConfirmDialog {
 
-    public static void show(Activity activity, String title, String message, @NotNull IDialogResult<Boolean> dialogResultListener) {
-        createDialog(activity, title, message, dialogResultListener).show();
+    public static void show(Context context, String title, String message, @NotNull IDialogResult<Boolean> dialogResultListener) {
+        createDialog(context, title, message, dialogResultListener).show();
     }
 
 
-    private static Dialog createDialog(Activity activity, String title, String message, @NotNull IDialogResult<Boolean> dialogResultListener) {
+    private static Dialog createDialog(Context context, String title, String message, @NotNull IDialogResult<Boolean> dialogResultListener) {
         return new AlertDialog
-                .Builder(activity)
+                .Builder(context)
                 .setTitle(title != null && title.length() > 0 ? title : "Title")
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_yes,
