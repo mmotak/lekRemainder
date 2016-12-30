@@ -16,7 +16,6 @@ public class LekRemainderMainReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         Bundle extra = intent.getExtras();
         Class<?> serviceClass = (Class<?>) extra.getSerializable(KEY);
 

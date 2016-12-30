@@ -6,7 +6,7 @@ package pl.com.mmotak.lekremainder.data;
 
 public interface ISharedDateProvider {
 
-    long loadReset();
-    void saveReset(long dateTimeInLong);
-    void removeReset();
+    long loadNextResetDateTime();
+    void saveNextResetDateTime(long dateTimeInLong);
+    void removeNextResetDateTime();
 }

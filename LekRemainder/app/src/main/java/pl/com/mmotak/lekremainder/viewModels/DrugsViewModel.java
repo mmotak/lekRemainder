@@ -55,12 +55,12 @@ public class DrugsViewModel extends AbstractBaseViewModel {
         if (subscription != null) {
             return;
         }
-        Log.d("DrugsViewModel", "++ subscribe");
+
         subscription = dataProvider.getDrugsObservable()
                 .subscribe(new Subscriber<List<Drug>>() {
                     @Override
                     public void onCompleted() {
-                        Log.d("DrugsViewModel", "onCompleted");
+
                     }
 
                     @Override
@@ -70,15 +70,12 @@ public class DrugsViewModel extends AbstractBaseViewModel {
 
                     @Override
                     public void onNext(List<Drug> drugs) {
-                        Log.d("DrugsViewModel", "onNext " +drugs.toString());
                         adapter.setDrugList(drugs);
-                        //adapter.addDrug(drug);
                     }
                 });
     }
 
     private void unsubscribe() {
-        Log.d("DrugsViewModel", "-- unsubscribe");
         if (subscription != null && subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }

@@ -16,6 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.adapters.SingleDrugDosesAdapter;
+import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.bindings.DialogData;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.models.Dose;
@@ -103,7 +104,12 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     public void onSaveButtonClick(View view) {
         drug.update(name.get(), type.get(), dosesNo.get(), dosesEveryH.get(), doses);
 
+        boolean wasEmptyBeforeAddNew = dataProvider.isDrugTableEmpty();
         dataProvider.addNewDrug(drug);
+
+        if (wasEmptyBeforeAddNew) {
+            TodayDoseResetAlarmManager.enableAlarms(view.getContext());
+        }
         getBaseActivity().finish();
     }
 
@@ -124,6 +130,9 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
     public void Remove() {
         dataProvider.RemoveDrug(this.drug.getId());
+        if (dataProvider.isDrugTableEmpty()) {
+            TodayDoseResetAlarmManager.disableAlarms(getBaseActivity());
+        }
     }
 
     private void enableSaveButton() {

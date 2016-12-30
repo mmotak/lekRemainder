@@ -236,14 +236,25 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
+    public boolean isDrugTableEmpty() {
+        return getData().select(DbDrug.class).get().toList().isEmpty();
+    }
+
+    @Override
     public void RemoveDrug(int id) {
-        getData().findByKey(DbDrug.class, id)
-                .subscribeOn(Schedulers.io())
-                .subscribe(
-                        dbDrug -> getData().delete(dbDrug)
-                                .subscribeOn(Schedulers.io())
-                                .subscribe()
-                );
+        DbDrug dbDrug = getData().toBlocking().findByKey(DbDrug.class, id);
+
+        if (dbDrug != null) {
+            getData().toBlocking().delete(dbDrug);
+        }
+
+//        getData().findByKey(DbDrug.class, id)
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(
+//                        dbDrug -> getData().delete(dbDrug)
+//                                .subscribeOn(Schedulers.io())
+//                                .subscribe()
+//                );
     }
 
     private Drug createNewDrug() {

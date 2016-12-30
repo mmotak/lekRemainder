@@ -37,4 +37,6 @@ public interface IDataProvider {
     rx.Observable<List<DbHistory>> getAllHistoryObservable();
 
     void removeAllTodayDoses();
+
+    boolean isDrugTableEmpty();
 }

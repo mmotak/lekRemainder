@@ -61,7 +61,7 @@ public class TodayDoseViewModel extends AbstractBaseViewModel {
                     @Override
                     public void onNext(List<TodayDose> doses) {
                         adapter.setList(doses);
-                        getBaseActivity().startService(new Intent(getBaseActivity(), NextDoseAlarmService.class));
+                        // getBaseActivity().startService(new Intent(getBaseActivity(), NextDoseAlarmService.class));
                     }
                 });
     }

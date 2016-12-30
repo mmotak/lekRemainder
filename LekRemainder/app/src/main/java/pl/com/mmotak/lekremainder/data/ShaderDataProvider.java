@@ -11,7 +11,7 @@ import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 
 public class ShaderDataProvider implements ISharedDateProvider {
     private static final String APP_KEY = "SP" + LekRemainderApplication.class.getSimpleName();
-    private static final String RESET_KEY = "RESET_KEY";
+    private static final String NEXT_RESET_KEY = "NEXT_RESET_KEY";
     private Context context;
 
     public ShaderDataProvider(Context context) {
@@ -27,21 +27,21 @@ public class ShaderDataProvider implements ISharedDateProvider {
     }
 
     @Override
-    public long loadReset() {
-        return getSharedPreferences().getLong(RESET_KEY, 0);
+    public long loadNextResetDateTime() {
+        return getSharedPreferences().getLong(NEXT_RESET_KEY, -1);
     }
 
     @Override
-    public void saveReset(long dateTimeInLong) {
+    public void saveNextResetDateTime(long dateTimeInLong) {
         SharedPreferences.Editor editor = getEditor();
-        editor.putLong(RESET_KEY,dateTimeInLong);
+        editor.putLong(NEXT_RESET_KEY,dateTimeInLong);
         editor.commit();
     }
 
     @Override
-    public void removeReset() {
+    public void removeNextResetDateTime() {
         SharedPreferences.Editor editor = getEditor();
-        editor.remove(RESET_KEY);
+        editor.remove(NEXT_RESET_KEY);
         editor.commit();
     }
 }

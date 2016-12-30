@@ -57,6 +57,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        fragmentsLoader.replaceFragment(this, new TodayDrugsFragment());
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
     }
