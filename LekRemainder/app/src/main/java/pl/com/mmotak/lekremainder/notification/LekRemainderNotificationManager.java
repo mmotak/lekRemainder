@@ -4,8 +4,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.text.Html;
 
 import java.util.List;
 
@@ -36,34 +37,30 @@ public class LekRemainderNotificationManager implements INotificationProvider {
 
     private PendingIntent createPendingIntent() {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(
-                //Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                         Intent.FLAG_ACTIVITY_CLEAR_TOP
-
-        );
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
-    public void show(TodayDose todayDose) {
-        showSingleNotification(todayDose);
+    public void show(TodayDose todayDose, boolean playSound) {
+        showSingleNotification(todayDose, playSound);
     }
 
     @Override
-    public void show(List<TodayDose> todayDoses) {
+    public void show(List<TodayDose> todayDoses, boolean playSound) {
 
         if (todayDoses == null || todayDoses.isEmpty()) {
             hideAllNotifications();
         } else {
             if (todayDoses.size() > 1) {
-                showBigNotification(todayDoses);
+                showBigNotification(todayDoses, playSound);
             } else {
-                showSingleNotification(todayDoses.get(0));
+                showSingleNotification(todayDoses.get(0), playSound);
             }
         }
     }
 
-    private void showBigNotification(List<TodayDose> todayDoses) {
+    private void showBigNotification(List<TodayDose> todayDoses, boolean playSound) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.clock)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -71,6 +68,11 @@ public class LekRemainderNotificationManager implements INotificationProvider {
                 .setContentTitle("Drugs to take: " + todayDoses.size())
                 .setContentText("Hmm... write here some text")
                 .setContentIntent(createPendingIntent());
+
+        if (playSound) {
+            builder.setSound(getSound());
+        }
+
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle("Drugs to take: " + todayDoses.size());
 
@@ -83,7 +85,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         getNotificationManager().notify(ID, builder.build());
     }
 
-    private void showSingleNotification(TodayDose todayDose) {
+    private void showSingleNotification(TodayDose todayDose, boolean playSound) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.clock)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -92,6 +94,14 @@ public class LekRemainderNotificationManager implements INotificationProvider {
                 .setContentText(todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)))
                 .setContentIntent(createPendingIntent());
 
+        if (playSound) {
+            builder.setSound(getSound());
+        }
+
         getNotificationManager().notify(ID, builder.build());
+    }
+
+    private Uri getSound() {
+        return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     }
 }

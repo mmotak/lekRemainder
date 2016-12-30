@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -70,7 +71,7 @@ public class NextDoseAlarmService extends Service {
 
     protected void onHandleIntent(Intent intent, int startId) {
 
-        DateTime now = DateTime.now().withTime(13,15,0,0);
+        DateTime now = DateTime.now();
 
         subscribe = dataProvider.getObservableForNotTakenTodayDoseAfterDateTime(now)
                 .subscribe(new Subscriber<List<TodayDose>>() {
@@ -95,10 +96,12 @@ public class NextDoseAlarmService extends Service {
                         List<TodayDose> notifications = new ArrayList<TodayDose>();
 
                         DateTime minimum = null;
+                        boolean playSound = false;
 
                         for (TodayDose td: todayDoses) {
                             if (td.getEstimatedDateTime().isBefore(now.plusMinutes(1))) {
                                 notifications.add(td);
+                                playSound = td.getEstimatedDateTime().isAfter(now.minusMinutes(1)) || playSound;
                             } else if (minimum == null){
                                 minimum = td.getEstimatedDateTime();
                             } else if (minimum.isAfter(td.getEstimatedDateTime())) {
@@ -106,13 +109,11 @@ public class NextDoseAlarmService extends Service {
                             }
                         }
 
-                        notificationProvider.show(notifications);
+                        notificationProvider.show(notifications, playSound);
+                        TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(),
+                                minimum == null ? DateTime.now().plusMinutes(30) : minimum);
                     }
                 });
-
-        // get current time
-        //
-
     }
 
     @Override

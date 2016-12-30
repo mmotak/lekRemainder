@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import pl.com.mmotak.lekremainder.R;
+import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.dialog.ConfirmDialog;
 import pl.com.mmotak.lekremainder.dialog.IDialogResult;
@@ -68,6 +69,8 @@ public class ItemTodayDoseViewModel implements IDialogResult<Boolean> {
 
             dataProvider.saveHistory(todayDose.getDrugName(), todayDose.getId(), now);
             dataProvider.updateTodayDose(todayDose);
+
+            TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(context, DateTime.now().plusMinutes(1));
         }
     }
 

@@ -8,6 +8,7 @@ import android.databinding.ObservableInt;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
@@ -109,6 +110,8 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
         if (wasEmptyBeforeAddNew) {
             TodayDoseResetAlarmManager.enableAlarms(view.getContext());
+        } else {
+            TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(view.getContext(), DateTime.now().plusMinutes(1));
         }
         getBaseActivity().finish();
     }
