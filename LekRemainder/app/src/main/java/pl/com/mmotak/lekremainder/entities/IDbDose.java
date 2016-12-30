@@ -31,6 +31,8 @@ public interface IDbDose extends Observable, Parcelable, Persistable {
     @Convert(LocalTimeConverter.class)
     LocalTime getTime();
 
+    int getShiftInDays();
+
     @ManyToOne
     IDbDrug getDbDrug();
 

@@ -1,4 +1,4 @@
-package pl.com.mmotak.lekremainder.converters;
+package pl.com.mmotak.lekremainder.converters.models;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

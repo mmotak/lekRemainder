@@ -1,7 +1,6 @@
 package pl.com.mmotak.lekremainder.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -14,11 +13,10 @@ import io.requery.rx.RxSupport;
 import io.requery.rx.SingleEntityStore;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
-import io.requery.sql.TableCreationMode;
 import pl.com.mmotak.lekremainder.BuildConfig;
-import pl.com.mmotak.lekremainder.converters.DoseConverter;
-import pl.com.mmotak.lekremainder.converters.DrugConverter;
-import pl.com.mmotak.lekremainder.converters.TakenDoseConverter;
+import pl.com.mmotak.lekremainder.converters.models.DoseConverter;
+import pl.com.mmotak.lekremainder.converters.models.DrugConverter;
+import pl.com.mmotak.lekremainder.converters.models.TakenDoseConverter;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.DbHistory;
@@ -26,15 +24,11 @@ import pl.com.mmotak.lekremainder.entities.DbTakeDose;
 import pl.com.mmotak.lekremainder.entities.IDbDose;
 import pl.com.mmotak.lekremainder.entities.IDbTakeDose;
 import pl.com.mmotak.lekremainder.entities.Models;
-import pl.com.mmotak.lekremainder.models.Dose;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
-import rx.Single;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -137,6 +131,31 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
+    public Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime(DateTime dateTime) {
+        return getData()
+                .select(DbDose.class)
+                .orderBy(DbDose.TIME.asc())
+                .get()
+                .toObservable()
+                .filter(dbDose -> dbDose.getDbTakeDose() != null)
+                .filter(dbDose -> !dbDose.getDbTakeDose().isTaken())
+//                .filter(dbDose -> {
+//                    IDbTakeDose dbTakeDose = dbDose.getDbTakeDose();
+//                    DateTime time = dbTakeDose.getTime() == null
+//                            ? dbDose.getTime().toDateTimeToday().plusDays(dbDose.getShiftInDays())
+//                            : dbTakeDose.getTime();
+//                    DateTime estimatedDateTime = time.plusSeconds(dbTakeDose.getShiftInSeconds());
+//                    return estimatedDateTime.isAfter(dateTime.minusMinutes(1));
+//                })
+                .toList()
+                .map(DoseConverter::toTodayDoses)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
+
+    @Override
     public Observable<List<TodayDose>> getTodayDosesObservable() {
         return getData()
                 .select(DbDose.class)
@@ -208,7 +227,7 @@ public class DataBaseProvider implements IDataProvider {
 
             for (int i = 1; i < list.size(); i++) {
                 DbTakeDose dbTakeDose = new DbTakeDose();
-                dbTakeDose.setShift(todayDose.getShift());
+                dbTakeDose.setShiftInSeconds(todayDose.getShiftInSeconds());
                 list.get(i).setDbTakeDose(dbTakeDose);
             }
 

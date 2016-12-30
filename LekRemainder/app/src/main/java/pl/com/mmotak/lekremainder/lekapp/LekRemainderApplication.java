@@ -27,8 +27,8 @@ public class LekRemainderApplication extends Application {
         super.onCreate();
         init();
 
-        DateTime time = DateTime.now().plusMinutes(1);
-        TodayDoseResetAlarmManager.setNextAlarm(this, time);
+        //DateTime time = DateTime.now().plusMinutes(1);
+        //TodayDoseResetAlarmManager.setNextAlarm(this, time);
     }
 
     private void init() {

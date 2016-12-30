@@ -28,7 +28,7 @@ public interface IDbTakeDose extends Observable, Parcelable, Persistable {
 
     boolean isTaken();
 
-    int getShift();
+    int getShiftInSeconds();
 
     @OneToOne
     IDbDose getDbDose();

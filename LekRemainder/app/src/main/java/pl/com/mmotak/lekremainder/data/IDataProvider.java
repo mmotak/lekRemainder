@@ -4,9 +4,11 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
+import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
+import rx.Observable;
 
 /**
  * Created by mmotak on 25.11.2016.
@@ -21,6 +23,8 @@ public interface IDataProvider {
     Drug getDrugById(Integer id);
 
     rx.Observable<List<Drug>> getDrugsObservable();
+
+    Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime(DateTime dateTime);
 
     rx.Observable<List<TodayDose>> getTodayDosesObservable();
 

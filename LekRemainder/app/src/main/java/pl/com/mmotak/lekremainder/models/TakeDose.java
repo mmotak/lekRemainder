@@ -31,7 +31,7 @@ public class TakeDose {
         return time;
     }
 
-    public int getShift() {
+    public int getShiftInSeconds() {
         return shift;
     }
 }

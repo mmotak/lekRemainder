@@ -27,9 +27,9 @@ public class Drug {
         dosesNo = 3;
         dosesEveryH = 4;
 
-        List<LocalTime> times = DosesTimesGenerator.generate(null, dosesNo, dosesEveryH);
-        for (LocalTime time: times) {
-            doses.add(new Dose(0, this, time));
+        List<ShiftedLocalTime> times = DosesTimesGenerator.generate(null, dosesNo, dosesEveryH);
+        for (ShiftedLocalTime time: times) {
+            doses.add(new Dose(0, this, time.getLocalTime(), time.getShiftInDays()));
         }
     }
 

@@ -1,4 +1,4 @@
-package pl.com.mmotak.lekremainder.converters;
+package pl.com.mmotak.lekremainder.converters.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +30,9 @@ public class DoseConverter {
             TodayDose todayDose = new TodayDose(
                     dbDose.getId(),
                     DrugConverter.toDrug((DbDrug) dbDose.getDbDrug()),
-                    dbDose.getTime());
-
-            todayDose.setTakeDose(TakenDoseConverter.toTakeDose(dbTakeDose));
+                    dbDose.getTime(),
+                    TakenDoseConverter.toTakeDose(dbTakeDose),
+                    dbDose.getShiftInDays());
 
             outputList.add(todayDose);
         }
@@ -45,7 +45,7 @@ public class DoseConverter {
         List<Dose> outputList = new ArrayList<>();
 
         for (IDbDose dbDose : dbDoseList) {
-            outputList.add(new Dose(dbDose.getId(), drug, dbDose.getTime()));
+            outputList.add(new Dose(dbDose.getId(), drug, dbDose.getTime(), dbDose.getShiftInDays()));
         }
 
         return outputList;
@@ -69,15 +69,7 @@ public class DoseConverter {
         DbDose dbDose = new DbDose();
         dbDose.setTime(dose.getTime());
         dbDose.setDbDrug(dbDrug);
-
-        return dbDose;
-    }
-
-    public static DbDose toDbFullDose(TodayDose todayDose, DbDose dbDose) {
-
-        dbDose.setTime(todayDose.getTime());
-        //dbDose.setDbDrug(dbDrug); //?
-        dbDose.setDbTakeDose(TakenDoseConverter.toDbTakeDose(todayDose.getTakeDose()));
+        dbDose.setShiftInDays(dbDose.getShiftInDays());
 
         return dbDose;
     }

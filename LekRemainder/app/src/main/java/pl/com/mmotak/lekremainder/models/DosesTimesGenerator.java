@@ -15,15 +15,17 @@ import pl.com.mmotak.lekremainder.R;
 
 public class DosesTimesGenerator {
 
-    public static List<LocalTime> generate(LocalTime time, int dosesNo, int dosesEveryH) {
-        List<LocalTime> list = new ArrayList<>();
+    public static List<ShiftedLocalTime> generate(LocalTime time, int dosesNo, int dosesEveryH) {
+        List<ShiftedLocalTime> list = new ArrayList<>();
 
         if (time == null) {
-            time = new LocalTime(8,0);
+            time = new LocalTime(8, 0);
         }
 
+        int hours = time.getHourOfDay() - dosesEveryH;
         for (int i = 0; i < dosesNo; i++) {
-            list.add(time.plusHours(i * dosesEveryH));
+            hours += dosesEveryH;
+            list.add(new ShiftedLocalTime(time.plusHours(i * dosesEveryH), hours/24));
         }
 
         return list;
@@ -35,7 +37,7 @@ public class DosesTimesGenerator {
 
         StringBuilder sb = new StringBuilder();
 
-        for (Dose dose: list) {
+        for (Dose dose : list) {
             sb.append(" ").append(dose.getTime().toString(timeFormat));
         }
 

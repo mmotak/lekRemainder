@@ -1,4 +1,4 @@
-package pl.com.mmotak.lekremainder.converters;
+package pl.com.mmotak.lekremainder.converters.models;
 
 import pl.com.mmotak.lekremainder.entities.DbTakeDose;
 import pl.com.mmotak.lekremainder.entities.IDbTakeDose;
@@ -15,7 +15,7 @@ public class TakenDoseConverter {
             TakeDose takeDose = new TakeDose(
                     dbTakeDose.getId(),
                     dbTakeDose.getTime(),
-                    dbTakeDose.getShift(),
+                    dbTakeDose.getShiftInSeconds(),
                     dbTakeDose.isTaken());
 
             return takeDose;
@@ -26,7 +26,7 @@ public class TakenDoseConverter {
         DbTakeDose dbTakeDose = new DbTakeDose();
         dbTakeDose.setTaken(takeDose.isTaken());
         dbTakeDose.setTime(takeDose.getTime());
-        dbTakeDose.setShift(takeDose.getShift());
+        dbTakeDose.setShiftInSeconds(takeDose.getShiftInSeconds());
 
         return dbTakeDose;
     }

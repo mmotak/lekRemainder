@@ -1,7 +1,6 @@
 package pl.com.mmotak.lekremainder.viewModels;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 
 import org.joda.time.DateTime;
@@ -48,11 +47,6 @@ public class ItemTodayDoseViewModel implements IDialogResult<Boolean> {
         return todayDose.getTime();
     }
 
-    public int getImageColor() {
-        int color = R.color.colorPrimary;
-        return color;
-    }
-
     public String getEstimatedTime() {
 
         if (todayDose.wasTaken()) {
@@ -60,7 +54,7 @@ public class ItemTodayDoseViewModel implements IDialogResult<Boolean> {
             return todayDose.getTakenTime().toLocalTime().toString();
         } else {
             // show estimated time
-            int shift = todayDose.getShift();
+            int shift = todayDose.getShiftInSeconds();
             LocalTime time = todayDose.getTime();
             return time.plusSeconds(shift).toString();
         }

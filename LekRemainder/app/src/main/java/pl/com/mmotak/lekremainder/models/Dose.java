@@ -10,11 +10,13 @@ public class Dose {
     private int id;
     private Drug drug;
     private LocalTime time;
+    private int shiftInDays;
 
-    public Dose(int id, Drug drug, LocalTime time) {
+    public Dose(int id, Drug drug, LocalTime time, int shiftInDays) {
         this.id = id;
         this.drug = drug;
         this.time = time;
+        this.shiftInDays = shiftInDays;
     }
 
     public LocalTime getTime() {
@@ -27,5 +29,13 @@ public class Dose {
 
     public int getId() {
         return id;
+    }
+
+    public int getShiftInDays() {
+        return shiftInDays;
+    }
+
+    public void setShiftInDays(int shiftInDays) {
+        this.shiftInDays = shiftInDays;
     }
 }

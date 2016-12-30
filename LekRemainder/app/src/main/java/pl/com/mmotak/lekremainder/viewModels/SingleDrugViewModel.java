@@ -21,6 +21,7 @@ import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.models.Dose;
 import pl.com.mmotak.lekremainder.models.DosesTimesGenerator;
 import pl.com.mmotak.lekremainder.models.Drug;
+import pl.com.mmotak.lekremainder.models.ShiftedLocalTime;
 
 /**
  * Created by mmotak on 13.12.2016.
@@ -130,18 +131,17 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
     }
 
     private void createList() {
-        List<LocalTime> times = DosesTimesGenerator.generate(startTime.getObject(), dosesNo.get(), dosesEveryH.get());
+        List<ShiftedLocalTime> times = DosesTimesGenerator.generate(startTime.getObject(), dosesNo.get(), dosesEveryH.get());
         int i = 0;
         if (times.size() < doses.size()) {
             doses.clear();
         }
-        for (; i< doses.size() ; i++)
-        {
-            doses.get(i).setTime(times.get(i));
+        for (; i < doses.size(); i++) {
+            doses.get(i).setTime(times.get(i).getLocalTime());
+            doses.get(i).setShiftInDays(times.get(i).getShiftInDays());
         }
-        for (; i< times.size() ; i++)
-        {
-            doses.add(new Dose(0, drug, times.get(i)));
+        for (; i < times.size(); i++) {
+            doses.add(new Dose(0, drug, times.get(i).getLocalTime(), times.get(i).getShiftInDays()));
         }
 
         adapter.setList(doses);
