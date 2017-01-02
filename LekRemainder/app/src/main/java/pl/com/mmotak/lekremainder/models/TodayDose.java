@@ -32,7 +32,6 @@ public class TodayDose {
         this.takeDose = takeDose;
     }
 
-
     public String getDrugName() {
         return drug != null ? drug.getName() : "";
     }
@@ -73,8 +72,7 @@ public class TodayDose {
     }
 
     public DateTime getEstimatedDateTime() {
-
-        DateTime dateTime = takeDose.getTime() == null ? getTime().toDateTimeToday().plusDays(shiftInDays) : takeDose.getTime();
-        return dateTime.plusSeconds(takeDose.getShiftInSeconds());
+        DateTime dateTime = (takeDose == null || takeDose.getTime() == null) ? getTime().toDateTimeToday().plusDays(shiftInDays) : takeDose.getTime();
+        return dateTime.plusSeconds(getShiftInSeconds());
     }
 }

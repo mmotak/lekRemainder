@@ -7,4 +7,8 @@
 
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
+
+    <color name="drug_was_taken">#007200</color>
+    <color name="drug_was_not_taken">#FF6600</color>
+    <color name="drug_was_not_taken_on_time">#a50000</color>
 </resources>

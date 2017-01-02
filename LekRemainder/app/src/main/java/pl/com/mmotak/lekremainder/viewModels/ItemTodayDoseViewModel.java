@@ -22,11 +22,27 @@ public class ItemTodayDoseViewModel implements IDialogResult<Boolean> {
     private Context context;
     private IDataProvider dataProvider;
     private final TodayDose todayDose;
+    private final int imageId;
+    private final int imageColorId;
 
     public ItemTodayDoseViewModel(Context context, TodayDose todayDose, IDataProvider dataProvider) {
         this.context = context;
         this.dataProvider = dataProvider;
         this.todayDose = todayDose;
+
+        DateTime now = DateTime.now();
+        DateTime estimated = todayDose.getEstimatedDateTime();
+        if (todayDose.wasTaken()) {
+            imageId = R.drawable.accept_black;
+            imageColorId = R.color.drug_was_taken;
+        } else {
+            imageId = R.drawable.clock_black;
+            if (now.getMillis()<estimated.getMillis()) {
+                imageColorId = R.color.drug_was_not_taken;
+            } else {
+                imageColorId = R.color.drug_was_not_taken_on_time;
+            }
+        }
     }
 
     public void onItemClick(View view) {
@@ -48,17 +64,19 @@ public class ItemTodayDoseViewModel implements IDialogResult<Boolean> {
         return todayDose.getTime();
     }
 
-    public String getEstimatedTime() {
+    public int getImage() {
+        return imageId;
+    }
 
-        if (todayDose.wasTaken()) {
-            // show taken time
-            return todayDose.getTakenTime().toLocalTime().toString();
-        } else {
-            // show estimated time
-            int shift = todayDose.getShiftInSeconds();
-            LocalTime time = todayDose.getTime();
-            return time.plusSeconds(shift).toString();
-        }
+    public int getImageColor() {
+        return imageColorId;
+    }
+
+    public String getEstimatedTime() {
+        String format = context.getString(R.string.time_format);
+
+        DateTime estimated = todayDose.getEstimatedDateTime();
+        return estimated.toString(format);
     }
 
     @Override

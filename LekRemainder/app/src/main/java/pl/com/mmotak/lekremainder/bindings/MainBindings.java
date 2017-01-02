@@ -3,8 +3,11 @@ package pl.com.mmotak.lekremainder.bindings;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
@@ -60,16 +63,26 @@ public class MainBindings {
         return visibility == View.VISIBLE;
     }
 
-    @BindingAdapter("android:tint")
-    public static void setColorTint(ImageView view, @ColorRes int color) {
-        final int version = Build.VERSION.SDK_INT;
-        final Context context = view.getContext();
-        if (version < Build.VERSION_CODES.LOLLIPOP) { // will it work ?
-            DrawableCompat.wrap(view.getDrawable());
+    @BindingAdapter("app:srcCompat")
+    public static void setSrcCompat(ImageView imageView, @DrawableRes int drawable) {
+        // Your setter code goes here, like setDrawable or similar
+        Drawable icon;
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            icon = VectorDrawableCompat.create(imageView.getResources(), drawable, imageView.getContext().getTheme());
+            icon = icon.mutate();
+        } else {
+            icon = imageView.getResources().getDrawable(drawable, imageView.getContext().getTheme()).mutate();
         }
 
-        DrawableCompat.setTint(view.getDrawable(), ContextCompat.getColor(context, color));
+        imageView.setImageDrawable(icon);
     }
 
+    @BindingAdapter("android:tint")
+    public static void setColorTint(ImageView view, @ColorRes int color) {
+        if (view.getDrawable() != null) {
+            DrawableCompat.wrap(view.getDrawable());
+            DrawableCompat.setTint(view.getDrawable(), ContextCompat.getColor(view.getContext(), color));
+        }
+    }
 
 }
