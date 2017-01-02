@@ -1,14 +1,6 @@
 package pl.com.mmotak.lekremainder.services;
 
-import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
-import android.os.Process;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.joda.time.DateTime;
@@ -29,7 +21,7 @@ import rx.Subscriber;
 import rx.Subscription;
 
 
-public class NextDoseAlarmService extends Service {
+public class NextDoseAlarmService extends BaseService {
 
     @Inject
     IDataProvider dataProvider;
@@ -38,11 +30,7 @@ public class NextDoseAlarmService extends Service {
     @Inject
     ISharedDateProvider sharedDateProvider;
 
-
     private Subscription subscribe;
-
-    private Looper serviceLooper;
-    private ServiceHandler serviceHandler;
 
     public NextDoseAlarmService() {
         super();
@@ -51,34 +39,11 @@ public class NextDoseAlarmService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
         init();
-
-        HandlerThread thread = new HandlerThread(
-                NextDoseAlarmService.class.getSimpleName(),
-                Process.THREAD_PRIORITY_BACKGROUND);
-        // start the new handler thread
-        thread.start();
-
-        serviceLooper = thread.getLooper();
-        // start the service using the background handler
-        serviceHandler = new ServiceHandler(serviceLooper);
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Message message = serviceHandler.obtainMessage();
-        message.arg1 = startId;
-        message.obj = intent;
-        serviceHandler.sendMessage(message);
-
-        return START_NOT_STICKY;
     }
 
     protected void onHandleIntent(Intent intent, int startId) {
         Log.d("NextDoseAlarmService", "onHandleIntent "+DateTime.now());
-
 
         DateTime now = DateTime.now();
 
@@ -86,14 +51,14 @@ public class NextDoseAlarmService extends Service {
                 .subscribe(new Subscriber<List<TodayDose>>() {
                     @Override
                     public void onCompleted() {
-                        unSubscibe();
+                        unSubscribe();
                         stopSelf(startId);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        unSubscibe();
+                        unSubscribe();
                         stopSelf(startId);
                     }
 
@@ -147,17 +112,10 @@ public class NextDoseAlarmService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unSubscibe();
-        serviceLooper.quit();
+        unSubscribe();
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    private void unSubscibe() {
+    private void unSubscribe() {
         if (subscribe != null && subscribe.isUnsubscribed()) {
             subscribe.unsubscribe();
         }
@@ -167,18 +125,5 @@ public class NextDoseAlarmService extends Service {
         ((LekRemainderApplication) getApplication())
                 .getDiComponent()
                 .inject(this);
-    }
-
-
-    private final class ServiceHandler extends Handler {
-
-        public ServiceHandler(Looper looper) {
-            super(looper);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            onHandleIntent((Intent) msg.obj, (int) msg.arg1);
-        }
     }
 }

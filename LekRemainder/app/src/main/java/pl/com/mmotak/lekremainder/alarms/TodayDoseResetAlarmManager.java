@@ -47,6 +47,7 @@ public class TodayDoseResetAlarmManager {
                 PackageManager.DONT_KILL_APP);
     }
 
+    //TODO: move to settings
     public static void enableBootIfShouldBe(Context context, boolean shouldBeEnable) {
         ComponentName receiver = new ComponentName(context, LekRemainderBootReceiver.class);
         PackageManager pm = context.getPackageManager();
