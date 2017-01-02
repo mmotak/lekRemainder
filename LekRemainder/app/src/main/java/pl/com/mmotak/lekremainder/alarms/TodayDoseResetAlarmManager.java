@@ -2,7 +2,6 @@ package pl.com.mmotak.lekremainder.alarms;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +12,6 @@ import org.joda.time.DateTime;
 import pl.com.mmotak.lekremainder.broadcasts.LekRemainderBootReceiver;
 import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.ShaderDataProvider;
-import pl.com.mmotak.lekremainder.services.NextDoseAlarmService;
-import pl.com.mmotak.lekremainder.services.TodayDoseResetService;
 import pl.com.mmotak.lekremainder.settings.SavedSettings;
 
 /**
@@ -26,20 +23,19 @@ public class TodayDoseResetAlarmManager {
     public static void enableAlarms(Context context) {
         // enable
         enableBoot(context);
-        DateTime dateTime = SavedSettings.getNextRestartDateTime();
+        DateTime dateTime = SavedSettings.getTomorrowRestartDateTime();
         ShaderDataProvider shaderDataProvider = new ShaderDataProvider(context);
         shaderDataProvider.saveNextResetDateTime(dateTime.getMillis());
         setNextAlarmTodayDoseResetService(context, dateTime);
         setNextAlarmNextDoseAlarmService(context, DateTime.now().plusMinutes(1));
-
     }
 
     public static void disableAlarms(Context context) {
         // disable
         disableBoot(context);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(createPendingIntent(context, 3, createServiceIntent(context, TodayDoseResetService.class)));
-        alarmManager.cancel(createPendingIntent(context, 4, createServiceIntent(context, NextDoseAlarmService.class)));
+        alarmManager.cancel(createPendingIntent(context, ServicesFactory.RESET, createServiceIntent(context, ServicesFactory.RESET)));
+        alarmManager.cancel(createPendingIntent(context, ServicesFactory.NEXT_DOSE, createServiceIntent(context, ServicesFactory.NEXT_DOSE)));
     }
 
     private static void enableBoot(Context context) {
@@ -49,6 +45,16 @@ public class TodayDoseResetAlarmManager {
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                 PackageManager.DONT_KILL_APP);
+    }
+
+    public static void enableBootIfShouldBe(Context context, boolean shouldBeEnable) {
+        ComponentName receiver = new ComponentName(context, LekRemainderBootReceiver.class);
+        PackageManager pm = context.getPackageManager();
+
+        final int result = pm.getComponentEnabledSetting(receiver);
+        if (shouldBeEnable && result != PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+            enableBoot(context);
+        }
     }
 
     private static void disableBoot(Context context) {
@@ -61,23 +67,23 @@ public class TodayDoseResetAlarmManager {
     }
 
     public static void setNextAlarmTodayDoseResetService(Context context, DateTime time) {
-        setNextAlarm(context, time, 3, TodayDoseResetService.class);
+        setNextAlarm(context, time, ServicesFactory.RESET, ServicesFactory.RESET);
     }
 
     public static void setNextAlarmNextDoseAlarmService(Context context, DateTime time) {
-        setNextAlarm(context, time, 4, NextDoseAlarmService.class);
+        setNextAlarm(context, time, ServicesFactory.NEXT_DOSE, ServicesFactory.NEXT_DOSE);
     }
 
-    private static void setNextAlarm(Context context, DateTime time, int requestCode, Class<? extends Service> serviceClass) {
+    private static void setNextAlarm(Context context, DateTime time, int requestCode, int id) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, time.getMillis(),
-                createPendingIntent(context, requestCode, createServiceIntent(context, serviceClass)));
+                createPendingIntent(context, requestCode, createServiceIntent(context, id)));
     }
 
-    private static Intent createServiceIntent(Context context, Class<? extends Service> serviceClass) {
+    private static Intent createServiceIntent(Context context, int id) {
         Intent serviceIntent = new Intent(context, LekRemainderMainReceiver.class);
-        serviceIntent.putExtra(LekRemainderMainReceiver.KEY, serviceClass);
+        serviceIntent.putExtra(LekRemainderMainReceiver.KEY, id);
         return serviceIntent;
     }
 

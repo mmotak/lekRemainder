@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="pl.com.mmotak.lekremainder">
+          package="pl.com.mmotak.lekremainder"
+          android:installLocation="internalOnly"> <!-- TO MAKE SURE BOOT WILL WORK! -->
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
@@ -14,8 +15,8 @@
 
         <activity
             android:name=".activities.MainActivity"
-            android:launchMode="singleTask"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.EditNewDrugActivity"

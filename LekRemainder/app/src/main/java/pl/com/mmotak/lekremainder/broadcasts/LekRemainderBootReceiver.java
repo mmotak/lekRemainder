@@ -22,7 +22,7 @@ public class LekRemainderBootReceiver extends BroadcastReceiver {
 
             ShaderDataProvider shaderDataProvider = new ShaderDataProvider(context);
             long nextResetTime = shaderDataProvider.loadNextResetDateTime();
-            DateTime time = SavedSettings.getNextRestartDateTime();
+            DateTime time = SavedSettings.getTomorrowRestartDateTime();
 
             if (nextResetTime > 0 && nextResetTime <= time.getMillis()) {
                 if (nextResetTime > DateTime.now().getMillis()) {

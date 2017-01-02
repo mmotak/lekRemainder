@@ -10,7 +10,11 @@ public class SavedSettings {
 
     //TODO: move to settings
 
-    public static DateTime getNextRestartDateTime() {
+    public static DateTime getTomorrowRestartDateTime() {
         return DateTime.now().plusDays(1).withTime(6, 0, 0, 0); // set tomorrow at 6 am
+    }
+
+    public static DateTime getTodayRestartDateTime() {
+        return DateTime.now().withTime(6, 0, 0, 0); // set tomorrow at 6 am
     }
 }

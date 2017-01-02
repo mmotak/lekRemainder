@@ -1,7 +1,6 @@
 package pl.com.mmotak.lekremainder.viewModels;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -10,10 +9,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.adapters.TodayDoseAdapter;
+import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;
-import pl.com.mmotak.lekremainder.services.NextDoseAlarmService;
 import rx.Subscriber;
 import rx.Subscription;
 
@@ -61,12 +60,12 @@ public class TodayDoseViewModel extends AbstractBaseViewModel {
                     @Override
                     public void onNext(List<TodayDose> doses) {
                         adapter.setList(doses);
-                        // getBaseActivity().startService(new Intent(getBaseActivity(), NextDoseAlarmService.class));
+                        //TodayDoseResetAlarmManager.enableBootIfShouldBe(getBaseActivity(), !doses.isEmpty());
                     }
                 });
     }
 
-    private void unsubscribe() {
+    private void unSubscribe() {
         if (subscription != null && subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
@@ -79,11 +78,11 @@ public class TodayDoseViewModel extends AbstractBaseViewModel {
 
     @Override
     public void unSubscribeOnPause() {
-        unsubscribe();
+        unSubscribe();
     }
 
     @Override
     public void onDestroy() {
-        unsubscribe();
+        unSubscribe();
     }
 }

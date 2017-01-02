@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import pl.com.mmotak.lekremainder.alarms.ServicesFactory;
 import pl.com.mmotak.lekremainder.services.TodayDoseResetService;
 
 public class LekRemainderMainReceiver extends BroadcastReceiver {
@@ -17,8 +18,8 @@ public class LekRemainderMainReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle extra = intent.getExtras();
-        Class<?> serviceClass = (Class<?>) extra.getSerializable(KEY);
+        int id = extra.getInt(KEY);
 
-        context.startService(new Intent(context, serviceClass));
+        context.startService(ServicesFactory.getServiceIntent(context, id));
     }
 }

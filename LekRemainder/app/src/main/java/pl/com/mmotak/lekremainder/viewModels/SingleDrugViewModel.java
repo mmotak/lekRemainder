@@ -111,6 +111,7 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
         if (wasEmptyBeforeAddNew) {
             TodayDoseResetAlarmManager.enableAlarms(view.getContext());
         } else {
+            TodayDoseResetAlarmManager.enableBootIfShouldBe(view.getContext(), true);
             TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(view.getContext(), DateTime.now().plusMinutes(1));
         }
         getBaseActivity().finish();

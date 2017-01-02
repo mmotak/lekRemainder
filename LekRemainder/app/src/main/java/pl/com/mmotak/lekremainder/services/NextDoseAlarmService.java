@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -19,9 +20,11 @@ import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
+import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;
+import pl.com.mmotak.lekremainder.settings.SavedSettings;
 import rx.Subscriber;
 import rx.Subscription;
 
@@ -32,6 +35,10 @@ public class NextDoseAlarmService extends Service {
     IDataProvider dataProvider;
     @Inject
     INotificationProvider notificationProvider;
+    @Inject
+    ISharedDateProvider sharedDateProvider;
+
+
     private Subscription subscribe;
 
     private Looper serviceLooper;
@@ -70,6 +77,8 @@ public class NextDoseAlarmService extends Service {
     }
 
     protected void onHandleIntent(Intent intent, int startId) {
+        Log.d("NextDoseAlarmService", "onHandleIntent "+DateTime.now());
+
 
         DateTime now = DateTime.now();
 
@@ -98,11 +107,11 @@ public class NextDoseAlarmService extends Service {
                         DateTime minimum = null;
                         boolean playSound = false;
 
-                        for (TodayDose td: todayDoses) {
+                        for (TodayDose td : todayDoses) {
                             if (td.getEstimatedDateTime().isBefore(now.plusMinutes(1))) {
                                 notifications.add(td);
                                 playSound = td.getEstimatedDateTime().isAfter(now.minusMinutes(1)) || playSound;
-                            } else if (minimum == null){
+                            } else if (minimum == null) {
                                 minimum = td.getEstimatedDateTime();
                             } else if (minimum.isAfter(td.getEstimatedDateTime())) {
                                 minimum = td.getEstimatedDateTime();
@@ -110,8 +119,27 @@ public class NextDoseAlarmService extends Service {
                         }
 
                         notificationProvider.show(notifications, playSound);
-                        TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(),
-                                minimum == null ? DateTime.now().plusMinutes(30) : minimum);
+                        if (minimum == null) {
+                            DateTime resetTime = null;
+
+                            DateTime now = DateTime.now();
+                            DateTime todayRestartDateTime = SavedSettings.getTodayRestartDateTime();
+
+                            if (now.isBefore(todayRestartDateTime)) {
+                                if (notifications.isEmpty()) {
+                                    resetTime = DateTime.now().plusMinutes(1);
+                                } else {
+                                    resetTime = todayRestartDateTime;
+                                }
+                            } else {
+                                resetTime = SavedSettings.getTomorrowRestartDateTime();
+                            }
+
+                            TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(getApplicationContext(), resetTime);
+                            sharedDateProvider.saveNextResetDateTime(resetTime.getMillis());
+                        } else {
+                            TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(), minimum);
+                        }
                     }
                 });
     }
@@ -136,11 +164,9 @@ public class NextDoseAlarmService extends Service {
     }
 
     private void init() {
-        if (dataProvider == null || notificationProvider == null) {
-            ((LekRemainderApplication) getApplication())
-                    .getDiComponent()
-                    .inject(this);
-        }
+        ((LekRemainderApplication) getApplication())
+                .getDiComponent()
+                .inject(this);
     }
 
 
@@ -152,7 +178,7 @@ public class NextDoseAlarmService extends Service {
 
         @Override
         public void handleMessage(Message msg) {
-            onHandleIntent((Intent)msg.obj, (int)msg.arg1);
+            onHandleIntent((Intent) msg.obj, (int) msg.arg1);
         }
     }
 }

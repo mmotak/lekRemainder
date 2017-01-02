@@ -2,6 +2,7 @@ package pl.com.mmotak.lekremainder.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -27,14 +28,17 @@ public class TodayDoseResetService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d("TodayDoseResetService", "onHandleIntent "+DateTime.now());
+
         init();
 
         dataProvider.removeAllTodayDoses();
 
-        DateTime dateTime = SavedSettings.getNextRestartDateTime();
+        DateTime dateTime = SavedSettings.getTomorrowRestartDateTime();
         sharedDateProvider.saveNextResetDateTime(dateTime.getMillis());
 
         TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(getApplicationContext(),dateTime);
+        TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(), DateTime.now().plusMinutes(1));
     }
 
     private void init() {
