@@ -39,7 +39,7 @@
             android:visibility="visible"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/clock"
+            app:srcCompat="@drawable/clock"
             app:dialogOnClick="@{DialogManager.timeDialog()}"
             app:dialogData="@{viewModel.startTime}"
             app:useCompatPadding="true"/>

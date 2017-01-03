@@ -68,7 +68,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:onClick="@{viewModel::onSaveButtonClick}"
-            android:src="@drawable/accept"
+            app:srcCompat="@drawable/accept"
             app:useCompatPadding="true"/>
         </RelativeLayout>
     </LinearLayout>
