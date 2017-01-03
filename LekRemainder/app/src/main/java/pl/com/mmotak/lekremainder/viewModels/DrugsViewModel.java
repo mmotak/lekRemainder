@@ -40,10 +40,8 @@ public class DrugsViewModel extends AbstractBaseViewModel {
     public void onAddNewDrugClick(View view) {
         view.getContext().startActivity(Henson.with(view.getContext())
                 .gotoSingleDrugActivity()
-                //.drugID(0)
                 .build()
         );
-        //view.getContext().startActivity(new Intent(view.getContext(), NewDrugActivity.class));
     }
 
     public RecyclerView.Adapter getAdapter() {

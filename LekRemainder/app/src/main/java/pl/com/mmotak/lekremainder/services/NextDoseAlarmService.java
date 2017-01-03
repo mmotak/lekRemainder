@@ -64,9 +64,6 @@ public class NextDoseAlarmService extends BaseService {
 
                     @Override
                     public void onNext(List<TodayDose> todayDoses) {
-
-                        // TODO: dodać leki pominięte!
-
                         List<TodayDose> notifications = new ArrayList<TodayDose>();
 
                         DateTime minimum = null;

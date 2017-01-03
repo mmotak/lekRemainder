@@ -102,6 +102,6 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     }
 
     private Uri getSound() {
-        return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
     }
 }

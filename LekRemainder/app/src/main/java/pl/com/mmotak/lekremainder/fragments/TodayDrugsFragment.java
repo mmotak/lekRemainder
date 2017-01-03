@@ -20,7 +20,6 @@ import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
  */
 public class TodayDrugsFragment extends Fragment implements IFragment {
 
-
     private FragmentTodayDrugsBinding binding;
     private TodayDoseViewModel viewModel;
 

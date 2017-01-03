@@ -13,16 +13,17 @@ public abstract class AbstractBaseViewModel implements BaseViewModel {
 
     private final Activity baseActivity;
 
-    public AbstractBaseViewModel(Activity baseActivity)
-    {
+    public AbstractBaseViewModel(Activity baseActivity) {
         this.baseActivity = baseActivity;
     }
 
-    @Override public DiComponent getDiComponent() {
+    @Override
+    public DiComponent getDiComponent() {
         return ((LekRemainderApplication) baseActivity.getApplication()).getDiComponent();
     }
 
-    @Override public Activity getBaseActivity() {
+    @Override
+    public Activity getBaseActivity() {
         return baseActivity;
     }
 }

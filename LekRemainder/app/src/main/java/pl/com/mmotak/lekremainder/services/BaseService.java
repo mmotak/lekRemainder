@@ -51,7 +51,6 @@ public abstract class BaseService extends Service {
         return null;
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -62,7 +61,7 @@ public abstract class BaseService extends Service {
 
     private final class ServiceHandler extends Handler {
 
-        public ServiceHandler(Looper looper) {
+        ServiceHandler(Looper looper) {
             super(looper);
         }
 

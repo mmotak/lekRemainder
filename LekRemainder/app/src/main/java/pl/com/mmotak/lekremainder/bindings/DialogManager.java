@@ -40,7 +40,6 @@ public class DialogManager {
                 return new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         String msg = data == null ? view.toString() :
                                 data.load() == null ? view.toString() : data.load().toString();
 
