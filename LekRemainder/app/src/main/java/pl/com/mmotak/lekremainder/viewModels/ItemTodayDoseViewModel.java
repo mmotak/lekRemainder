@@ -30,13 +30,13 @@ public class ItemTodayDoseViewModel implements IDialogResult<Boolean> {
         this.dataProvider = dataProvider;
         this.todayDose = todayDose;
 
-        DateTime now = DateTime.now();
-        DateTime estimated = todayDose.getEstimatedDateTime();
         if (todayDose.wasTaken()) {
             imageId = R.drawable.accept_black;
             imageColorId = R.color.drug_was_taken;
         } else {
             imageId = R.drawable.clock_black;
+            DateTime now = DateTime.now();
+            DateTime estimated = todayDose.getEstimatedDateTime();
             if (now.getMillis()<estimated.getMillis()) {
                 imageColorId = R.color.drug_was_not_taken;
             } else {

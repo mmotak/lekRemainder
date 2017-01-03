@@ -19,10 +19,6 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".activities.EditNewDrugActivity"
-            android:label="@string/title_activity_edit_new_drug"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
             android:name=".activities.SingleDrugActivity"
             android:label="@string/title_activity_edit_new_drug"
             android:theme="@style/AppTheme.NoActionBar"

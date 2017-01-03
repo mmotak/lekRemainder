@@ -2,6 +2,9 @@ package pl.com.mmotak.lekremainder.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.MenuRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,12 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.fragments.DrugsFragment;
 import pl.com.mmotak.lekremainder.fragments.HistoryFragment;
+import pl.com.mmotak.lekremainder.fragments.IFragment;
 import pl.com.mmotak.lekremainder.fragments.MyFragmentsLoader;
 import pl.com.mmotak.lekremainder.fragments.SettingsFragment;
 import pl.com.mmotak.lekremainder.fragments.TodayDrugsFragment;
@@ -25,9 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private Toolbar toolbar;
     private DrawerLayout drawer;
-    private FrameLayout fragmentLayout;
 
-    private MyFragmentsLoader fragmentsLoader = new MyFragmentsLoader();
+    private MyFragmentsLoader fragmentsLoader = new MyFragmentsLoader(R.id.fragment_layout);
 
     private static final int TIME_DELAY = 2000;
     private static long backPressedTime;
@@ -45,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        fragmentLayout = (FrameLayout) findViewById(R.id.fragment_layout);
 
         setSupportActionBar(toolbar);
 
@@ -64,11 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -83,44 +79,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_today_drugs) {
-            fragmentsLoader.replaceFragment(this, new TodayDrugsFragment());
-        } else if (id == R.id.nav_drugs) {
-            fragmentsLoader.replaceFragment(this, new DrugsFragment());
-        } else if (id == R.id.nav_history) {
-            fragmentsLoader.replaceFragment(this, new HistoryFragment());
-        } else if (id == R.id.nav_settings) {
-            fragmentsLoader.replaceFragment(this, new SettingsFragment());
-            //startActivity(new Intent(this, SingleDrugActivity.class));
-        }
-
+        IFragment fragment = fragmentFactory(id);
+        fragmentsLoader.replaceFragment(this, fragment);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private IFragment fragmentFactory(int id) {
+        switch (id) {
+            case R.id.nav_today_drugs:
+                return new TodayDrugsFragment();
+            case R.id.nav_drugs:
+                return new DrugsFragment();
+            case R.id.nav_history:
+                return new HistoryFragment();
+            case R.id.nav_settings:
+                return new SettingsFragment();
+            default:
+                return null;
+        }
     }
 }

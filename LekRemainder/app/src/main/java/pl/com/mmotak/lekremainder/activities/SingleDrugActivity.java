@@ -67,26 +67,21 @@ public class SingleDrugActivity extends BaseNavDrawerActivity implements IDialog
         getMenuInflater().inflate(R.menu.single_drug_menu, menu);
 
         MenuItem item = menu.findItem(R.id.menu_delete);
-        item.setVisible(drugID != 0);
+        int drugId = drugID != null ? drugID : 0;
+        item.setVisible(drugId != 0);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.menu_delete) {
-
             ConfirmDialog.show(this, getString(R.string.dialog_remove_title), getString(R.string.dialog_remove_message), this);
-
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-
     }
 
     @Override

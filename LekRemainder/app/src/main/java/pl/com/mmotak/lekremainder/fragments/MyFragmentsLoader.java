@@ -1,5 +1,6 @@
 package pl.com.mmotak.lekremainder.fragments;
 
+import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -14,25 +15,25 @@ import pl.com.mmotak.lekremainder.R;
 
 public class MyFragmentsLoader {
 
-    public MyFragmentsLoader() {
+    private int layoutResId;
+
+    public MyFragmentsLoader(@LayoutRes int layoutResId) {
+        this.layoutResId = layoutResId;
     }
 
     public void addFragment(FragmentActivity fragmentActivity, IFragment fragment) {
-        if (!isNoFragment(fragmentActivity)) {
+        if (fragment != null && !isNoFragment(fragmentActivity)) {
             FragmentTransaction fragmentTransaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.fragment_layout, fragment.asFragment(), fragment.getTagName()).commit();
+            fragmentTransaction.add(layoutResId, fragment.asFragment(), fragment.getTagName()).commit();
         }
     }
 
     public void replaceFragment(FragmentActivity fragmentActivity, IFragment fragment) {
-
-        if (!isFragmentOnScreen(fragmentActivity, fragment)) {
+        if (fragment != null && !isFragmentOnScreen(fragmentActivity, fragment)) {
             FragmentTransaction fragmentTransaction = fragmentActivity.getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-            fragmentTransaction.replace(R.id.fragment_layout, fragment.asFragment(), fragment.getTagName());
-            //fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.replace(layoutResId, fragment.asFragment(), fragment.getTagName());
             fragmentTransaction.commit();
-            //fragmentTransaction.disallowAddToBackStack();
         }
     }
 
