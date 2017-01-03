@@ -18,7 +18,6 @@ public class ConfirmDialog {
         createDialog(context, title, message, dialogResultListener).show();
     }
 
-
     private static Dialog createDialog(Context context, String title, String message, @NotNull IDialogResult<Boolean> dialogResultListener) {
         return new AlertDialog
                 .Builder(context)

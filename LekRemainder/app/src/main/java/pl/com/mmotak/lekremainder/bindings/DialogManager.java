@@ -1,6 +1,5 @@
 package pl.com.mmotak.lekremainder.bindings;
 
-import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -9,10 +8,11 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
-import pl.com.mmotak.lekremainder.dialog.DateDialogPickerProvider;
+import pl.com.mmotak.lekremainder.dialog.ContextHelper;
+import pl.com.mmotak.lekremainder.dialog.DateTimeDialog;
 import pl.com.mmotak.lekremainder.dialog.IDialogResult;
 import pl.com.mmotak.lekremainder.dialog.NumberSeekDialog;
-import pl.com.mmotak.lekremainder.dialog.TimeDialog;
+import pl.com.mmotak.lekremainder.dialog.LocalTimeDialog;
 
 /**
  * Created by mmotak on 02.12.2016.
@@ -59,16 +59,7 @@ public class DialogManager {
                 return new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DateDialogPickerProvider p = new DateDialogPickerProvider();
-
-                        DateTime dt = null;
-
-                        if (data != null) {
-                            dt = (DateTime) data.load();
-                        }
-
-                        p.showDialog((Activity) view.getContext(), dt, new IDialogResult<DateTime>() {
-                            @SuppressWarnings("unchecked")
+                        DateTimeDialog.show((FragmentActivity) ContextHelper.getActivity(view.getContext()), data == null ? null : (DateTime) data.load(), new IDialogResult<DateTime>() {
                             @Override
                             public void onSuccess(DateTime dateTime) {
                                 if (data != null) {
@@ -78,9 +69,7 @@ public class DialogManager {
 
                             @Override
                             public void onFail() {
-                                if (data != null) {
-                                    data.save(null);
-                                }
+
                             }
                         });
                     }
@@ -92,10 +81,10 @@ public class DialogManager {
     public static Factory timeDialog() {
         return (v, data) -> view -> {
 
-            TimeDialog.show((FragmentActivity) view.getContext(), (LocalTime) data.load(), new IDialogResult<LocalTime>() {
+            LocalTimeDialog.show((FragmentActivity) ContextHelper.getActivity(view.getContext()),  data == null ? null : (LocalTime) data.load(), new IDialogResult<LocalTime>() {
                 @Override
                 public void onSuccess(LocalTime time) {
-                    data.save(time);
+                    if (data != null) { data.save(time); }
                 }
 
                 @Override
@@ -127,7 +116,7 @@ public class DialogManager {
                         }
 
 
-                        NumberSeekDialog.show((FragmentActivity) view.getContext(), number, max, title, new IDialogResult<Integer>() {
+                        NumberSeekDialog.show((FragmentActivity) ContextHelper.getActivity(view.getContext()), number, max, title, new IDialogResult<Integer>() {
                             @Override
                             public void onSuccess(Integer number) {
                                 if (data != null) {

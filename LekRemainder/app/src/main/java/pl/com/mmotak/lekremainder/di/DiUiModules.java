@@ -6,8 +6,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import pl.com.mmotak.lekremainder.dialog.DateDialogPickerProvider;
-import pl.com.mmotak.lekremainder.dialog.IDateUIProvider;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;
 import pl.com.mmotak.lekremainder.notification.LekRemainderNotificationManager;
 
@@ -17,11 +15,6 @@ import pl.com.mmotak.lekremainder.notification.LekRemainderNotificationManager;
 
 @Module
 public class DiUiModules {
-
-    @Provides
-    public IDateUIProvider getDateUIProvider() {
-        return new DateDialogPickerProvider();
-    }
 
     @Provides
     @Singleton
