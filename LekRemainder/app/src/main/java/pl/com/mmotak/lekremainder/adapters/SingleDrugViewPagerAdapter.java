@@ -32,8 +32,7 @@ public class SingleDrugViewPagerAdapter extends PagerAdapter {
     }
 
     private ViewDataBinding inflate(ViewGroup container, LayoutInflater inflater, int position) {
-        ViewDataBinding dataBinding = InflaterStrategy.inflate(inflater, container, viewModel, position);
-        return dataBinding;
+        return InflaterStrategy.inflate(inflater, container, viewModel, position);
     }
 
     @Override

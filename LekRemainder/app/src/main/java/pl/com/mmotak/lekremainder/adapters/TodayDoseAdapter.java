@@ -53,10 +53,10 @@ public class TodayDoseAdapter extends RecyclerView.Adapter<TodayDoseAdapter.Dose
         notifyDataSetChanged();
     }
 
-    public static class DoseViewHolder extends RecyclerView.ViewHolder {
+    static class DoseViewHolder extends RecyclerView.ViewHolder {
         final ItemTodayDoseBinding binding;
 
-        public DoseViewHolder(ItemTodayDoseBinding binding) {
+        DoseViewHolder(ItemTodayDoseBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

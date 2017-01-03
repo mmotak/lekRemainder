@@ -46,10 +46,10 @@ public class SingleDrugDosesAdapter extends RecyclerView.Adapter<SingleDrugDoses
         notifyDataSetChanged();
     }
 
-    public static class DoseViewHolder extends RecyclerView.ViewHolder {
+    static class DoseViewHolder extends RecyclerView.ViewHolder {
         final ItemSingleDrugDoseBinding binding;
 
-        public DoseViewHolder(ItemSingleDrugDoseBinding binding) {
+        DoseViewHolder(ItemSingleDrugDoseBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

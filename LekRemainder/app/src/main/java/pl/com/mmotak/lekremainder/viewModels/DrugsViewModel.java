@@ -3,7 +3,6 @@ package pl.com.mmotak.lekremainder.viewModels;
 import android.app.Activity;
 import android.databinding.ObservableInt;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
     public DrugsViewModel(Activity baseActivity) {
         super(baseActivity);
         getDiComponent().inject(this);
-        adapter = new DrugsAdapter(getBaseActivity());
+        adapter = new DrugsAdapter();
         subscribe();
     }
 

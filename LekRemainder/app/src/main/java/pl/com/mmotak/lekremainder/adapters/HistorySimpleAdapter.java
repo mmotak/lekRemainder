@@ -41,10 +41,10 @@ public class HistorySimpleAdapter extends RecyclerView.Adapter<HistorySimpleAdap
         notifyDataSetChanged();
     }
 
-    public class HistoryViewHolder extends RecyclerView.ViewHolder {
+    class HistoryViewHolder extends RecyclerView.ViewHolder {
         final ItemHistoryBinding binding;
 
-        public HistoryViewHolder(ItemHistoryBinding binding) {
+        HistoryViewHolder(ItemHistoryBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
