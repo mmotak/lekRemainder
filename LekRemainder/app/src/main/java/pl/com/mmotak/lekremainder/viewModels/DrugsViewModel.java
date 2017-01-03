@@ -69,7 +69,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
 
                     @Override
                     public void onNext(List<Drug> drugs) {
-                        adapter.setDrugList(drugs);
+                        adapter.setList(drugs);
                     }
                 });
     }

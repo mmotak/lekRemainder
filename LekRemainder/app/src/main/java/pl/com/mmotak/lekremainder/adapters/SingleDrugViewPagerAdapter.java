@@ -17,12 +17,10 @@ import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
 public class SingleDrugViewPagerAdapter extends PagerAdapter {
 
     private SingleDrugViewModel viewModel;
-    private Context context;
     private LayoutInflater inflater;
 
     public SingleDrugViewPagerAdapter(Context context, SingleDrugViewModel viewModel) {
         this.viewModel = viewModel;
-        this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
@@ -52,10 +50,4 @@ public class SingleDrugViewPagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
-
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            return getText(position);
-//        }
-
 }
