@@ -137,8 +137,8 @@ public class DataBaseProvider implements IDataProvider {
                 .orderBy(DbDose.TIME.asc())
                 .get()
                 .toObservable()
-                .filter(dbDose -> dbDose.getDbTakeDose() != null)
-                .filter(dbDose -> !dbDose.getDbTakeDose().isTaken())
+                .filter(dbDose -> dbDose.getDbTakeDose() == null || !dbDose.getDbTakeDose().isTaken())
+                //.filter(dbDose -> !dbDose.getDbTakeDose().isTaken())
 //                .filter(dbDose -> {
 //                    IDbTakeDose dbTakeDose = dbDose.getDbTakeDose();
 //                    DateTime time = dbTakeDose.getTime() == null

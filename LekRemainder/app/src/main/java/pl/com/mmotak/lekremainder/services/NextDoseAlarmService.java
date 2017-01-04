@@ -11,6 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
+import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
@@ -50,19 +51,24 @@ public class NextDoseAlarmService extends BaseService {
                 .subscribe(new Subscriber<List<TodayDose>>() {
                     @Override
                     public void onCompleted() {
+                        Log.d("NextDoseAlarmService", "onCompleted ");
                         unSubscribe();
                         stopSelf(startId);
+                        LekRemainderMainReceiver.completeWakefulIntent(intent);
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d("NextDoseAlarmService", "onError ");
                         e.printStackTrace();
                         unSubscribe();
                         stopSelf(startId);
+                        LekRemainderMainReceiver.completeWakefulIntent(intent);
                     }
 
                     @Override
                     public void onNext(List<TodayDose> todayDoses) {
+                        Log.d("NextDoseAlarmService", "onNext "+ todayDoses.size());
                         List<TodayDose> notifications = new ArrayList<TodayDose>();
 
                         DateTime minimum = null;
@@ -79,6 +85,7 @@ public class NextDoseAlarmService extends BaseService {
                             }
                         }
 
+                        Log.d("NextDoseAlarmService", "onNext "+ notifications.size());
                         notificationProvider.show(notifications, playSound);
                         if (minimum == null) {
                             DateTime resetTime = null;
@@ -101,6 +108,7 @@ public class NextDoseAlarmService extends BaseService {
                         } else {
                             TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(), minimum);
                         }
+                        Log.d("NextDoseAlarmService", "onNext - end");
                     }
                 });
     }

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import pl.com.mmotak.lekremainder.models.TodayDose;
 
 public class LekRemainderNotificationManager implements INotificationProvider {
 
+    private static final String TAG = "NotificationManager";
     private static final int ID = 1;
     private Context context;
 
@@ -29,7 +31,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     }
 
     private NotificationManager getNotificationManager() {
-        return (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     private void hideAllNotifications() {
@@ -44,12 +46,13 @@ public class LekRemainderNotificationManager implements INotificationProvider {
 
     @Override
     public void show(TodayDose todayDose, boolean playSound) {
+        Log.d(TAG ,"show "+ todayDose.toString() + " play " + playSound );
         showSingleNotification(todayDose, playSound);
     }
 
     @Override
     public void show(List<TodayDose> todayDoses, boolean playSound) {
-
+        Log.d(TAG ,"show "+ todayDoses.size() + " play " + playSound );
         if (todayDoses == null || todayDoses.isEmpty()) {
             hideAllNotifications();
         } else {
