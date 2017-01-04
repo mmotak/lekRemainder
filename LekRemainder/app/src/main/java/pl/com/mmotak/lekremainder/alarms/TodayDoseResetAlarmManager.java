@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 import pl.com.mmotak.lekremainder.broadcasts.LekRemainderBootReceiver;
 import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.ShaderDataProvider;
-import pl.com.mmotak.lekremainder.settings.SavedSettings;
 
 /**
  * Created by Maciej on 2016-12-28.
@@ -23,8 +22,10 @@ public class TodayDoseResetAlarmManager {
     public static void enableAlarms(Context context) {
         // enable
         enableBoot(context);
-        DateTime dateTime = SavedSettings.getTomorrowRestartDateTime();
+
         ShaderDataProvider shaderDataProvider = new ShaderDataProvider(context);
+        DateTime dateTime = shaderDataProvider.getTomorrowRestartDateTime();
+
         shaderDataProvider.saveNextResetDateTime(dateTime.getMillis());
         setNextAlarmTodayDoseResetService(context, dateTime);
         setNextAlarmNextDoseAlarmService(context, DateTime.now().plusMinutes(1));

@@ -12,7 +12,6 @@ import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
-import pl.com.mmotak.lekremainder.settings.SavedSettings;
 
 
 public class TodayDoseResetService extends IntentService {
@@ -27,25 +26,27 @@ public class TodayDoseResetService extends IntentService {
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        Log.d("TodayDoseResetService", "onHandleIntent "+DateTime.now());
-
+    public void onCreate() {
+        super.onCreate();
         init();
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        Log.d("TodayDoseResetService", "onHandleIntent " + DateTime.now());
 
         dataProvider.removeAllTodayDoses();
 
-        DateTime dateTime = SavedSettings.getTomorrowRestartDateTime();
+        DateTime dateTime = sharedDateProvider.getTomorrowRestartDateTime();
         sharedDateProvider.saveNextResetDateTime(dateTime.getMillis());
 
-        TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(getApplicationContext(),dateTime);
+        TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(getApplicationContext(), dateTime);
         TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(), DateTime.now().plusMinutes(1));
     }
 
     private void init() {
-        if (dataProvider == null || sharedDateProvider == null) {
-            ((LekRemainderApplication) getApplication())
-                    .getDiComponent()
-                    .inject(this);
-        }
+        ((LekRemainderApplication) getApplication())
+                .getDiComponent()
+                .inject(this);
     }
 }

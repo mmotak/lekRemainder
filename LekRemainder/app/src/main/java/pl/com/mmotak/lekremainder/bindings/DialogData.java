@@ -18,7 +18,7 @@ public class DialogData<T> extends BaseObservable implements DialogManager.IDial
 
     public void setObject(T object) {
         this.object = object;
-        notifyPropertyChanged(-1);
+        notifyChange();
     }
 
     @Override
@@ -29,6 +29,6 @@ public class DialogData<T> extends BaseObservable implements DialogManager.IDial
     @Override
     public void save(Object o) {
         object = (T) o;
-        notifyPropertyChanged(-1);
+        notifyChange();
     }
 }

@@ -16,7 +16,6 @@ import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;
-import pl.com.mmotak.lekremainder.settings.SavedSettings;
 import rx.Subscriber;
 import rx.Subscription;
 
@@ -85,7 +84,7 @@ public class NextDoseAlarmService extends BaseService {
                             DateTime resetTime = null;
 
                             DateTime now = DateTime.now();
-                            DateTime todayRestartDateTime = SavedSettings.getTodayRestartDateTime();
+                            DateTime todayRestartDateTime = sharedDateProvider.getTodayRestartDateTime();
 
                             if (now.isBefore(todayRestartDateTime)) {
                                 if (notifications.isEmpty()) {
@@ -94,7 +93,7 @@ public class NextDoseAlarmService extends BaseService {
                                     resetTime = todayRestartDateTime;
                                 }
                             } else {
-                                resetTime = SavedSettings.getTomorrowRestartDateTime();
+                                resetTime = sharedDateProvider.getTomorrowRestartDateTime();
                             }
 
                             TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(getApplicationContext(), resetTime);

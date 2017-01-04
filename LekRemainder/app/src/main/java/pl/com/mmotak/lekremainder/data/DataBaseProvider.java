@@ -203,13 +203,45 @@ public class DataBaseProvider implements IDataProvider {
 
         getData().update(dbDoses)
                 .subscribeOn(Schedulers.io())
-                .subscribe();
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Iterable<DbDose>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Iterable<DbDose> dbDoses) {
+
+                    }
+                });
 
         List<DbTakeDose> dbTakeDoses = getData().select(DbTakeDose.class).get().toList();
 
         getData().delete(dbTakeDoses)
                 .subscribeOn(Schedulers.io())
-                .subscribe();
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+
+                    }
+                });
     }
 
     @Override

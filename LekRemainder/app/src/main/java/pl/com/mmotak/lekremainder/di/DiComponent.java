@@ -7,6 +7,7 @@ import pl.com.mmotak.lekremainder.services.NextDoseAlarmService;
 import pl.com.mmotak.lekremainder.services.TodayDoseResetService;
 import pl.com.mmotak.lekremainder.viewModels.DrugsViewModel;
 import pl.com.mmotak.lekremainder.viewModels.HistoryFragmentViewModel;
+import pl.com.mmotak.lekremainder.viewModels.SettingsFragmentViewModel;
 import pl.com.mmotak.lekremainder.viewModels.SingleDrugViewModel;
 import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 
@@ -28,4 +29,6 @@ public interface DiComponent {
     void inject(TodayDoseResetService todayDoseResetService);
 
     void inject(NextDoseAlarmService nextDoseAlarmService);
+
+    void inject(SettingsFragmentViewModel settingsViewModel);
 }

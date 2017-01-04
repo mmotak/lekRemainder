@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -60,48 +61,51 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         }
     }
 
-    private void showBigNotification(List<TodayDose> todayDoses, boolean playSound) {
+    private Uri getSound() {
+        return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+    }
+
+    private NotificationCompat.Builder createBaseBuilder(boolean playSound) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.clock)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.drawable.ic_notification)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setContentTitle("Drugs to take: " + todayDoses.size())
-                .setContentText("Hmm... write here some text")
-                .setContentIntent(createPendingIntent());
+                .setCategory(NotificationCompat.CATEGORY_ALARM);
 
         if (playSound) {
             builder.setSound(getSound());
         }
 
+        return builder;
+    }
+
+    private NotificationCompat.InboxStyle createInboxStyle(List<TodayDose> todayDoses) {
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle("Drugs to take: " + todayDoses.size());
 
         for (TodayDose todayDose : todayDoses) {
             inboxStyle.addLine(todayDose.getDrugName() + ": " + todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)));
         }
-        builder.setStyle(inboxStyle);
-        builder.setNumber(todayDoses.size());
+
+        return inboxStyle;
+    }
+
+    private void showBigNotification(List<TodayDose> todayDoses, boolean playSound) {
+        NotificationCompat.Builder builder = createBaseBuilder(playSound)
+                .setContentTitle("Drugs to take: " + todayDoses.size())
+                .setContentText("Drugs to take: " + todayDoses.size())
+                .setContentIntent(createPendingIntent())
+                .setStyle(createInboxStyle(todayDoses));
 
         getNotificationManager().notify(ID, builder.build());
     }
 
     private void showSingleNotification(TodayDose todayDose, boolean playSound) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.clock)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
+        NotificationCompat.Builder builder = createBaseBuilder(playSound)
                 .setContentTitle(todayDose.getDrugName())
                 .setContentText(todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)))
                 .setContentIntent(createPendingIntent());
 
-        if (playSound) {
-            builder.setSound(getSound());
-        }
-
         getNotificationManager().notify(ID, builder.build());
-    }
-
-    private Uri getSound() {
-        return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
     }
 }

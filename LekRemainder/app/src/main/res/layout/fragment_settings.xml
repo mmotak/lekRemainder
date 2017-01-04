@@ -1,22 +1,50 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="pl.com.mmotak.lekremainder.fragments.SettingsFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <data>
+
+        <variable
+            name="viewModel"
+            type="pl.com.mmotak.lekremainder.viewModels.SettingsFragmentViewModel"/>
+
+        <import type="pl.com.mmotak.lekremainder.bindings.LayoutManagers"/>
+
+        <import type="pl.com.mmotak.lekremainder.bindings.DialogManager"/>
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context="pl.com.mmotak.lekremainder.fragments.SettingsFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textColor="@color/colorAccent"
-            android:layout_centerInParent="true"
-            android:text="@string/to_do" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reset_time"/>
 
-</FrameLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.time}"
+                app:dialogOnClick="@{DialogManager.timeDialog()}"
+                app:dialogData="@{viewModel.time}"
+                android:textColor="@color/primary_text"
+                android:textSize="24sp"
+                tools:text="06:00"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:onClick="@{viewModel::onResetNowButtonClick}"
+                android:text="@string/reset_now"/>
+        </LinearLayout>
+    </FrameLayout>
+</layout>

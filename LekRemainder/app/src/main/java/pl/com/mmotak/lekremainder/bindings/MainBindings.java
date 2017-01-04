@@ -47,6 +47,12 @@ public class MainBindings {
     }
 
     @BindingAdapter("android:text")
+    public static void setText(TextView view, DialogData<LocalTime> value) {
+        String format = view.getContext().getString(R.string.time_format);
+        view.setText(value.getObject().toString(format));
+    }
+
+    @BindingAdapter("android:text")
     public static void setText(TextView view, DateTime value) {
         String format = view.getContext().getString(R.string.datetime_format);
         view.setText(value.toString(format));

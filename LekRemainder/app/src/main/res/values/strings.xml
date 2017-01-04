@@ -48,5 +48,9 @@
     <string name="dialog_remove_title">Remove</string>
     <string name="dialog_remove_message">Are you sure to remove this?</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="reset_time">Reset Time:</string>
+    <string name="reset_now">Reset now!</string>
+    <string name="reset_now_ask_title">Reset now?</string>
+    <string name="reset_now_ask">Do you want to reset taken drugs now?</string>
 
 </resources>
