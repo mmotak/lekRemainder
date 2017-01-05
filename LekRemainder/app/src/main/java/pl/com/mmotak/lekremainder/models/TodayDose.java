@@ -72,7 +72,10 @@ public class TodayDose {
     }
 
     public DateTime getEstimatedDateTime() {
-        DateTime dateTime = (takeDose == null || takeDose.getTime() == null) ? getTime().toDateTimeToday().plusDays(shiftInDays) : takeDose.getTime();
-        return dateTime.plusSeconds(getShiftInSeconds());
+        if (takeDose != null && takeDose.getTime() != null) {
+            return takeDose.getTime();
+        } else {
+            return getTime().toDateTimeToday().plusDays(shiftInDays).plusSeconds(getShiftInSeconds());
+        }
     }
 }
