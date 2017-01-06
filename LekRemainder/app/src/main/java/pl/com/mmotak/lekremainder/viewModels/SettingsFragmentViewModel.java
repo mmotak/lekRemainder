@@ -16,6 +16,7 @@ import pl.com.mmotak.lekremainder.bindings.DialogData;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.dialog.ConfirmDialog;
 import pl.com.mmotak.lekremainder.dialog.IDialogResult;
+import pl.com.mmotak.lekremainder.ui.IToastProvider;
 
 /**
  * Created by Maciej on 2017-01-04.
@@ -25,6 +26,8 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel implements 
 
     @Inject
     ISharedDateProvider sharedDateProvider;
+    @Inject
+    IToastProvider toastProvider;
 
     public DialogData<LocalTime> time;
 
@@ -53,6 +56,11 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel implements 
                 this);
     }
 
+    public void onTestNextDoseTimeButtonClick(View view) {
+        TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(view.getContext(), DateTime.now().plusSeconds(7));
+        toastProvider.show(view.getContext(), "Next Doses Alarm will be call in 7 seconds");
+    }
+
     @Override
     public void subscribeOnResume() {
 
@@ -71,6 +79,7 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel implements 
     @Override
     public void onSuccess(Boolean data) {
         TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(getBaseActivity(), DateTime.now().plusSeconds(7));
+        toastProvider.show(getBaseActivity(), "Next Reset All Alarm will be call in 7 seconds");
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.util.List;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.models.Drug;
+import pl.com.mmotak.lekremainder.models.History;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
 
@@ -34,7 +35,7 @@ public interface IDataProvider {
 
     void RemoveDrug(int id);
 
-    rx.Observable<List<DbHistory>> getAllHistoryObservable();
+    rx.Observable<List<History>> getAllHistoryObservable();
 
     void removeAllTodayDoses();
 

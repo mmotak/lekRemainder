@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.List;
 
+import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.activities.MainActivity;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -64,8 +66,8 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         }
     }
 
-    private Uri getSound() {
-        return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+    private Uri getSound(boolean playSound) {
+        return RingtoneManager.getDefaultUri(playSound ? RingtoneManager.TYPE_ALARM : RingtoneManager.TYPE_NOTIFICATION);
     }
 
     private NotificationCompat.Builder createBaseBuilder(boolean playSound) {
@@ -73,18 +75,16 @@ public class LekRemainderNotificationManager implements INotificationProvider {
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_notification)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_ALARM);
-
-        if (playSound) {
-            builder.setSound(getSound());
-        }
-
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setSound(getSound(playSound));
         return builder;
     }
 
-    private NotificationCompat.InboxStyle createInboxStyle(List<TodayDose> todayDoses) {
+    private NotificationCompat.InboxStyle createInboxStyle(List<TodayDose> todayDoses, boolean playSound) {
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle("Drugs to take: " + todayDoses.size());
+
+        if (BuildConfig.DEBUG) inboxStyle.addLine("show "+ todayDoses.size() + " play " + playSound);
 
         for (TodayDose todayDose : todayDoses) {
             inboxStyle.addLine(todayDose.getDrugName() + ": " + todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)));
@@ -98,7 +98,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
                 .setContentTitle("Drugs to take: " + todayDoses.size())
                 .setContentText("Drugs to take: " + todayDoses.size())
                 .setContentIntent(createPendingIntent())
-                .setStyle(createInboxStyle(todayDoses));
+                .setStyle(createInboxStyle(todayDoses,playSound));
 
         getNotificationManager().notify(ID, builder.build());
     }

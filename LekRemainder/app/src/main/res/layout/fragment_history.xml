@@ -25,7 +25,7 @@
                 android:clipToPadding="false"
                 android:scrollbars="vertical"
                 app:adapter="@{viewModel.adapter}"
-                app:layoutManager="@{LayoutManagers.grid(2)}"
+                app:layoutManager="@{LayoutManagers.linear()}"
                 tools:listitem="@layout/item_history"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"

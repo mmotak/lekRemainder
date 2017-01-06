@@ -45,6 +45,13 @@
                 android:paddingTop="4dp"
                 android:onClick="@{viewModel::onResetNowButtonClick}"
                 android:text="@string/reset_now"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:onClick="@{viewModel::onTestNextDoseTimeButtonClick}"
+                android:text="@string/call_next_drugs_alarm"/>
         </LinearLayout>
     </FrameLayout>
 </layout>

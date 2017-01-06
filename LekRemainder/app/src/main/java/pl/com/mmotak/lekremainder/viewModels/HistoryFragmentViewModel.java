@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.adapters.HistorySimpleAdapter;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.entities.DbHistory;
+import pl.com.mmotak.lekremainder.models.History;
 import rx.Subscriber;
 import rx.Subscription;
 
@@ -40,7 +41,7 @@ public class HistoryFragmentViewModel extends AbstractBaseViewModel {
             return;
         }
 
-        subscription = dataProvider.getAllHistoryObservable().subscribe(new Subscriber<List<DbHistory>>() {
+        subscription = dataProvider.getAllHistoryObservable().subscribe(new Subscriber<List<History>>() {
             @Override
             public void onCompleted() {
 
@@ -52,8 +53,8 @@ public class HistoryFragmentViewModel extends AbstractBaseViewModel {
             }
 
             @Override
-            public void onNext(List<DbHistory> dbHistories) {
-                adapter.setList(dbHistories);
+            public void onNext(List<History> histories) {
+                adapter.setList(histories);
             }
         });
     }

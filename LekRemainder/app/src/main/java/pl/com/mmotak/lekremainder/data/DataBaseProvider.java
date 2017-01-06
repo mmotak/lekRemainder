@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.requery.Persistable;
@@ -16,19 +17,23 @@ import io.requery.sql.EntityDataStore;
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.converters.models.DoseConverter;
 import pl.com.mmotak.lekremainder.converters.models.DrugConverter;
+import pl.com.mmotak.lekremainder.converters.models.HistoryConverter;
 import pl.com.mmotak.lekremainder.converters.models.TakenDoseConverter;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.entities.DbTakeDose;
 import pl.com.mmotak.lekremainder.entities.IDbDose;
+import pl.com.mmotak.lekremainder.entities.IDbHistory;
 import pl.com.mmotak.lekremainder.entities.IDbTakeDose;
 import pl.com.mmotak.lekremainder.entities.Models;
 import pl.com.mmotak.lekremainder.models.Drug;
+import pl.com.mmotak.lekremainder.models.History;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -180,7 +185,7 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
-    public Observable<List<DbHistory>> getAllHistoryObservable() {
+    public Observable<List<History>> getAllHistoryObservable() {
         return getData()
                 .select(DbHistory.class)
                 .where(DbHistory.TIME.between(DateTime.now().minusDays(7), DateTime.now().plusSeconds(30)))
@@ -188,6 +193,7 @@ public class DataBaseProvider implements IDataProvider {
                 .get()
                 .toSelfObservable()
                 .map(Result::toList)
+                .map(HistoryConverter::toHistoryList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 ;
