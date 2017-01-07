@@ -11,6 +11,8 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 import pl.com.mmotak.lekremainder.BuildConfig;
@@ -58,11 +60,12 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         if (todayDoses == null || todayDoses.isEmpty()) {
             hideAllNotifications();
         } else {
-            if (todayDoses.size() > 1) {
-                showBigNotification(todayDoses, playSound);
-            } else {
-                showSingleNotification(todayDoses.get(0), playSound);
-            }
+            showBigNotification(todayDoses, playSound);
+//            if (todayDoses.size() > 1) {
+//                showBigNotification(todayDoses, playSound);
+//            } else {
+//                showSingleNotification(todayDoses.get(0), playSound);
+//            }
         }
     }
 
@@ -85,6 +88,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         inboxStyle.setBigContentTitle("Drugs to take: " + todayDoses.size());
 
         if (BuildConfig.DEBUG) inboxStyle.addLine("show "+ todayDoses.size() + " play " + playSound);
+        if (BuildConfig.DEBUG) inboxStyle.addLine("NOW: "+ DateTime.now().toString());
 
         for (TodayDose todayDose : todayDoses) {
             inboxStyle.addLine(todayDose.getDrugName() + ": " + todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)));

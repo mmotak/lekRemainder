@@ -266,6 +266,7 @@ public class DataBaseProvider implements IDataProvider {
             for (int i = 1; i < list.size(); i++) {
                 DbTakeDose dbTakeDose = new DbTakeDose();
                 dbTakeDose.setShiftInSeconds(todayDose.getShiftInSeconds());
+                //dbTakeDose.setTime(list.get(i).getTime().plusSeconds(todayDose.getShiftInSeconds()));
                 list.get(i).setDbTakeDose(dbTakeDose);
             }
 

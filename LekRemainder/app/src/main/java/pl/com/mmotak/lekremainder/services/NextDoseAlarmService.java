@@ -69,19 +69,29 @@ public class NextDoseAlarmService extends BaseService {
                     @Override
                     public void onNext(List<TodayDose> todayDoses) {
                         Log.d("NextDoseAlarmService", "onNext "+ todayDoses.size());
+                        Log.d("NextDoseAlarmService", "now "+ now);
+                        Log.d("NextDoseAlarmService", "now_NEW "+ DateTime.now());
                         List<TodayDose> notifications = new ArrayList<TodayDose>();
 
                         DateTime minimum = null;
                         boolean playSound = false;
 
+                        int shiftDay = 0;
+                        if (now.isBefore(sharedDateProvider.getTodayRestartDateTime())) {
+                            // a little date time hack
+                            // if after 00:00 and before reset time
+                            // add -1 day
+                            shiftDay = -1;
+                        }
+
                         for (TodayDose td : todayDoses) {
-                            if (td.getEstimatedDateTime().isBefore(now.plusMinutes(1))) {
+                            if (td.getEstimatedDateTime().plusDays(shiftDay).isBefore(now.plusMinutes(1))) {
                                 notifications.add(td);
-                                playSound = td.getEstimatedDateTime().isAfter(now.minusMinutes(1)) || playSound;
+                                playSound = td.getEstimatedDateTime().plusDays(shiftDay).isAfter(now.minusMinutes(1)) || playSound;
                             } else if (minimum == null) {
-                                minimum = td.getEstimatedDateTime();
+                                minimum = td.getEstimatedDateTime().plusDays(shiftDay);
                             } else if (minimum.isAfter(td.getEstimatedDateTime())) {
-                                minimum = td.getEstimatedDateTime();
+                                minimum = td.getEstimatedDateTime().plusDays(shiftDay);
                             }
                         }
 
