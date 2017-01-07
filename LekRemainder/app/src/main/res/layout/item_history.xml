@@ -22,23 +22,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="4dp">
+            android:paddingRight="4dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.getDay}"
-                android:visibility="@{viewModel.getHeaderVisibility}"
                 android:gravity="center_horizontal"
+                android:text="@{viewModel.getDay}"
                 android:textSize="24sp"
+                android:visibility="@{viewModel.getHeaderVisibility}"
                 tools:text="02"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.getMonth}"
-                android:visibility="@{viewModel.getHeaderVisibility}"
                 android:gravity="center_horizontal"
+                android:text="@{viewModel.getMonth}"
                 android:textSize="12sp"
+                android:visibility="@{viewModel.getHeaderVisibility}"
                 tools:text="12"/>
         </LinearLayout>
 
@@ -46,29 +47,42 @@
             android:id="@+id/card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             card_view:cardCornerRadius="2dp">
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="4dp">
-
-            <TextView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.getName}"
-                tools:text="Lek nr 234"/>
+                android:orientation="vertical"
+                android:padding="4dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.getTime}"
-                android:paddingLeft="12dp"
-                tools:text="12:43"/>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.getName}"
+                    tools:text="Lek nr 234"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="12dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:tint="@color/colorPrimary"
+                        card_view:srcCompat="@drawable/accept"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.getTime}"
+                        tools:text="12:43"/>
+                </LinearLayout>
+            </LinearLayout>
         </android.support.v7.widget.CardView>
 
 
