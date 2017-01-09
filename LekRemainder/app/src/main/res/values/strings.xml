@@ -52,5 +52,6 @@
     <string name="reset_now">Reset now!</string>
     <string name="reset_now_ask_title">Reset now?</string>
     <string name="reset_now_ask">Do you want to reset taken drugs now?</string>
+    <string name="call_next_drugs_alarm">Call Next Drugs Alarm</string>
 
 </resources>
