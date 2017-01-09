@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import org.joda.time.DateTime;
 
@@ -79,8 +80,13 @@ public class TodayDoseResetAlarmManager {
     private static void setNextAlarm(Context context, DateTime time, int requestCode, int id) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time.getMillis(),
-                createPendingIntent(context, requestCode, createServiceIntent(context, id)));
+        if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time.getMillis(),
+                    createPendingIntent(context, requestCode, createServiceIntent(context, id)));
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, time.getMillis(),
+                    createPendingIntent(context, requestCode, createServiceIntent(context, id)));
+        }
     }
 
     private static Intent createServiceIntent(Context context, int id) {
