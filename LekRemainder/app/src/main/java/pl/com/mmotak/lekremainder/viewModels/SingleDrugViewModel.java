@@ -61,7 +61,9 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
         type.set(drug.getType());
         dosesNo.set(drug.getDosesNo());
         dosesEveryH.set(drug.getDosesEveryH());
-        startTime.setObject(drug.getDoses().get(0).getTime()); // the first item
+        if (drug.getDoses() != null && !drug.getDoses().isEmpty()) {
+            startTime.setObject(drug.getDoses().get(0).getTime()); // the first item
+        }
         doses.clear();
         doses.addAll(drug.getDoses());
 

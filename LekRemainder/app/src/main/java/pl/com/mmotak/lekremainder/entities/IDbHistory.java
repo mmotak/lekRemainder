@@ -1,6 +1,5 @@
 package pl.com.mmotak.lekremainder.entities;
 
-import android.databinding.Bindable;
 import android.databinding.Observable;
 import android.os.Parcelable;
 
@@ -24,12 +23,10 @@ public interface IDbHistory extends Observable, Parcelable, Persistable {
     @Key @Generated
     int getId();
 
-    @Bindable
     @Convert(DateTimeConverter.class)
     DateTime getTime();
 
     int getDoseId();
 
-    @Bindable
     String getName(); // drugName
 }

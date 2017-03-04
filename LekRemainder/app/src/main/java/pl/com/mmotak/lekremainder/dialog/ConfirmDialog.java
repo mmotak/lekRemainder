@@ -3,8 +3,7 @@ package pl.com.mmotak.lekremainder.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
-
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import pl.com.mmotak.lekremainder.R;
 
@@ -14,11 +13,11 @@ import pl.com.mmotak.lekremainder.R;
 
 public class ConfirmDialog {
 
-    public static void show(Context context, String title, String message, @NotNull IDialogResult<Boolean> dialogResultListener) {
+    public static void show(Context context, String title, String message, @NonNull IDialogResult<Boolean> dialogResultListener) {
         createDialog(context, title, message, dialogResultListener).show();
     }
 
-    private static Dialog createDialog(Context context, String title, String message, @NotNull IDialogResult<Boolean> dialogResultListener) {
+    private static Dialog createDialog(Context context, String title, String message, @NonNull IDialogResult<Boolean> dialogResultListener) {
         return new AlertDialog
                 .Builder(context)
                 .setTitle(title != null && title.length() > 0 ? title : "Title")
