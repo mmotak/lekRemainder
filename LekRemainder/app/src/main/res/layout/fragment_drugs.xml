@@ -16,15 +16,15 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="pl.com.mmotak.lekremainder.fragments.DrugsFragment">
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            app:layoutManager="@{LayoutManagers.linear()}"
-            app:adapter="@{drugsViewModel.adapter}"
-            app:visibility="@{drugsViewModel.recyclerViewVisibility}"
-            tools:listitem="@layout/item_drug"/>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                app:layoutManager="@{LayoutManagers.linear()}"
+                app:adapter="@{drugsViewModel.adapter}"
+                app:visibility="@{drugsViewModel.recyclerViewVisibility}"
+                tools:listitem="@layout/item_drug"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

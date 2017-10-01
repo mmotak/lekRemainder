@@ -8,7 +8,7 @@ import org.joda.time.LocalTime;
 
 public class Dose {
     private int id;
-    private Drug drug;
+    private transient Drug drug;
     private LocalTime time;
     private int shiftInDays;
 

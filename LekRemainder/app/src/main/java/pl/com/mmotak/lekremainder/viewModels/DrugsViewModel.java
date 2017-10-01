@@ -15,6 +15,7 @@ import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.models.Drug;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by mmotak on 29.11.2016.
@@ -54,6 +55,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
         }
 
         subscription = dataProvider.getDrugsObservable()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Drug>>() {
                     @Override
                     public void onCompleted() {

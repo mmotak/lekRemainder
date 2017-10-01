@@ -131,7 +131,7 @@ public class DataBaseProvider implements IDataProvider {
                 .map(Result::toList)
                 .map(DrugConverter::toDrugs)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+
                 ;
     }
 
@@ -188,6 +188,19 @@ public class DataBaseProvider implements IDataProvider {
     public Observable<List<History>> getAllHistoryObservable() {
         return getData()
                 .select(DbHistory.class)
+                .get()
+                .toSelfObservable()
+                .map(Result::toList)
+                .map(HistoryConverter::toHistoryList)
+                .subscribeOn(Schedulers.io())
+                ;
+
+    }
+
+    @Override
+    public Observable<List<History>> getAllLastHistoryObservable() {
+        return getData()
+                .select(DbHistory.class)
                 .where(DbHistory.TIME.between(DateTime.now().minusDays(7), DateTime.now().plusSeconds(30)))
                 .orderBy(DbHistory.TIME.desc())
                 .get()
@@ -195,9 +208,7 @@ public class DataBaseProvider implements IDataProvider {
                 .map(Result::toList)
                 .map(HistoryConverter::toHistoryList)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 ;
-
     }
 
     @Override

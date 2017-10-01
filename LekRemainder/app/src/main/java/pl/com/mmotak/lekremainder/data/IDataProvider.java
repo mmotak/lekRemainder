@@ -1,5 +1,7 @@
 package pl.com.mmotak.lekremainder.data;
 
+import android.support.v4.media.MediaBrowserCompat;
+
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -36,6 +38,8 @@ public interface IDataProvider {
     void RemoveDrug(int id);
 
     rx.Observable<List<History>> getAllHistoryObservable();
+
+    rx.Observable<List<History>> getAllLastHistoryObservable();
 
     void removeAllTodayDoses();
 

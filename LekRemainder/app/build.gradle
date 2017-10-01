@@ -63,7 +63,13 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.3'
 
-    // requerry
+    // file saver
+    compile 'com.snatik:storage:2.1.0'
+
+    // json moshi parser
+    compile 'com.squareup.moshi:moshi:1.5.0'
+
+    // requery
     compile 'io.requery:requery:1.2.0'
     compile 'io.requery:requery-android:1.2.0'
     annotationProcessor 'io.requery:requery-processor:1.2.0'

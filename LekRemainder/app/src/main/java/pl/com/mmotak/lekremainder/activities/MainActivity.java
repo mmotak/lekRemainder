@@ -1,17 +1,18 @@
 package pl.com.mmotak.lekremainder.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setUpViews();
         fragmentsLoader.addFragment(this, new TodayDrugsFragment());
         navigationView.getMenu().getItem(0).setChecked(true);
+        checkPermission();
     }
 
     private void setUpViews() {
@@ -99,6 +101,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return new SettingsFragment();
             default:
                 return null;
+        }
+    }
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    12);
         }
     }
 }

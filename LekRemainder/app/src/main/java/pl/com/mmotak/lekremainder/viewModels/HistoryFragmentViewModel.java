@@ -13,6 +13,7 @@ import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.models.History;
 import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Maciej on 2016-12-27.
@@ -41,7 +42,9 @@ public class HistoryFragmentViewModel extends AbstractBaseViewModel {
             return;
         }
 
-        subscription = dataProvider.getAllHistoryObservable().subscribe(new Subscriber<List<History>>() {
+        subscription = dataProvider.getAllLastHistoryObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<History>>() {
             @Override
             public void onCompleted() {
 

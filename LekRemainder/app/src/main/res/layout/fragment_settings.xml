@@ -52,6 +52,27 @@
                 android:paddingTop="4dp"
                 android:onClick="@{viewModel::onTestNextDoseTimeButtonClick}"
                 android:text="@string/call_next_drugs_alarm"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:onClick="@{viewModel::onSaveHistoryButtonClick}"
+                android:text="@string/save_history"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:onClick="@{viewModel::onSaveConfigButtonClick}"
+                android:text="@string/save_config"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:onClick="@{viewModel::onLoadConfigButtonClick}"
+                android:text="@string/load_config"/>
         </LinearLayout>
     </FrameLayout>
 </layout>
