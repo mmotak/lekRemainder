@@ -2,6 +2,7 @@ package pl.com.mmotak.lekremainder.alarms;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -80,7 +81,11 @@ public class TodayDoseResetAlarmManager {
     private static void setNextAlarm(Context context, DateTime time, int requestCode, int id) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.KITKAT) {
+        if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getMillis(),
+                    createPendingIntent(context, requestCode, createServiceIntent(context, id)));
+        }
+        else if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.KITKAT) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time.getMillis(),
                     createPendingIntent(context, requestCode, createServiceIntent(context, id)));
         } else {
