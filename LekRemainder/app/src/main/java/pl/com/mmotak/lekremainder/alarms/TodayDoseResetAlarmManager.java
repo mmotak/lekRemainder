@@ -2,15 +2,16 @@ package pl.com.mmotak.lekremainder.alarms;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import org.joda.time.DateTime;
 
+import pl.com.mmotak.lekremainder.activities.MainActivity;
 import pl.com.mmotak.lekremainder.broadcasts.LekRemainderBootReceiver;
 import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.ShaderDataProvider;
@@ -80,18 +81,25 @@ public class TodayDoseResetAlarmManager {
 
     private static void setNextAlarm(Context context, DateTime time, int requestCode, int id) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = createPendingIntent(context, requestCode, createServiceIntent(context, id));
 
-        if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getMillis(),
-                    createPendingIntent(context, requestCode, createServiceIntent(context, id)));
-        }
-        else if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time.getMillis(),
-                    createPendingIntent(context, requestCode, createServiceIntent(context, id)));
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAlarmClock(createAlarmClockInfo(context, time), pendingIntent);
+        } else if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time.getMillis(), pendingIntent);
         } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, time.getMillis(),
-                    createPendingIntent(context, requestCode, createServiceIntent(context, id)));
+            alarmManager.set(AlarmManager.RTC_WAKEUP, time.getMillis(), pendingIntent);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static AlarmManager.AlarmClockInfo createAlarmClockInfo(Context context,DateTime time) {
+        return new AlarmManager.AlarmClockInfo(time.getMillis(),
+                createPendingIntent(context, 0, createMainActivityIntent(context)));
+    }
+
+    private static Intent createMainActivityIntent(Context context) {
+        return new Intent(context, MainActivity.class);
     }
 
     private static Intent createServiceIntent(Context context, int id) {
@@ -101,7 +109,6 @@ public class TodayDoseResetAlarmManager {
     }
 
     private static PendingIntent createPendingIntent(Context context, int requestCode, Intent inputIntent) {
-        PendingIntent pi = PendingIntent.getBroadcast(context, requestCode, inputIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pi;
+        return PendingIntent.getBroadcast(context, requestCode, inputIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
