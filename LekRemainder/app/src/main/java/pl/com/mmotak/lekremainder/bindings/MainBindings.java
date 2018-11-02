@@ -1,6 +1,5 @@
 package pl.com.mmotak.lekremainder.bindings;
 
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.graphics.drawable.Drawable;

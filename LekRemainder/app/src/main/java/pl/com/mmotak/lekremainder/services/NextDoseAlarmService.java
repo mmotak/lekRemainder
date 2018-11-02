@@ -43,7 +43,7 @@ public class NextDoseAlarmService extends BaseService {
     }
 
     protected void onHandleIntent(Intent intent, int startId) {
-        Log.d("NextDoseAlarmService", "onHandleIntent "+DateTime.now());
+        Log.d("NextDoseAlarmService", "onHandleIntent " + DateTime.now());
 
         DateTime now = DateTime.now();
 
@@ -68,9 +68,9 @@ public class NextDoseAlarmService extends BaseService {
 
                     @Override
                     public void onNext(List<TodayDose> todayDoses) {
-                        Log.d("NextDoseAlarmService", "onNext "+ todayDoses.size());
-                        Log.d("NextDoseAlarmService", "now "+ now);
-                        Log.d("NextDoseAlarmService", "now_NEW "+ DateTime.now());
+                        Log.d("NextDoseAlarmService", "onNext " + todayDoses.size());
+                        Log.d("NextDoseAlarmService", "now " + now);
+                        Log.d("NextDoseAlarmService", "now_NEW " + DateTime.now());
                         List<TodayDose> notifications = new ArrayList<TodayDose>();
 
                         DateTime minimum = null;
@@ -95,7 +95,7 @@ public class NextDoseAlarmService extends BaseService {
                             }
                         }
 
-                        Log.d("NextDoseAlarmService", "onNext "+ notifications.size());
+                        Log.d("NextDoseAlarmService", "onNext " + notifications.size());
                         notificationProvider.show(notifications, playSound);
                         if (minimum == null) {
                             DateTime resetTime = null;

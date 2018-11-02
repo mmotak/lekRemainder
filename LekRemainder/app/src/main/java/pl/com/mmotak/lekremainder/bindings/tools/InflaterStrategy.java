@@ -27,7 +27,7 @@ public class InflaterStrategy {
     }
 
     public static ViewDataBinding inflate(LayoutInflater inflater, ViewGroup container, BaseViewModel viewModel, int position) {
-        AbstractViewDataBinder<?,?> dataBinding = InflaterStrategy.create(position);
+        AbstractViewDataBinder<?, ?> dataBinding = InflaterStrategy.create(position);
         dataBinding.inflate(inflater, container);
         dataBinding.setViewModel(viewModel);
         return dataBinding.getViewDataBinding();

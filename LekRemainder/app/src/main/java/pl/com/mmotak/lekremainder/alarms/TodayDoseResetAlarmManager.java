@@ -93,7 +93,7 @@ public class TodayDoseResetAlarmManager {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private static AlarmManager.AlarmClockInfo createAlarmClockInfo(Context context,DateTime time) {
+    private static AlarmManager.AlarmClockInfo createAlarmClockInfo(Context context, DateTime time) {
         return new AlarmManager.AlarmClockInfo(time.getMillis(),
                 createPendingIntent(context, 0, createMainActivityIntent(context)));
     }

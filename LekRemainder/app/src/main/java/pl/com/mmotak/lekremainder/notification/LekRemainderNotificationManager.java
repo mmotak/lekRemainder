@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -50,22 +49,17 @@ public class LekRemainderNotificationManager implements INotificationProvider {
 
     @Override
     public void show(TodayDose todayDose, boolean playSound) {
-        Log.d(TAG ,"show "+ todayDose.toString() + " play " + playSound );
+        Log.d(TAG, "show " + todayDose.toString() + " play " + playSound);
         showSingleNotification(todayDose, playSound);
     }
 
     @Override
     public void show(List<TodayDose> todayDoses, boolean playSound) {
-        Log.d(TAG ,"show "+ todayDoses.size() + " play " + playSound );
+        Log.d(TAG, "show " + todayDoses.size() + " play " + playSound);
         if (todayDoses == null || todayDoses.isEmpty()) {
             hideAllNotifications();
         } else {
             showBigNotification(todayDoses, playSound);
-//            if (todayDoses.size() > 1) {
-//                showBigNotification(todayDoses, playSound);
-//            } else {
-//                showSingleNotification(todayDoses.get(0), playSound);
-//            }
         }
     }
 
@@ -87,8 +81,10 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle("Drugs to take: " + todayDoses.size());
 
-        if (BuildConfig.DEBUG) inboxStyle.addLine("show "+ todayDoses.size() + " play " + playSound);
-        if (BuildConfig.DEBUG) inboxStyle.addLine("NOW: "+ DateTime.now().toString());
+        if (BuildConfig.DEBUG) {
+            inboxStyle.addLine("show " + todayDoses.size() + " play " + playSound);
+            inboxStyle.addLine("NOW: " + DateTime.now().toString());
+        }
 
         for (TodayDose todayDose : todayDoses) {
             inboxStyle.addLine(todayDose.getDrugName() + ": " + todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)));
@@ -102,7 +98,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
                 .setContentTitle("Drugs to take: " + todayDoses.size())
                 .setContentText("Drugs to take: " + todayDoses.size())
                 .setContentIntent(createPendingIntent())
-                .setStyle(createInboxStyle(todayDoses,playSound));
+                .setStyle(createInboxStyle(todayDoses, playSound));
 
         getNotificationManager().notify(ID, builder.build());
     }

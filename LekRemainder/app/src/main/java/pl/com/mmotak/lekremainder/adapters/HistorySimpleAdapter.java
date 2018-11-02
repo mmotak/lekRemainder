@@ -2,7 +2,6 @@ package pl.com.mmotak.lekremainder.adapters;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.ItemHistoryBinding;
-import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.models.History;
 
 /**

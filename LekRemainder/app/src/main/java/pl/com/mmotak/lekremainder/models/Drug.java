@@ -1,7 +1,5 @@
 package pl.com.mmotak.lekremainder.models;
 
-import org.joda.time.LocalTime;
-
 import java.util.ArrayList;
 import java.util.List;
 

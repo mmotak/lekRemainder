@@ -1,13 +1,9 @@
 package pl.com.mmotak.lekremainder.data;
 
-import android.support.v4.media.MediaBrowserCompat;
-
 import org.joda.time.DateTime;
 
 import java.util.List;
 
-import pl.com.mmotak.lekremainder.entities.DbDose;
-import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.History;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -25,21 +21,21 @@ public interface IDataProvider {
 
     Drug getDrugById(Integer id);
 
-    rx.Observable<List<Drug>> getDrugsObservable();
+    Observable<List<Drug>> getDrugsObservable();
 
     Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime(DateTime dateTime);
 
-    rx.Observable<List<TodayDose>> getTodayDosesObservable();
+    Observable<List<TodayDose>> getTodayDosesObservable();
 
     void saveHistory(String name, int doseId, DateTime time);
 
     void updateTodayDose(TodayDose todayDose);
 
-    void RemoveDrug(int id);
+    void removeDrug(int id);
 
-    rx.Observable<List<History>> getAllHistoryObservable();
+    Observable<List<History>> getAllHistoryObservable();
 
-    rx.Observable<List<History>> getAllLastHistoryObservable();
+    Observable<List<History>> getAllLastHistoryObservable();
 
     void removeAllTodayDoses();
 

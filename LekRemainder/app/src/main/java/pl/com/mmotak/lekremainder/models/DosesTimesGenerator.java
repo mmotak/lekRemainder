@@ -1,13 +1,9 @@
 package pl.com.mmotak.lekremainder.models;
 
-import android.content.Context;
-
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.com.mmotak.lekremainder.R;
 
 /**
  * Created by mmotak on 08.12.2016.
@@ -25,14 +21,13 @@ public class DosesTimesGenerator {
         int hours = time.getHourOfDay() - dosesEveryH;
         for (int i = 0; i < dosesNo; i++) {
             hours += dosesEveryH;
-            list.add(new ShiftedLocalTime(time.plusHours(i * dosesEveryH), hours/24));
+            list.add(new ShiftedLocalTime(time.plusHours(i * dosesEveryH), hours / 24));
         }
 
         return list;
     }
 
     public static String generateString(List<Dose> list) {
-        //String timeFormat = context.getString(R.string.time_format);
         String timeFormat = "HH:mm";
 
         StringBuilder sb = new StringBuilder();

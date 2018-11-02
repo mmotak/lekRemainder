@@ -136,8 +136,8 @@ public class SingleDrugViewModel extends AbstractBaseViewModel {
 
     }
 
-    public void Remove() {
-        dataProvider.RemoveDrug(this.drug.getId());
+    public void remove() {
+        dataProvider.removeDrug(this.drug.getId());
         if (dataProvider.isDrugTableEmpty()) {
             TodayDoseResetAlarmManager.disableAlarms(getBaseActivity());
         }

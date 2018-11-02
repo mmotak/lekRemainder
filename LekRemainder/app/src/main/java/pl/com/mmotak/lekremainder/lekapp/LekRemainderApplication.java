@@ -1,14 +1,9 @@
 package pl.com.mmotak.lekremainder.lekapp;
 
 import android.app.Application;
-import android.os.Handler;
-import android.util.Log;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import org.joda.time.DateTime;
-
-import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.di.DaggerDiComponent;
 import pl.com.mmotak.lekremainder.di.DiApplicationModule;
 import pl.com.mmotak.lekremainder.di.DiComponent;

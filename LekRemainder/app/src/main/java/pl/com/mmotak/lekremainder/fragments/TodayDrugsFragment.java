@@ -1,9 +1,7 @@
 package pl.com.mmotak.lekremainder.fragments;
 
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,8 +31,7 @@ public class TodayDrugsFragment extends Fragment implements IFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_today_drugs, container, false);
         viewModel = new TodayDoseViewModel(getActivity()); // TODO REMOVE!

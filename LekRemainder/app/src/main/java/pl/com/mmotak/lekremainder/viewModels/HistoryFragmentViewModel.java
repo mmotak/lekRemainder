@@ -9,7 +9,6 @@ import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.adapters.HistorySimpleAdapter;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
-import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.models.History;
 import rx.Subscriber;
 import rx.Subscription;

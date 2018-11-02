@@ -9,7 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.adapters.TodayDoseAdapter;
-import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;

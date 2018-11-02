@@ -13,8 +13,8 @@ import java.util.List;
  * Created by mmotak on 03.01.2017.
  */
 
-public abstract class ListRecyclerViewAdapter<ITEM,BINDING extends android.databinding.ViewDataBinding>
-        extends RecyclerView.Adapter<ListRecyclerViewAdapter.ViewHolder<BINDING>>{
+public abstract class ListRecyclerViewAdapter<ITEM, BINDING extends android.databinding.ViewDataBinding>
+        extends RecyclerView.Adapter<ListRecyclerViewAdapter.ViewHolder<BINDING>> {
 
     private List<ITEM> list = new ArrayList<ITEM>();
     private int layoutId;
@@ -25,7 +25,8 @@ public abstract class ListRecyclerViewAdapter<ITEM,BINDING extends android.datab
 
     @Override
     public ListRecyclerViewAdapter.ViewHolder<BINDING> onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ListRecyclerViewAdapter.ViewHolder<BINDING>(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), layoutId, parent, false));
+        return new ListRecyclerViewAdapter.ViewHolder<BINDING>(DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                layoutId, parent, false));
     }
 
     @Override

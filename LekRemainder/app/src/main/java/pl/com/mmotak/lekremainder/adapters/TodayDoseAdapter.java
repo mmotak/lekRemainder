@@ -1,6 +1,7 @@
 package pl.com.mmotak.lekremainder.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
@@ -24,7 +25,7 @@ public class TodayDoseAdapter extends ListRecyclerViewAdapter<TodayDose, ItemTod
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder<ItemTodayDoseBinding> holder, int position) {
-        holder.binding.setViewModel(new ItemTodayDoseViewModel(context, get(position),dataProvider));
+    public void onBindViewHolder(@NonNull ViewHolder<ItemTodayDoseBinding> holder, int position) {
+        holder.binding.setViewModel(new ItemTodayDoseViewModel(context, get(position), dataProvider));
     }
 }

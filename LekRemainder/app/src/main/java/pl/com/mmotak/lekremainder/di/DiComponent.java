@@ -16,7 +16,7 @@ import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
  */
 
 @Singleton
-@Component(modules = {DiStorageModule.class,DiApplicationModule.class,DiUiModules.class})
+@Component(modules = {DiStorageModule.class, DiApplicationModule.class, DiUiModules.class})
 public interface DiComponent {
     void inject(DrugsViewModel drugsViewModel);
 

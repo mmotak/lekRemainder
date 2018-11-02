@@ -1,7 +1,6 @@
 package pl.com.mmotak.lekremainder.fragments;
 
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.FragmentHistoryBinding;
 import pl.com.mmotak.lekremainder.viewModels.HistoryFragmentViewModel;
-import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 
 /**
  * Created by Maciej on 2016-12-11.

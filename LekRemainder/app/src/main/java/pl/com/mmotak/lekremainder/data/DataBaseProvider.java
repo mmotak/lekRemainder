@@ -4,7 +4,6 @@ import android.content.Context;
 
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.requery.Persistable;
@@ -24,8 +23,6 @@ import pl.com.mmotak.lekremainder.entities.DbDrug;
 import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.entities.DbTakeDose;
 import pl.com.mmotak.lekremainder.entities.IDbDose;
-import pl.com.mmotak.lekremainder.entities.IDbHistory;
-import pl.com.mmotak.lekremainder.entities.IDbTakeDose;
 import pl.com.mmotak.lekremainder.entities.Models;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.History;
@@ -33,7 +30,6 @@ import pl.com.mmotak.lekremainder.models.TodayDose;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -62,8 +58,7 @@ public class DataBaseProvider implements IDataProvider {
         }
 
         getData().findByKey(DbDrug.class, drug.getId())
-                .flatMap(dbDrug ->
-                {
+                .flatMap(dbDrug -> {
                     if (dbDrug == null) {
                         // new one
                         return getData().insert(DrugConverter.toDbDrug(drug));
@@ -92,8 +87,7 @@ public class DataBaseProvider implements IDataProvider {
                                         .delete(dbDose)
                                         .subscribeOn(Schedulers.io())
                                         .subscribe()
-                                )
-                        ;
+                                );
                     }
 
                     @Override
@@ -130,9 +124,7 @@ public class DataBaseProvider implements IDataProvider {
                 .toSelfObservable()
                 .map(Result::toList)
                 .map(DrugConverter::toDrugs)
-                .subscribeOn(Schedulers.io())
-
-                ;
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -143,20 +135,10 @@ public class DataBaseProvider implements IDataProvider {
                 .get()
                 .toObservable()
                 .filter(dbDose -> dbDose.getDbTakeDose() == null || !dbDose.getDbTakeDose().isTaken())
-                //.filter(dbDose -> !dbDose.getDbTakeDose().isTaken())
-//                .filter(dbDose -> {
-//                    IDbTakeDose dbTakeDose = dbDose.getDbTakeDose();
-//                    DateTime time = dbTakeDose.getTime() == null
-//                            ? dbDose.getTime().toDateTimeToday().plusDays(dbDose.getShiftInDays())
-//                            : dbTakeDose.getTime();
-//                    DateTime estimatedDateTime = time.plusSeconds(dbTakeDose.getShiftInSeconds());
-//                    return estimatedDateTime.isAfter(dateTime.minusMinutes(1));
-//                })
                 .toList()
                 .map(DoseConverter::toTodayDoses)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-
     }
 
 
@@ -170,8 +152,7 @@ public class DataBaseProvider implements IDataProvider {
                 .map(Result::toList)
                 .map(DoseConverter::toTodayDoses)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                ;
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -192,9 +173,7 @@ public class DataBaseProvider implements IDataProvider {
                 .toSelfObservable()
                 .map(Result::toList)
                 .map(HistoryConverter::toHistoryList)
-                .subscribeOn(Schedulers.io())
-                ;
-
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -207,8 +186,7 @@ public class DataBaseProvider implements IDataProvider {
                 .toSelfObservable()
                 .map(Result::toList)
                 .map(HistoryConverter::toHistoryList)
-                .subscribeOn(Schedulers.io())
-                ;
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -291,7 +269,7 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
-    public void RemoveDrug(int id) {
+    public void removeDrug(int id) {
         DbDrug dbDrug = getData().toBlocking().findByKey(DbDrug.class, id);
 
         if (dbDrug != null) {

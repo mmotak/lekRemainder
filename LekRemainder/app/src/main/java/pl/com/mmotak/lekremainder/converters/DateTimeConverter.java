@@ -1,12 +1,7 @@
 package pl.com.mmotak.lekremainder.converters;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import java.lang.annotation.Annotation;
-
-import io.requery.Convert;
 import io.requery.Converter;
 import io.requery.Nullable;
 

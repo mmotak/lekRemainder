@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.databinding.FragmentSettingsBinding;
 import pl.com.mmotak.lekremainder.viewModels.SettingsFragmentViewModel;
-import pl.com.mmotak.lekremainder.viewModels.TodayDoseViewModel;
 
 /**
  * Created by Maciej on 2016-12-11.

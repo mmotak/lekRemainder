@@ -1,0 +1,23 @@
+apply plugin: 'checkstyle'
+
+task checkstyleTask(type: Checkstyle) {
+    ignoreFailures true
+    configFile file("${project.rootDir}/config/quality/checkstyle/checkstyle_rules.xml")
+    configProperties.checkstyleSuppressionsPath = file("${project.rootDir}/config/quality/checkstyle/checkstyle_suppressions.xml").absolutePath
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    classpath = files()
+}
+
+checkstyle {
+    toolVersion = "7.5.1"
+}
+
+task genCheckstyleReport(dependsOn: [ checkstyleTask ]) {
+    doLast {
+        ant.xslt(in: "$buildDir/reports/checkstyle/task.xml",
+                style: "${project.rootDir}/config/quality/checkstyle/checkstyle.xsl",
+                out: "$buildDir/reports/checkstyle/checkstyle.html")
+    }
+}

@@ -1,5 +1,6 @@
 package pl.com.mmotak.lekremainder.bindings;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -10,9 +11,9 @@ import org.joda.time.LocalTime;
 
 import pl.com.mmotak.lekremainder.dialog.ContextHelper;
 import pl.com.mmotak.lekremainder.dialog.DateTimeDialog;
-import pl.com.mmotak.lekremainder.dialog.IDialogResult;
-import pl.com.mmotak.lekremainder.dialog.NumberSeekDialog;
+import pl.com.mmotak.lekremainder.dialog.IDialogSuccesResult;
 import pl.com.mmotak.lekremainder.dialog.LocalTimeDialog;
+import pl.com.mmotak.lekremainder.dialog.NumberSeekDialog;
 
 /**
  * Created by mmotak on 02.12.2016.
@@ -33,106 +34,71 @@ public class DialogManager {
         View.OnClickListener create(View view, IDialogData data);
     }
 
-    public static Factory toast() {
-        return new Factory() {
-            @Override
-            public View.OnClickListener create(View view, final IDialogData data) {
-                return new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String msg = data == null ? view.toString() :
-                                data.load() == null ? view.toString() : data.load().toString();
+    private static FragmentActivity getFragmentActivity(View view) {
+        return (FragmentActivity) ContextHelper.getActivity(view.getContext());
+    }
 
-                        Toast.makeText(view.getContext(), msg, Toast.LENGTH_LONG)
-                                .show();
-                    }
-                };
-            }
+    public static Factory toast() {
+        return (inputView, inputData) -> (View.OnClickListener) view -> {
+            String msg = inputData == null ? view.toString() : inputData.load() == null ? view.toString() : inputData.load().toString();
+            Toast.makeText(view.getContext(), msg, Toast.LENGTH_LONG).show();
         };
     }
 
     public static Factory dateTimePicker() {
-        return new Factory() {
-            @Override
-            public View.OnClickListener create(View view, IDialogData data) {
-                return new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        DateTimeDialog.show((FragmentActivity) ContextHelper.getActivity(view.getContext()), data == null ? null : (DateTime) data.load(), new IDialogResult<DateTime>() {
-                            @Override
-                            public void onSuccess(DateTime dateTime) {
-                                if (data != null) {
-                                    data.save(dateTime);
-                                }
+        return (inputView, data) -> (View.OnClickListener) view -> {
+            DateTimeDialog.show(getFragmentActivity(view), data == null ? null : (DateTime) data.load(),
+                    new IDialogSuccesResult<DateTime>() {
+                        @Override
+                        public void onSuccess(DateTime dateTime) {
+                            if (data != null) {
+                                data.save(dateTime);
                             }
-
-                            @Override
-                            public void onFail() {
-
-                            }
-                        });
-                    }
-                };
-            }
+                        }
+                    });
         };
     }
 
+
     public static Factory timeDialog() {
         return (v, data) -> view -> {
-
-            LocalTimeDialog.show((FragmentActivity) ContextHelper.getActivity(view.getContext()),  data == null ? null : (LocalTime) data.load(), new IDialogResult<LocalTime>() {
+            LocalTimeDialog.show(getFragmentActivity(view), data == null ? null : (LocalTime) data.load(), new IDialogSuccesResult<LocalTime>() {
                 @Override
                 public void onSuccess(LocalTime time) {
-                    if (data != null) { data.save(time); }
-                }
-
-                @Override
-                public void onFail() {
-
+                    if (data != null) {
+                        data.save(time);
+                    }
                 }
             });
         };
     }
 
     public static Factory numberSeekDialog(int max) {
-        return new Factory() {
-            @Override
-            public View.OnClickListener create(View view, IDialogData data) {
-                return new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Integer number = null;
-                        String title = null;
+        return (inputView, data) -> (View.OnClickListener) view -> {
+            Integer number = null;
+            String title = null;
 
-                        if (data == null) {
-                            if (view instanceof TextView) {
-                                String text = ((TextView) view).getText().toString();
-                                title = ((TextView) view).getHint().toString();
-                                number = Integer.parseInt(text);
-                            }
-                        } else {
-                            number = (Integer) data.load();
-                        }
-
-
-                        NumberSeekDialog.show((FragmentActivity) ContextHelper.getActivity(view.getContext()), number, max, title, new IDialogResult<Integer>() {
-                            @Override
-                            public void onSuccess(Integer number) {
-                                if (data != null) {
-                                    data.save(number);
-                                } else if (view instanceof TextView) {
-                                    ((TextView) view).setText(number.toString());
-                                }
-                            }
-
-                            @Override
-                            public void onFail() {
-
-                            }
-                        });
-                    }
-                };
+            if (data == null) {
+                if (view instanceof TextView) {
+                    String text = ((TextView) view).getText().toString();
+                    title = ((TextView) view).getHint().toString();
+                    number = Integer.parseInt(text);
+                }
+            } else {
+                number = (Integer) data.load();
             }
+
+            NumberSeekDialog.show(getFragmentActivity(view), number, max, title, new IDialogSuccesResult<Integer>() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onSuccess(Integer number) {
+                    if (data != null) {
+                        data.save(number);
+                    } else if (view instanceof TextView) {
+                        ((TextView) view).setText(number.toString());
+                    }
+                }
+            });
         };
     }
 }

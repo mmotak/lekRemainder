@@ -86,7 +86,7 @@ public class SingleDrugActivity extends BaseNavDrawerActivity implements IDialog
 
     @Override
     public void onSuccess(Boolean data) {
-        viewModel.Remove();
+        viewModel.remove();
         finish();
     }
 

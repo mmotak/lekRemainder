@@ -7,8 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import java.util.List;
 
-import pl.com.mmotak.lekremainder.R;
-
 /**
  * Created by Maciej on 2016-12-11.
  */

@@ -1,12 +1,12 @@
 package pl.com.mmotak.lekremainder.models;
 
+import android.annotation.SuppressLint;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
-import org.joda.time.chrono.StrictChronology;
 
 /**
  * Created by Maciej on 2017-01-06.
@@ -28,14 +28,16 @@ public class History extends BaseObservable {
         this.isHeaderVisible = isHeaderVisible;
     }
 
+    @SuppressLint("DefaultLocale")
     @Bindable
     public String getDay() {
-        return String.format("%02d",time.getDayOfMonth());
+        return String.format("%02d", time.getDayOfMonth());
     }
 
+    @SuppressLint("DefaultLocale")
     @Bindable
     public String getMonth() {
-        return String.format("%02d",time.getMonthOfYear());
+        return String.format("%02d", time.getMonthOfYear());
     }
 
     @Bindable

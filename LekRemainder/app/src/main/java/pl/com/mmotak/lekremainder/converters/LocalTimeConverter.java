@@ -12,8 +12,8 @@ import io.requery.Nullable;
 
 public class LocalTimeConverter implements Converter<LocalTime, String> {
 
-    private static String DbLocalTimeFormat = "HHmmss";
-    private static org.joda.time.format.DateTimeFormatter LocalTimeFormatter = DateTimeFormat.forPattern(DbLocalTimeFormat);
+    private static String dbLocalTimeFormat = "HHmmss";
+    private static org.joda.time.format.DateTimeFormatter localTimeFormatter = DateTimeFormat.forPattern(dbLocalTimeFormat);
 
 
     @Override
@@ -43,13 +43,13 @@ public class LocalTimeConverter implements Converter<LocalTime, String> {
     }
 
     private static String parse(LocalTime localTime) {
-        return localTime == null ? null : localTime.toString(DbLocalTimeFormat);
+        return localTime == null ? null : localTime.toString(dbLocalTimeFormat);
     }
 
     private static LocalTime parse(String localTime) {
         if (localTime == null || localTime.length() == 0) {
             return null;
         }
-        return LocalTimeFormatter.parseLocalTime(localTime);
+        return localTimeFormatter.parseLocalTime(localTime);
     }
 }
