@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -85,6 +86,7 @@ public class TodayDoseResetAlarmManager {
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setAlarmClock(createAlarmClockInfo(context, time), pendingIntent);
+            //alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getMillis(), pendingIntent);
         } else if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.KITKAT) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time.getMillis(), pendingIntent);
         } else {
@@ -105,6 +107,7 @@ public class TodayDoseResetAlarmManager {
     private static Intent createServiceIntent(Context context, int id) {
         Intent serviceIntent = new Intent(context, LekRemainderMainReceiver.class);
         serviceIntent.putExtra(LekRemainderMainReceiver.KEY, id);
+        Log.d("create", "createServiceIntent: " + id);
         return serviceIntent;
     }
 

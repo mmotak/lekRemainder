@@ -259,7 +259,9 @@ public class DataBaseProvider implements IDataProvider {
                 list.get(i).setDbTakeDose(dbTakeDose);
             }
 
-            getData().update(list).subscribeOn(Schedulers.io()).subscribe();
+            getData().update(list).subscribeOn(Schedulers.io())
+                    .subscribe(dbDoses -> {},
+                            throwable -> throwable.printStackTrace());
         }
     }
 

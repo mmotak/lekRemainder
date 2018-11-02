@@ -1,12 +1,17 @@
 package pl.com.mmotak.lekremainder.notification;
 
+import android.annotation.TargetApi;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -26,6 +31,8 @@ import pl.com.mmotak.lekremainder.models.TodayDose;
 public class LekRemainderNotificationManager implements INotificationProvider {
 
     private static final String TAG = "NotificationManager";
+    private static final String CHANNEL_ID = "Drug_Remainder_Notification1"; // This name is important! LOL https://stackoverflow.com/questions/50567164/custom-notification-sound-not-working-in-oreo
+    private static final String CHANNEL_NAME = "DrugRemainders1";
     private static final int ID = 1;
     private Context context;
 
@@ -68,13 +75,13 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     }
 
     private NotificationCompat.Builder createBaseBuilder(boolean playSound) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        return new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_notification)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setChannelId(CHANNEL_ID)
                 .setSound(getSound(playSound));
-        return builder;
     }
 
     private NotificationCompat.InboxStyle createInboxStyle(List<TodayDose> todayDoses, boolean playSound) {
@@ -99,8 +106,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
                 .setContentText("Drugs to take: " + todayDoses.size())
                 .setContentIntent(createPendingIntent())
                 .setStyle(createInboxStyle(todayDoses, playSound));
-
-        getNotificationManager().notify(ID, builder.build());
+        showNotifications(builder, playSound);
     }
 
     private void showSingleNotification(TodayDose todayDose, boolean playSound) {
@@ -108,7 +114,41 @@ public class LekRemainderNotificationManager implements INotificationProvider {
                 .setContentTitle(todayDose.getDrugName())
                 .setContentText(todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)))
                 .setContentIntent(createPendingIntent());
+        showNotifications(builder, playSound);
+    }
 
-        getNotificationManager().notify(ID, builder.build());
+    @TargetApi(Build.VERSION_CODES.O)
+    private NotificationChannel getNotificationChannel(boolean playSound) {
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build();
+
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+        notificationChannel.enableLights(true);
+        notificationChannel.enableVibration(true);
+        notificationChannel.setLightColor(Color.BLUE);
+        notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
+        notificationChannel.setSound(getSound(playSound), attributes);
+
+        return notificationChannel;
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void removePreviousChannels() {
+        NotificationManager notificationManager = getNotificationManager();
+        List<NotificationChannel> channelList = notificationManager.getNotificationChannels();
+
+        for (int i = 0; channelList != null && i < channelList.size(); i++) {
+            notificationManager.deleteNotificationChannel(channelList.get(i).getId());
+        }
+    }
+
+    private void showNotifications(NotificationCompat.Builder builder, boolean playSound) {
+        NotificationManager notificationManager = getNotificationManager();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //removePreviousChannels();
+            notificationManager.createNotificationChannel(getNotificationChannel(playSound));
+        }
+        notificationManager.notify(ID, builder.build());
     }
 }
