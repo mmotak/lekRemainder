@@ -4,12 +4,13 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
-
-        // retrolambda
-        classpath 'me.tatarka:gradle-retrolambda:3.4.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
 
         //Dagger2
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
@@ -23,6 +24,10 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 }
 
