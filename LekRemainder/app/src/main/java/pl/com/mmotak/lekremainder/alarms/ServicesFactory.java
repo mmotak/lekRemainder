@@ -14,6 +14,7 @@ public class ServicesFactory {
 
     public static final int RESET = 3;
     public static final int NEXT_DOSE = RESET + 1;
+    public static final int ACTIVITY_DOSE = NEXT_DOSE + 1;
 
     public static Intent getServiceIntent(Context context, int id) {
         switch (id) {

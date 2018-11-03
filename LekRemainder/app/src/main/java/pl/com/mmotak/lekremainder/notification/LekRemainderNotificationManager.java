@@ -31,17 +31,25 @@ import pl.com.mmotak.lekremainder.models.TodayDose;
 public class LekRemainderNotificationManager implements INotificationProvider {
 
     private static final String TAG = "NotificationManager";
-    private static final String CHANNEL_ID = "Drug_Remainder_Notification1"; // This name is important! LOL https://stackoverflow.com/questions/50567164/custom-notification-sound-not-working-in-oreo
-    private static final String CHANNEL_NAME = "DrugRemainders1";
+    // This name is important! LOL https://stackoverflow.com/questions/50567164/custom-notification-sound-not-working-in-oreo
+    private static final String ALARM_CHANNEL_ID = "DrugRemainderAlarmID";
+    private static final String NOTIFICATION_CHANNEL_ID = "DrugRemainderNotificationID";
+    private static final String ALARM_CHANNEL_NAME = "DrugRemainderAlarm";
+    private static final String NOTIFICATION_CHANNEL_NAME = "DrugRemainderNotification";
     private static final int ID = 1;
     private Context context;
+    private NotificationManager notificationManager;
 
     public LekRemainderNotificationManager(Context context) {
         this.context = context;
+        createChannels();
     }
 
     private NotificationManager getNotificationManager() {
-        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager == null) {
+            notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        return notificationManager;
     }
 
     private void hideAllNotifications() {
@@ -55,33 +63,50 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     }
 
     @Override
-    public void show(TodayDose todayDose, boolean playSound) {
-        Log.d(TAG, "show " + todayDose.toString() + " play " + playSound);
-        showSingleNotification(todayDose, playSound);
+    public void show(TodayDose todayDose, boolean isAlarmType) {
+        Log.d(TAG, "show " + todayDose.toString() + " play is alarm type " + isAlarmType);
+        showSingleNotification(todayDose, isAlarmType);
     }
 
     @Override
-    public void show(List<TodayDose> todayDoses, boolean playSound) {
-        Log.d(TAG, "show " + todayDoses.size() + " play " + playSound);
+    public void show(List<TodayDose> todayDoses, boolean isAlarmType) {
+        Log.d(TAG, "show " + todayDoses.size() + " play is alarm type " + isAlarmType);
         if (todayDoses == null || todayDoses.isEmpty()) {
             hideAllNotifications();
         } else {
-            showBigNotification(todayDoses, playSound);
+            showBigNotification(todayDoses, isAlarmType);
         }
     }
 
-    private Uri getSound(boolean playSound) {
-        return RingtoneManager.getDefaultUri(playSound ? RingtoneManager.TYPE_ALARM : RingtoneManager.TYPE_NOTIFICATION);
+    @TargetApi(Build.VERSION_CODES.N)
+    private int getImportance(boolean isAlarmType) {
+        return isAlarmType ? NotificationManager.IMPORTANCE_HIGH : NotificationManager.IMPORTANCE_DEFAULT;
     }
 
-    private NotificationCompat.Builder createBaseBuilder(boolean playSound) {
-        return new NotificationCompat.Builder(context, CHANNEL_ID)
+    private int getPriority(boolean isAlarmType) {
+        return isAlarmType ? NotificationCompat.PRIORITY_HIGH : NotificationCompat.PRIORITY_DEFAULT;
+    }
+
+    private String getChannelName(boolean isAlarmType) {
+        return isAlarmType ? ALARM_CHANNEL_NAME : NOTIFICATION_CHANNEL_NAME;
+    }
+
+    private String getChannelId(boolean isAlarmType) {
+        return isAlarmType ? ALARM_CHANNEL_ID : NOTIFICATION_CHANNEL_ID;
+    }
+
+    private Uri getSound(boolean isAlarmType) {
+        return RingtoneManager.getDefaultUri(isAlarmType ? RingtoneManager.TYPE_ALARM : RingtoneManager.TYPE_NOTIFICATION);
+    }
+
+    private NotificationCompat.Builder createBaseBuilder(boolean isAlarmType) {
+        return new NotificationCompat.Builder(context, getChannelId(isAlarmType))
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_notification)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setPriority(getPriority(isAlarmType))
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setChannelId(CHANNEL_ID)
-                .setSound(getSound(playSound));
+                .setChannelId(getChannelId(isAlarmType))
+                .setSound(getSound(isAlarmType));
     }
 
     private NotificationCompat.InboxStyle createInboxStyle(List<TodayDose> todayDoses, boolean playSound) {
@@ -100,37 +125,29 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         return inboxStyle;
     }
 
-    private void showBigNotification(List<TodayDose> todayDoses, boolean playSound) {
-        NotificationCompat.Builder builder = createBaseBuilder(playSound)
+    private void showBigNotification(List<TodayDose> todayDoses, boolean isAlarmType) {
+        NotificationCompat.Builder builder = createBaseBuilder(isAlarmType)
                 .setContentTitle("Drugs to take: " + todayDoses.size())
                 .setContentText("Drugs to take: " + todayDoses.size())
                 .setContentIntent(createPendingIntent())
-                .setStyle(createInboxStyle(todayDoses, playSound));
-        showNotifications(builder, playSound);
+                .setStyle(createInboxStyle(todayDoses, isAlarmType));
+        showNotifications(builder);
     }
 
-    private void showSingleNotification(TodayDose todayDose, boolean playSound) {
-        NotificationCompat.Builder builder = createBaseBuilder(playSound)
+    private void showSingleNotification(TodayDose todayDose, boolean isAlarmType) {
+        NotificationCompat.Builder builder = createBaseBuilder(isAlarmType)
                 .setContentTitle(todayDose.getDrugName())
                 .setContentText(todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)))
                 .setContentIntent(createPendingIntent());
-        showNotifications(builder, playSound);
+        showNotifications(builder);
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
-    private NotificationChannel getNotificationChannel(boolean playSound) {
-        AudioAttributes attributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                .build();
-
-        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
-        notificationChannel.enableLights(true);
-        notificationChannel.enableVibration(true);
-        notificationChannel.setLightColor(Color.BLUE);
-        notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
-        notificationChannel.setSound(getSound(playSound), attributes);
-
-        return notificationChannel;
+    private void createChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            removePreviousChannels();
+            getNotificationManager().createNotificationChannel(getNotificationChannel(true));
+            getNotificationManager().createNotificationChannel(getNotificationChannel(false));
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -143,12 +160,24 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         }
     }
 
-    private void showNotifications(NotificationCompat.Builder builder, boolean playSound) {
-        NotificationManager notificationManager = getNotificationManager();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //removePreviousChannels();
-            notificationManager.createNotificationChannel(getNotificationChannel(playSound));
-        }
-        notificationManager.notify(ID, builder.build());
+    @TargetApi(Build.VERSION_CODES.O)
+    private NotificationChannel getNotificationChannel(boolean isAlarmType) {
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build();
+
+        NotificationChannel notificationChannel = new NotificationChannel(getChannelId(isAlarmType),
+                getChannelName(isAlarmType), getImportance(isAlarmType));
+        notificationChannel.enableLights(true);
+        notificationChannel.enableVibration(true);
+        notificationChannel.setLightColor(Color.BLUE);
+        notificationChannel.setImportance(getImportance(isAlarmType));
+        notificationChannel.setSound(getSound(isAlarmType), attributes);
+
+        return notificationChannel;
+    }
+
+    private void showNotifications(NotificationCompat.Builder builder) {
+        getNotificationManager().notify(ID, builder.build());
     }
 }

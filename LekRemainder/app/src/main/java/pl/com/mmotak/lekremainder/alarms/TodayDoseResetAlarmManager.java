@@ -39,8 +39,8 @@ public class TodayDoseResetAlarmManager {
         // disable
         disableBoot(context);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.cancel(createPendingIntent(context, ServicesFactory.RESET, createServiceIntent(context, ServicesFactory.RESET)));
-        alarmManager.cancel(createPendingIntent(context, ServicesFactory.NEXT_DOSE, createServiceIntent(context, ServicesFactory.NEXT_DOSE)));
+        alarmManager.cancel(createBroadcastPendingIntent(context, ServicesFactory.RESET, createServiceIntent(context, ServicesFactory.RESET)));
+        alarmManager.cancel(createBroadcastPendingIntent(context, ServicesFactory.NEXT_DOSE, createServiceIntent(context, ServicesFactory.NEXT_DOSE)));
     }
 
     private static void enableBoot(Context context) {
@@ -82,7 +82,7 @@ public class TodayDoseResetAlarmManager {
 
     private static void setNextAlarm(Context context, DateTime time, int requestCode, int id) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = createPendingIntent(context, requestCode, createServiceIntent(context, id));
+        PendingIntent pendingIntent = createBroadcastPendingIntent(context, requestCode, createServiceIntent(context, id));
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setAlarmClock(createAlarmClockInfo(context, time), pendingIntent);
@@ -96,12 +96,7 @@ public class TodayDoseResetAlarmManager {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static AlarmManager.AlarmClockInfo createAlarmClockInfo(Context context, DateTime time) {
-        return new AlarmManager.AlarmClockInfo(time.getMillis(),
-                createPendingIntent(context, 0, createMainActivityIntent(context)));
-    }
-
-    private static Intent createMainActivityIntent(Context context) {
-        return new Intent(context, MainActivity.class);
+        return new AlarmManager.AlarmClockInfo(time.getMillis(), createActivityPendingIntent(context, ServicesFactory.ACTIVITY_DOSE));
     }
 
     private static Intent createServiceIntent(Context context, int id) {
@@ -111,7 +106,13 @@ public class TodayDoseResetAlarmManager {
         return serviceIntent;
     }
 
-    private static PendingIntent createPendingIntent(Context context, int requestCode, Intent inputIntent) {
+    private static PendingIntent createBroadcastPendingIntent(Context context, int requestCode, Intent inputIntent) {
         return PendingIntent.getBroadcast(context, requestCode, inputIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private static PendingIntent createActivityPendingIntent(Context context, int requestCode) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
