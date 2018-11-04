@@ -2,6 +2,7 @@ package pl.com.mmotak.lekremainder.broadcasts;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
@@ -19,6 +20,10 @@ public class LekRemainderMainReceiver extends WakefulBroadcastReceiver {
         Bundle extra = intent.getExtras();
         int id = extra.getInt(KEY);
 
-        startWakefulService(context, ServicesFactory.getServiceIntent(context, id));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(ServicesFactory.getServiceIntent(context, id));
+        } else {
+            startWakefulService(context, ServicesFactory.getServiceIntent(context, id));
+        }
     }
 }

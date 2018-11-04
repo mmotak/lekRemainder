@@ -1,6 +1,7 @@
 package pl.com.mmotak.lekremainder.services;
 
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import org.joda.time.DateTime;
@@ -42,6 +43,26 @@ public class NextDoseAlarmService extends BaseService {
         init();
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        startForegroundMe();
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void startForegroundMe() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // it is foreground service
+            startForeground(notificationProvider.getNextDoseId(), notificationProvider.getNextDoseNotification());
+        }
+    }
+
+    private void stopForegroundMe() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // it is foreground service
+            stopForeground(true);
+        }
+    }
+
     protected void onHandleIntent(Intent intent, int startId) {
         Log.d("NextDoseAlarmService", "onHandleIntent " + DateTime.now());
 
@@ -53,6 +74,7 @@ public class NextDoseAlarmService extends BaseService {
                     public void onCompleted() {
                         Log.d("NextDoseAlarmService", "onCompleted ");
                         unSubscribe();
+                        stopForegroundMe();
                         stopSelf(startId);
                         LekRemainderMainReceiver.completeWakefulIntent(intent);
                     }
@@ -62,6 +84,7 @@ public class NextDoseAlarmService extends BaseService {
                         Log.d("NextDoseAlarmService", "onError ");
                         e.printStackTrace();
                         unSubscribe();
+                        stopForegroundMe();
                         stopSelf(startId);
                         LekRemainderMainReceiver.completeWakefulIntent(intent);
                     }

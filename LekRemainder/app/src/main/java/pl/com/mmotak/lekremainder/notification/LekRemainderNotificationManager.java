@@ -1,6 +1,7 @@
 package pl.com.mmotak.lekremainder.notification;
 
 import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -36,7 +37,17 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     private static final String NOTIFICATION_CHANNEL_ID = "DrugRemainderNotificationID";
     private static final String ALARM_CHANNEL_NAME = "DrugRemainderAlarm";
     private static final String NOTIFICATION_CHANNEL_NAME = "DrugRemainderNotification";
-    private static final int ID = 1;
+
+    private static final String NEXT_DRUG_CHANNEL_ID = "NextDrugID";
+    private static final String NEXT_DRUG_CHANNEL_NAME = "NextDrugService";
+    private static final String RESET_CHANNEL_ID = "ResetDrugID";
+    private static final String RESET_CHANNEL_NAME = "ResetDrugService";
+
+
+    private static final int TAKE_DRUG_ID = 1;
+    private static final int NEXT_DRUG_SERVICE_ID = 2;
+    private static final int RESET_SERVICE_ID = 3;
+
     private Context context;
     private NotificationManager notificationManager;
 
@@ -76,6 +87,38 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         } else {
             showBigNotification(todayDoses, isAlarmType);
         }
+    }
+
+    @Override
+    public int getResetId() {
+        return RESET_SERVICE_ID;
+    }
+
+    @Override
+    public Notification getResetNotification() {
+        return createNotification(RESET_CHANNEL_ID, "Reset the drugs for next day");
+    }
+
+    @Override
+    public int getNextDoseId() {
+        return NEXT_DRUG_SERVICE_ID;
+    }
+
+    @Override
+    public Notification getNextDoseNotification() {
+        return createNotification(NEXT_DRUG_CHANNEL_ID, "Calculating drugs");
+    }
+
+    private Notification createNotification(String channelId, String message) {
+        return new NotificationCompat.Builder(context, channelId)
+                .setContentTitle("Lek Remainder in progress")
+                .setContentText(message)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setSmallIcon(R.drawable.ic_notification)
+                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+                .setChannelId(channelId)
+                .setContentIntent(createPendingIntent())
+                .build();
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -147,6 +190,8 @@ public class LekRemainderNotificationManager implements INotificationProvider {
             removePreviousChannels();
             getNotificationManager().createNotificationChannel(getNotificationChannel(true));
             getNotificationManager().createNotificationChannel(getNotificationChannel(false));
+            getNotificationManager().createNotificationChannel(getNotificationChannel(NEXT_DRUG_CHANNEL_ID, NEXT_DRUG_CHANNEL_NAME));
+            getNotificationManager().createNotificationChannel(getNotificationChannel(RESET_CHANNEL_ID, RESET_CHANNEL_NAME));
         }
     }
 
@@ -158,6 +203,15 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         for (int i = 0; channelList != null && i < channelList.size(); i++) {
             notificationManager.deleteNotificationChannel(channelList.get(i).getId());
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private NotificationChannel getNotificationChannel(String channelId, String channelName) {
+        NotificationChannel notificationChannel = new NotificationChannel(channelId,
+                channelName, NotificationManager.IMPORTANCE_DEFAULT);
+        notificationChannel.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
+
+        return notificationChannel;
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -178,6 +232,6 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     }
 
     private void showNotifications(NotificationCompat.Builder builder) {
-        getNotificationManager().notify(ID, builder.build());
+        getNotificationManager().notify(TAKE_DRUG_ID, builder.build());
     }
 }
