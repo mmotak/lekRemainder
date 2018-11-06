@@ -260,7 +260,7 @@ public class DataBaseProvider implements IDataProvider {
             }
 
             getData().update(list).subscribeOn(Schedulers.io())
-                    .subscribe(dbDoses -> {},
+                    .subscribe(dbDoses -> { },
                             throwable -> throwable.printStackTrace());
         }
     }

@@ -35,13 +35,13 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     // This name is important! LOL https://stackoverflow.com/questions/50567164/custom-notification-sound-not-working-in-oreo
     private static final String ALARM_CHANNEL_ID = "DrugRemainderAlarmID";
     private static final String NOTIFICATION_CHANNEL_ID = "DrugRemainderNotificationID";
-    private static final String ALARM_CHANNEL_NAME = "DrugRemainderAlarm";
-    private static final String NOTIFICATION_CHANNEL_NAME = "DrugRemainderNotification";
+    private static final String ALARM_CHANNEL_NAME = "Drug Alarm";
+    private static final String NOTIFICATION_CHANNEL_NAME = "Drug Notification";
 
     private static final String NEXT_DRUG_CHANNEL_ID = "NextDrugID";
-    private static final String NEXT_DRUG_CHANNEL_NAME = "NextDrugService";
+    private static final String NEXT_DRUG_CHANNEL_NAME = "Next Drug";
     private static final String RESET_CHANNEL_ID = "ResetDrugID";
-    private static final String RESET_CHANNEL_NAME = "ResetDrugService";
+    private static final String RESET_CHANNEL_NAME = "Reset Drug";
 
 
     private static final int TAKE_DRUG_ID = 1;
@@ -116,6 +116,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
                 .setSmallIcon(R.drawable.ic_notification)
                 .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setChannelId(channelId)
                 .setContentIntent(createPendingIntent())
                 .build();
@@ -208,8 +209,8 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     @TargetApi(Build.VERSION_CODES.O)
     private NotificationChannel getNotificationChannel(String channelId, String channelName) {
         NotificationChannel notificationChannel = new NotificationChannel(channelId,
-                channelName, NotificationManager.IMPORTANCE_DEFAULT);
-        notificationChannel.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
+                channelName, NotificationManager.IMPORTANCE_NONE);
+        notificationChannel.setImportance(NotificationManager.IMPORTANCE_NONE); // LOL - this is important because we do not want any sound
 
         return notificationChannel;
     }
@@ -217,7 +218,8 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     @TargetApi(Build.VERSION_CODES.O)
     private NotificationChannel getNotificationChannel(boolean isAlarmType) {
         AudioAttributes attributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
                 .build();
 
         NotificationChannel notificationChannel = new NotificationChannel(getChannelId(isAlarmType),
