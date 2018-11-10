@@ -21,15 +21,19 @@ public class LekRemainderMainReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        LOGGER.d("onReceive " + DateTime.now());
-        Bundle extra = intent.getExtras();
-        int id = extra.getInt(KEY);
-        LOGGER.d("onReceive id " + id);
+        try {
+            LOGGER.d("onReceive " + DateTime.now());
+            Bundle extra = intent.getExtras();
+            int id = extra.getInt(KEY);
+            LOGGER.d("onReceive id " + ServicesFactory.getName(id));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(ServicesFactory.getServiceIntent(context, id));
-        } else {
-            startWakefulService(context, ServicesFactory.getServiceIntent(context, id));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(ServicesFactory.getServiceIntent(context, id));
+            } else {
+                startWakefulService(context, ServicesFactory.getServiceIntent(context, id));
+            }
+        } catch (Exception e) {
+            LOGGER.e(e.getMessage(), e);
         }
     }
 }

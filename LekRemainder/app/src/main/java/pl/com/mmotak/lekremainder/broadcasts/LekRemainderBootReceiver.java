@@ -16,14 +16,15 @@ import pl.com.mmotak.lekremainder.logger.LekLogger;
  */
 
 public class LekRemainderBootReceiver extends BroadcastReceiver {
+    private static final String BOOT_ACTION = "android.intent.action.BOOT_COMPLETED";
     private static final ILogger LOGGER = LekLogger.create(LekRemainderBootReceiver.class.getSimpleName());
 
     @Override
     public void onReceive(Context context, Intent intent) {
         LOGGER.d("onReceive " + DateTime.now());
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+        if (BOOT_ACTION.equals(intent.getAction())) {
 
-            LOGGER.d("BOOT_COMPLETED " + DateTime.now());
+            LOGGER.d("BOOT_COMPLETED start " + DateTime.now());
 
             ShaderDataProvider shaderDataProvider = new ShaderDataProvider(context);
             long nextResetTime = shaderDataProvider.loadNextResetDateTime();
@@ -41,6 +42,8 @@ public class LekRemainderBootReceiver extends BroadcastReceiver {
             }
 
             TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(context, DateTime.now().plusMinutes(4));
+
+            LOGGER.d("BOOT_COMPLETED end " + DateTime.now());
         }
     }
 

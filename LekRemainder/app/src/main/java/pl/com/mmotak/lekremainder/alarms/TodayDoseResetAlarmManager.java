@@ -105,7 +105,7 @@ public class TodayDoseResetAlarmManager {
     private static Intent createServiceIntent(Context context, int id) {
         Intent serviceIntent = new Intent(context, LekRemainderMainReceiver.class);
         serviceIntent.putExtra(LekRemainderMainReceiver.KEY, id);
-        LOGGER.d("createServiceIntent: " + id);
+        LOGGER.d("createServiceIntent: " + ServicesFactory.getName(id));
         return serviceIntent;
     }
 

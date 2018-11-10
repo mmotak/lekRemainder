@@ -59,5 +59,6 @@
 
     <string name="send_email">Send email..</string>
     <string name="save_logs">Save logs to file</string>
+    <string name="logs">Logs</string>
 
 </resources>

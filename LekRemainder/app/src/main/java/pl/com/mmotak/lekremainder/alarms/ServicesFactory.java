@@ -26,4 +26,16 @@ public class ServicesFactory {
                 return new Intent(context, NextDoseAlarmService.class);
         }
     }
+
+    public static String getName(int id) {
+        switch (id) {
+            case ACTIVITY_DOSE:
+                return "ACTIVITY_DOSE(" + ACTIVITY_DOSE + ")";
+            case NEXT_DOSE:
+                return "NEXT_DOSE(" + NEXT_DOSE + ")";
+            case RESET:
+                return "RESET(" + RESET + ")";
+        }
+        return "" + id;
+    }
 }

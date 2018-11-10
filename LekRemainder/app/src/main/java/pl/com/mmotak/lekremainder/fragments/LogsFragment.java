@@ -8,27 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pl.com.mmotak.lekremainder.R;
-import pl.com.mmotak.lekremainder.databinding.FragmentHistoryBinding;
-import pl.com.mmotak.lekremainder.viewModels.HistoryFragmentViewModel;
+import pl.com.mmotak.lekremainder.databinding.FragmentLogsBinding;
+import pl.com.mmotak.lekremainder.viewModels.LogsFragmentsViewModel;
 
-/**
- * Created by Maciej on 2016-12-11.
- */
 
-public class HistoryFragment extends Fragment implements IFragment {
-
-    private HistoryFragmentViewModel viewModel;
-    private FragmentHistoryBinding binding;
-
-    public HistoryFragment() {
-        // Required empty public constructor
-    }
+public class LogsFragment extends Fragment implements IFragment {
+    private LogsFragmentsViewModel viewModel;
+    private FragmentLogsBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false);
-        viewModel = new HistoryFragmentViewModel(getActivity()); // TODO REMOVE!
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_logs, container, false);
+        viewModel = new LogsFragmentsViewModel(getActivity()); // TODO REMOVE!
         binding.setViewModel(viewModel);
 
         return binding.getRoot();
@@ -54,7 +46,7 @@ public class HistoryFragment extends Fragment implements IFragment {
 
     @Override
     public String getTagName() {
-        return HistoryFragment.class.getSimpleName();
+        return LogsFragment.class.getSimpleName();
     }
 
     @Override

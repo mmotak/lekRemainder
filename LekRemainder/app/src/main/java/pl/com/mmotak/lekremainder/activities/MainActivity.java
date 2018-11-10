@@ -1,6 +1,7 @@
 package pl.com.mmotak.lekremainder.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.fragments.DrugsFragment;
 import pl.com.mmotak.lekremainder.fragments.HistoryFragment;
 import pl.com.mmotak.lekremainder.fragments.IFragment;
+import pl.com.mmotak.lekremainder.fragments.LogsFragment;
 import pl.com.mmotak.lekremainder.fragments.MyFragmentsLoader;
 import pl.com.mmotak.lekremainder.fragments.SettingsFragment;
 import pl.com.mmotak.lekremainder.fragments.TodayDrugsFragment;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private DrawerLayout drawer;
 
+    @SuppressLint("ResourceType")
     private MyFragmentsLoader fragmentsLoader = new MyFragmentsLoader(R.id.fragment_layout);
 
     private static final int TIME_DELAY = 2000;
@@ -100,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return new HistoryFragment();
             case R.id.nav_settings:
                 return new SettingsFragment();
+            case R.id.nav_logs:
+                return new LogsFragment();
             default:
                 return null;
         }

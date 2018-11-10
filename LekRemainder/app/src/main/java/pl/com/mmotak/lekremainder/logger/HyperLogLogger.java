@@ -32,7 +32,7 @@ public class HyperLogLogger extends AbstractLogger implements ILogger {
     }
 
     public static void init(Context context) {
-        HyperLog.initialize(context);
+        HyperLog.initialize(context, new LekLogFormat(context));
         HyperLog.setLogLevel(Log.VERBOSE);
     }
 }
