@@ -1,5 +1,7 @@
 package pl.com.mmotak.lekremainder.data.backup;
 
+import java.io.File;
+
 import rx.Observable;
 
 /**
@@ -7,9 +9,9 @@ import rx.Observable;
  */
 
 public interface IFileBackup {
-    rx.Observable<Boolean> saveHistory();
+    Observable<File> saveHistory();
 
-    rx.Observable<Boolean> saveConfig();
+    Observable<File> saveConfig();
 
     Observable<Boolean> loadConfig();
 }

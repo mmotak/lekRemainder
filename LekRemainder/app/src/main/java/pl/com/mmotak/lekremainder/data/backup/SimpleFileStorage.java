@@ -36,8 +36,12 @@ public class SimpleFileStorage implements PublicFileStorage {
     }
 
     @Override
-    public boolean saveFile(String name, String body) {
-        return storage.createFile(getFilePath(name), body);
+    public File saveFile(String name, String body) {
+        if (storage.createFile(getFilePath(name), body)) {
+            return storage.getFile(getFilePath(name));
+        } else {
+            return null;
+        }
     }
 
     @Override

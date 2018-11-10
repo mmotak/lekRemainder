@@ -80,6 +80,9 @@ dependencies {
     implementation 'com.f2prateek.dart:henson:2.0.2'
     annotationProcessor 'com.f2prateek.dart:henson-processor:2.0.2'
 
+    // logger
+    implementation 'com.hypertrack:hyperlog:0.0.10'
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.6.1'
 }

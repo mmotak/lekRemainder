@@ -1,93 +1,50 @@
-package pl.com.mmotak.lekremainder.services;
+package pl.com.mmotak.lekremainder.procedures;
 
-import android.content.Intent;
-import android.os.Build;
+import android.content.Context;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
-import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
-import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 import pl.com.mmotak.lekremainder.logger.ILogger;
 import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;
 import rx.Subscriber;
-import rx.Subscription;
 
+public class NextDoseProcedure {
+    private static final ILogger LOGGER = LekLogger.create(NextDoseProcedure.class.getSimpleName());
 
-public class NextDoseAlarmService extends BaseService {
-    private static final ILogger LOGGER = LekLogger.create(NextDoseAlarmService.class.getSimpleName());
+    private IDataProvider dataProvider;
+    private INotificationProvider notificationProvider;
+    private ISharedDateProvider sharedDateProvider;
 
-    @Inject
-    IDataProvider dataProvider;
-    @Inject
-    INotificationProvider notificationProvider;
-    @Inject
-    ISharedDateProvider sharedDateProvider;
-
-    private Subscription subscribe;
-
-    public NextDoseAlarmService() {
-        super();
+    public NextDoseProcedure(IDataProvider dataProvider, INotificationProvider notificationProvider, ISharedDateProvider sharedDateProvider) {
+        this.dataProvider = dataProvider;
+        this.notificationProvider = notificationProvider;
+        this.sharedDateProvider = sharedDateProvider;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        init();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        startForegroundMe();
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void startForegroundMe() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // it is foreground service
-            startForeground(notificationProvider.getNextDoseId(), notificationProvider.getNextDoseNotification());
-        }
-    }
-
-    private void stopForegroundMe() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // it is foreground service
-            stopForeground(true);
-        }
-    }
-
-    protected void onHandleIntent(Intent intent, int startId) {
-        LOGGER.d("onHandleIntent " + DateTime.now());
+    private void doJob(Context context) {
+        LOGGER.d("doJob " + DateTime.now());
 
         DateTime now = DateTime.now();
 
-        subscribe = dataProvider.getObservableForNotTakenTodayDoseAfterDateTime(now)
+        /*subscribe = */
+        dataProvider.getObservableForNotTakenTodayDoseAfterDateTime(now)
                 .subscribe(new Subscriber<List<TodayDose>>() {
                     @Override
                     public void onCompleted() {
                         LOGGER.d("onCompleted ");
-                        unSubscribe();
-                        stopForegroundMe();
-                        stopSelf(startId);
-                        LekRemainderMainReceiver.completeWakefulIntent(intent);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        LOGGER.e("onError " + e.getMessage(), e);
-                        unSubscribe();
-                        stopForegroundMe();
-                        stopSelf(startId);
-                        LekRemainderMainReceiver.completeWakefulIntent(intent);
+                        LOGGER.e(e.getMessage(), e);
                     }
 
                     @Override
@@ -137,31 +94,13 @@ public class NextDoseAlarmService extends BaseService {
                                 resetTime = sharedDateProvider.getTomorrowRestartDateTime();
                             }
 
-                            TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(getApplicationContext(), resetTime);
+                            TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(context, resetTime);
                             sharedDateProvider.saveNextResetDateTime(resetTime.getMillis());
                         } else {
-                            TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(), minimum);
+                            TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(context, minimum);
                         }
                         LOGGER.d("onNext - end");
                     }
                 });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unSubscribe();
-    }
-
-    private void unSubscribe() {
-        if (subscribe != null && subscribe.isUnsubscribed()) {
-            subscribe.unsubscribe();
-        }
-    }
-
-    private void init() {
-        ((LekRemainderApplication) getApplication())
-                .getDiComponent()
-                .inject(this);
     }
 }

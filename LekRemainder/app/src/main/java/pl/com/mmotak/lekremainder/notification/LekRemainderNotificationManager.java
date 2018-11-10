@@ -14,7 +14,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -23,6 +22,8 @@ import java.util.List;
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.activities.MainActivity;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 
 /**
@@ -30,8 +31,9 @@ import pl.com.mmotak.lekremainder.models.TodayDose;
  */
 
 public class LekRemainderNotificationManager implements INotificationProvider {
-
     private static final String TAG = "NotificationManager";
+    private static final ILogger LOGGER = LekLogger.create(TAG);
+
     // This name is important! LOL https://stackoverflow.com/questions/50567164/custom-notification-sound-not-working-in-oreo
     private static final String ALARM_CHANNEL_ID = "DrugRemainderAlarmID";
     private static final String NOTIFICATION_CHANNEL_ID = "DrugRemainderNotificationID";
@@ -75,13 +77,13 @@ public class LekRemainderNotificationManager implements INotificationProvider {
 
     @Override
     public void show(TodayDose todayDose, boolean isAlarmType) {
-        Log.d(TAG, "show " + todayDose.toString() + " play is alarm type " + isAlarmType);
+        LOGGER.d("show " + todayDose.toString() + " play is alarm type " + isAlarmType);
         showSingleNotification(todayDose, isAlarmType);
     }
 
     @Override
     public void show(List<TodayDose> todayDoses, boolean isAlarmType) {
-        Log.d(TAG, "show " + todayDoses.size() + " play is alarm type " + isAlarmType);
+        LOGGER.d("show " + todayDoses.size() + " play is alarm type " + isAlarmType);
         if (todayDoses == null || todayDoses.isEmpty()) {
             hideAllNotifications();
         } else {

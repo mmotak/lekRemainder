@@ -3,7 +3,6 @@ package pl.com.mmotak.lekremainder.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -14,10 +13,13 @@ import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;
 
 
 public class TodayDoseResetService extends IntentService {
+    private static final ILogger LOGGER = LekLogger.create(TodayDoseResetService.class.getSimpleName());
 
     @Inject
     IDataProvider dataProvider;
@@ -59,7 +61,7 @@ public class TodayDoseResetService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d("TodayDoseResetService", "onHandleIntent " + DateTime.now());
+        LOGGER.d("onHandleIntent " + DateTime.now());
 
         dataProvider.removeAllTodayDoses();
 

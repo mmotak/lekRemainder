@@ -24,6 +24,8 @@ import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.entities.DbTakeDose;
 import pl.com.mmotak.lekremainder.entities.IDbDose;
 import pl.com.mmotak.lekremainder.entities.Models;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.History;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -37,6 +39,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class DataBaseProvider implements IDataProvider {
+    private static final ILogger LOGGER = LekLogger.create(DataBaseProvider.class.getSimpleName());
 
     private SingleEntityStore<Persistable> dataStore;
     private Context context;
@@ -92,7 +95,7 @@ public class DataBaseProvider implements IDataProvider {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        LOGGER.e(e.getMessage(), e);
                     }
 
                     @Override
@@ -207,7 +210,7 @@ public class DataBaseProvider implements IDataProvider {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        LOGGER.e(e.getMessage(), e);
                     }
 
                     @Override
@@ -229,7 +232,7 @@ public class DataBaseProvider implements IDataProvider {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        LOGGER.e(e.getMessage(), e);
                     }
 
                     @Override
@@ -261,7 +264,7 @@ public class DataBaseProvider implements IDataProvider {
 
             getData().update(list).subscribeOn(Schedulers.io())
                     .subscribe(dbDoses -> { },
-                            throwable -> throwable.printStackTrace());
+                            throwable -> LOGGER.e(throwable.getMessage(), throwable));
         }
     }
 
@@ -277,14 +280,6 @@ public class DataBaseProvider implements IDataProvider {
         if (dbDrug != null) {
             getData().toBlocking().delete(dbDrug);
         }
-
-//        getData().findByKey(DbDrug.class, id)
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(
-//                        dbDrug -> getData().delete(dbDrug)
-//                                .subscribeOn(Schedulers.io())
-//                                .subscribe()
-//                );
     }
 
     private Drug createNewDrug() {

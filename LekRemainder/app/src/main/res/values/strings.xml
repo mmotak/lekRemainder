@@ -57,4 +57,7 @@
     <string name="save_config">Save Config</string>
     <string name="load_config">Load Config</string>
 
+    <string name="send_email">Send email..</string>
+    <string name="save_logs">Save logs to file</string>
+
 </resources>

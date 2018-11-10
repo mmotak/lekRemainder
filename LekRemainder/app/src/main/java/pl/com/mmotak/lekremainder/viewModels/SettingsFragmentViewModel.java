@@ -8,6 +8,8 @@ import android.view.View;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.R;
@@ -15,8 +17,12 @@ import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.bindings.DialogData;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.data.backup.IFileBackup;
+import pl.com.mmotak.lekremainder.dialog.ADialogSuccessResult;
 import pl.com.mmotak.lekremainder.dialog.ConfirmDialog;
 import pl.com.mmotak.lekremainder.dialog.IDialogResult;
+import pl.com.mmotak.lekremainder.email.EmailSender;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.ui.IToastProvider;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -25,6 +31,7 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 
 public class SettingsFragmentViewModel extends AbstractBaseViewModel {
+    private static final ILogger LOGGER = LekLogger.create(SettingsFragmentViewModel.class.getSimpleName());
 
     @Inject
     ISharedDateProvider sharedDateProvider;
@@ -52,21 +59,46 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel {
         });
     }
 
+    private void showSendFileByEmailDialog(Context context, String title, File file) {
+        ConfirmDialog.show(context, title, "Send file via email?",
+                new ADialogSuccessResult<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean data) {
+                        EmailSender.sendFileToEmail(context, context.getString(R.string.app_name) + " " + title, file);
+                    }
+                });
+    }
+
+    public void onLogsSaveToFile(View view) {
+        Context context = view.getContext();
+        ConfirmDialog.show(context, "Logs", "Save logs to file?",
+                new ADialogSuccessResult<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean data) {
+                        LekLogger.saveLogsToFile(context)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(file -> {
+                                            if (file != null && file.exists()) {
+                                                showSendFileByEmailDialog(context, "Logs " + DateTime.now(), file);
+                                            } else {
+                                                toastProvider.show(context, "Logs not saved");
+                                            }
+                                        },
+                                        e -> LOGGER.e(e.getMessage(), e));
+                    }
+                });
+    }
+
     public void onResetNowButtonClick(View view) {
         Context context = view.getContext();
         ConfirmDialog.show(context,
                 context.getString(R.string.reset_now_ask_title),
                 context.getString(R.string.reset_now_ask),
-                new IDialogResult<Boolean>() {
+                new ADialogSuccessResult<Boolean>() {
                     @Override
                     public void onSuccess(Boolean data) {
                         TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(getBaseActivity(), DateTime.now().plusSeconds(7));
                         toastProvider.show(getBaseActivity(), "Next Reset All Alarm will be call in 7 seconds");
-                    }
-
-                    @Override
-                    public void onFail() {
-
                     }
                 });
     }
@@ -76,18 +108,19 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel {
         ConfirmDialog.show(context,
                 "Save History?",
                 "Save All Drugs History?",
-                new IDialogResult<Boolean>() {
+                new ADialogSuccessResult<Boolean>() {
                     @Override
                     public void onSuccess(Boolean data) {
                         fileBackup.saveHistory()
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(isOk -> toastProvider.show(view.getContext(), isOk ? "saved" : "not saved"),
-                                        e -> e.printStackTrace());
-                    }
-
-                    @Override
-                    public void onFail() {
-
+                                .subscribe(file -> {
+                                            if (file != null && file.exists()) {
+                                                showSendFileByEmailDialog(context, "History", file);
+                                            } else {
+                                                toastProvider.show(view.getContext(), "History not saved");
+                                            }
+                                        },
+                                        e -> LOGGER.e(e.getMessage(), e));
                     }
                 });
     }
@@ -102,8 +135,14 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel {
                     public void onSuccess(Boolean data) {
                         fileBackup.saveConfig()
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(isOk -> toastProvider.show(view.getContext(), isOk ? "saved" : "not saved"),
-                                        e -> e.printStackTrace());
+                                .subscribe(file -> {
+                                            if (file != null && file.exists()) {
+                                                showSendFileByEmailDialog(context, "Configuration", file);
+                                            } else {
+                                                toastProvider.show(view.getContext(), "Configuration not saved");
+                                            }
+                                        },
+                                        e -> LOGGER.e(e.getMessage(), e));
                     }
 
                     @Override
@@ -124,7 +163,7 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel {
                         fileBackup.loadConfig()
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(isOk -> toastProvider.show(view.getContext(), isOk ? "saved" : "not saved"),
-                                        e -> e.printStackTrace());
+                                        e -> LOGGER.e(e.getMessage(), e));
                     }
 
                     @Override
