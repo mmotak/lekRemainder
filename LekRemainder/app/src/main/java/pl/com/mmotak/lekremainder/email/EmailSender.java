@@ -3,6 +3,7 @@ package pl.com.mmotak.lekremainder.email;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.ShareCompat;
 
 import java.io.File;
 

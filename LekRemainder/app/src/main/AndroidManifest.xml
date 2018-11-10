@@ -60,7 +60,7 @@
         </receiver>
 
         <provider
-            android:authorities="${applicationId}.pl.com.mmotak.lekremainder.LekFileProvider"
+            android:authorities="pl.com.mmotak.lekremainder.fileprovider"
             android:name=".LekFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">

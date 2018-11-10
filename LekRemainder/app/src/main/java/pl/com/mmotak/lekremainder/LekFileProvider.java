@@ -7,12 +7,9 @@ import android.support.v4.content.FileProvider;
 import java.io.File;
 
 public class LekFileProvider extends FileProvider {
+    private static final String AUTHORITY = "pl.com.mmotak.lekremainder.fileprovider";
+
     public static Uri getUriForFile(Context context, File file) {
-        LekFileProvider.getUriForFile(context,
-                context.getApplicationContext().getPackageName() + "."
-                        //+".my.package.name.provider",
-                + LekFileProvider.class.getName(),
-                file);
-        return null;
+        return LekFileProvider.getUriForFile(context, AUTHORITY, file);
     }
 }
