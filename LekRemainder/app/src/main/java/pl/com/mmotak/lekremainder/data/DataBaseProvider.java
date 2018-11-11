@@ -287,21 +287,28 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     private SingleEntityStore<Persistable> getData() {
+        LOGGER.d("getData start");
         if (dataStore == null) {
+            LOGGER.d("getData dataStore in NULL");
             // override onUpgrade to handle migrating to a new version
             DatabaseSource source = new DatabaseSource(context, Models.DEFAULT, 1);
+            LOGGER.d("getData new DatabaseSource");
 
             if (BuildConfig.DEBUG) {
                 source.setLoggingEnabled(true);
+                LOGGER.d("getData new DatabaseSource");
 
                 // use this in development mode to drop and recreate the tables on every upgrade
                 //source.setTableCreationMode(TableCreationMode.DROP_CREATE);
             }
             Configuration configuration = source.getConfiguration();
+            LOGGER.d("getData new Configuration");
 
             dataStore = RxSupport.toReactiveStore(
                     new EntityDataStore<Persistable>(configuration));
+            LOGGER.d("getData new dataStore");
         }
+        LOGGER.d("getData return dataStore");
         return dataStore;
     }
 }
