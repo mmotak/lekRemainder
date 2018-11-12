@@ -131,7 +131,7 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
-    public Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime(DateTime dateTime) {
+    public Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime() {
         return getData()
                 .select(DbDose.class)
                 .orderBy(DbDose.TIME.asc())
@@ -140,8 +140,8 @@ public class DataBaseProvider implements IDataProvider {
                 .filter(dbDose -> dbDose.getDbTakeDose() == null || !dbDose.getDbTakeDose().isTaken())
                 .toList()
                 .map(DoseConverter::toTodayDoses)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
+                //.observeOn(AndroidSchedulers.mainThread());
     }
 
 

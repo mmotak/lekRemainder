@@ -70,7 +70,7 @@ public class NextDoseAlarmService extends BaseService {
 
         DateTime now = DateTime.now();
 
-        subscribe = dataProvider.getObservableForNotTakenTodayDoseAfterDateTime(now)
+        subscribe = dataProvider.getObservableForNotTakenTodayDoseAfterDateTime()
                 .doOnSubscribe(() -> LOGGER.d("doOnSubscribe"))
                 .subscribe(new Subscriber<List<TodayDose>>() {
                     @Override
@@ -158,7 +158,7 @@ public class NextDoseAlarmService extends BaseService {
         unSubscribe();
         stopForegroundMe();
         stopSelf(startId);
-        LekRemainderMainReceiver.completeWakefulIntent(intent);
+        //LekRemainderMainReceiver.completeWakefulIntent(intent);
     }
 
     private void init() {

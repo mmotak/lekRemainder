@@ -23,7 +23,7 @@ public interface IDataProvider {
 
     Observable<List<Drug>> getDrugsObservable();
 
-    Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime(DateTime dateTime);
+    Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime();
 
     Observable<List<TodayDose>> getTodayDosesObservable();
 

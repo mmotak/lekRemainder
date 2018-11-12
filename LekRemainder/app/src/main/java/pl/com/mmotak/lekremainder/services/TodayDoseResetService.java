@@ -72,7 +72,7 @@ public class TodayDoseResetService extends IntentService {
         TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(), DateTime.now().plusMinutes(2));
 
         stopForegroundMe();
-        LekRemainderMainReceiver.completeWakefulIntent(intent);
+        //LekRemainderMainReceiver.completeWakefulIntent(intent);
     }
 
     private void init() {

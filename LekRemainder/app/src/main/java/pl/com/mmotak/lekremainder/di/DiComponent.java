@@ -3,6 +3,8 @@ package pl.com.mmotak.lekremainder.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import pl.com.mmotak.lekremainder.procedures.DoseResetProcedure;
+import pl.com.mmotak.lekremainder.procedures.NextDoseProcedure;
 import pl.com.mmotak.lekremainder.services.NextDoseAlarmService;
 import pl.com.mmotak.lekremainder.services.TodayDoseResetService;
 import pl.com.mmotak.lekremainder.viewModels.DrugsViewModel;
@@ -31,4 +33,8 @@ public interface DiComponent {
     void inject(NextDoseAlarmService nextDoseAlarmService);
 
     void inject(SettingsFragmentViewModel settingsViewModel);
+
+    void inject(NextDoseProcedure nextDoseProcedure);
+
+    void inject(DoseResetProcedure doseResetProcedure);
 }

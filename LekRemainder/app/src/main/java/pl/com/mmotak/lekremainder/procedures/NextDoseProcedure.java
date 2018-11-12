@@ -7,21 +7,24 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
+import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 import pl.com.mmotak.lekremainder.logger.ILogger;
 import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;
 import rx.Subscriber;
 
-public class NextDoseProcedure {
+public class NextDoseProcedure extends AProcerude {
     private static final ILogger LOGGER = LekLogger.create(NextDoseProcedure.class.getSimpleName());
 
-    private IDataProvider dataProvider;
-    private INotificationProvider notificationProvider;
-    private ISharedDateProvider sharedDateProvider;
+    @Inject IDataProvider dataProvider;
+    @Inject INotificationProvider notificationProvider;
+    @Inject ISharedDateProvider sharedDateProvider;
 
     public NextDoseProcedure(IDataProvider dataProvider, INotificationProvider notificationProvider, ISharedDateProvider sharedDateProvider) {
         this.dataProvider = dataProvider;
@@ -29,13 +32,18 @@ public class NextDoseProcedure {
         this.sharedDateProvider = sharedDateProvider;
     }
 
-    private void doJob(Context context) {
+    public NextDoseProcedure(Context context) {
+        getDiCompoment(context).inject(this);
+    }
+
+    @Override
+    public void doJob(Context context) {
         LOGGER.d("doJob " + DateTime.now());
 
         DateTime now = DateTime.now();
 
         /*subscribe = */
-        dataProvider.getObservableForNotTakenTodayDoseAfterDateTime(now)
+        dataProvider.getObservableForNotTakenTodayDoseAfterDateTime()
                 .subscribe(new Subscriber<List<TodayDose>>() {
                     @Override
                     public void onCompleted() {
