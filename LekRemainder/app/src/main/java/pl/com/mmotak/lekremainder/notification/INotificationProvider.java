@@ -21,4 +21,6 @@ public interface INotificationProvider {
     int getNextDoseId();
 
     Notification getNextDoseNotification();
+
+    void show(boolean playAlarmSound);
 }

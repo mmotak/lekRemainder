@@ -78,4 +78,8 @@ public class TodayDose {
             return getTime().toDateTimeToday().plusDays(shiftInDays).plusSeconds(getShiftInSeconds());
         }
     }
+
+    public String getMessage() {
+        return getDrugName() + " " + getTime();
+    }
 }

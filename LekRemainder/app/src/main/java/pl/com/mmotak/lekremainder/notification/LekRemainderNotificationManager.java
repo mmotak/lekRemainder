@@ -16,12 +16,14 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.activities.MainActivity;
+import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 import pl.com.mmotak.lekremainder.logger.ILogger;
 import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -111,6 +113,12 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         return createNotification(NEXT_DRUG_CHANNEL_ID, "Calculating drugs");
     }
 
+    @Override
+    public void show(boolean playAlarmSound) {
+        LOGGER.d("Show test notification with sound " + playAlarmSound);
+        showSingleNotification(playAlarmSound);
+    }
+
     private Notification createNotification(String channelId, String message) {
         return new NotificationCompat.Builder(context, channelId)
                 .setContentTitle("Lek Remainder in progress")
@@ -171,10 +179,21 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         return inboxStyle;
     }
 
+    private String createMessage(List<TodayDose> todayDoses) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (TodayDose todayDose : todayDoses) {
+            stringBuilder.append(todayDose.getMessage())
+            .append("/n");
+        }
+
+        return stringBuilder.toString();
+    }
+
     private void showBigNotification(List<TodayDose> todayDoses, boolean isAlarmType) {
         NotificationCompat.Builder builder = createBaseBuilder(isAlarmType)
                 .setContentTitle("Drugs to take: " + todayDoses.size())
-                .setContentText("Drugs to take: " + todayDoses.size())
+                .setContentText(createMessage(todayDoses))
                 .setContentIntent(createPendingIntent())
                 .setStyle(createInboxStyle(todayDoses, isAlarmType));
         showNotifications(builder);
@@ -184,6 +203,14 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         NotificationCompat.Builder builder = createBaseBuilder(isAlarmType)
                 .setContentTitle(todayDose.getDrugName())
                 .setContentText(todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)))
+                .setContentIntent(createPendingIntent());
+        showNotifications(builder);
+    }
+
+    private void showSingleNotification(boolean isAlarmType) {
+        NotificationCompat.Builder builder = createBaseBuilder(isAlarmType)
+                .setContentTitle(context.getString(R.string.app_name))
+                .setContentText("This is test with alarm ("+isAlarmType+") that was triggered at \n" + LocalDateTime.now().toString())
                 .setContentIntent(createPendingIntent());
         showNotifications(builder);
     }

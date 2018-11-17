@@ -23,6 +23,7 @@ import pl.com.mmotak.lekremainder.dialog.IDialogResult;
 import pl.com.mmotak.lekremainder.email.EmailSender;
 import pl.com.mmotak.lekremainder.logger.ILogger;
 import pl.com.mmotak.lekremainder.logger.LekLogger;
+import pl.com.mmotak.lekremainder.notification.INotificationProvider;
 import pl.com.mmotak.lekremainder.ui.IToastProvider;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -39,6 +40,8 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel {
     IToastProvider toastProvider;
     @Inject
     IFileBackup fileBackup;
+    @Inject
+    INotificationProvider notificationProvider;
 
     public DialogData<LocalTime> time;
 
@@ -155,14 +158,14 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel {
     public void onLoadConfigButtonClick(View view) {
         Context context = view.getContext();
         ConfirmDialog.show(context,
-                "Save Configuration?",
-                "Save Configuration?",
+                "Load Configuration?",
+                "Load Configuration from file?",
                 new IDialogResult<Boolean>() {
                     @Override
                     public void onSuccess(Boolean data) {
                         fileBackup.loadConfig()
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(isOk -> toastProvider.show(view.getContext(), isOk ? "saved" : "not saved"),
+                                .subscribe(isOk -> toastProvider.show(view.getContext(), isOk ? "loaded" : "not loaded"),
                                         e -> LOGGER.e(e.getMessage(), e));
                     }
 
@@ -177,6 +180,24 @@ public class SettingsFragmentViewModel extends AbstractBaseViewModel {
     public void onTestNextDoseTimeButtonClick(View view) {
         TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(view.getContext(), DateTime.now().plusSeconds(7));
         toastProvider.show(view.getContext(), "Next Doses Alarm will be call in 7 seconds");
+    }
+
+    public void onTestNextAlarmNotification(View view) {
+        Context context = view.getContext();
+        ConfirmDialog.show(context,
+                "With Alarm Sound?",
+                "Play notification with alarm sound?",
+                new IDialogResult<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean data) {
+                        notificationProvider.show(true);
+                    }
+
+                    @Override
+                    public void onFail() {
+                        notificationProvider.show(false);
+                    }
+                });
     }
 
     @Override

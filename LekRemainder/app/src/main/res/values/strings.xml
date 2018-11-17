@@ -60,5 +60,6 @@
     <string name="send_email">Send email..</string>
     <string name="save_logs">Save logs to file</string>
     <string name="logs">Logs</string>
+    <string name="test_next_alarm_notification">Test next alarm notification</string>
 
 </resources>
