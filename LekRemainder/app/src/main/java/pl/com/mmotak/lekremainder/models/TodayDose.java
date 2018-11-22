@@ -80,6 +80,6 @@ public class TodayDose {
     }
 
     public String getMessage() {
-        return getDrugName() + " " + getTime();
+        return getDrugName() + ": " + getEstimatedDateTime().toString("HH:mm:ss");
     }
 }

@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
 import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
-import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;

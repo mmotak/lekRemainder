@@ -173,7 +173,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
         }
 
         for (TodayDose todayDose : todayDoses) {
-            inboxStyle.addLine(todayDose.getDrugName() + ": " + todayDose.getEstimatedDateTime().toString(context.getString(R.string.time_format)));
+            inboxStyle.addLine(todayDose.getMessage());
         }
 
         return inboxStyle;
@@ -184,7 +184,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
 
         for (TodayDose todayDose : todayDoses) {
             stringBuilder.append(todayDose.getMessage())
-            .append("/n");
+            .append("\n");
         }
 
         return stringBuilder.toString();
