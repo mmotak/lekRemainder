@@ -9,8 +9,6 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
-import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
-import pl.com.mmotak.lekremainder.notification.INotificationProvider;
 
 public class DoseResetProcedure extends AProcerude {
     @Inject IDataProvider dataProvider;
@@ -26,13 +24,19 @@ public class DoseResetProcedure extends AProcerude {
     }
 
     @Override
-    public void doJob(Context context) {
-        dataProvider.removeAllTodayDoses();
+    public void doJob(Context context, IEndProcedure endProcedure) {
+        try {
+            dataProvider.removeAllTodayDoses();
 
-        DateTime dateTime = sharedDateProvider.getTomorrowRestartDateTime();
-        sharedDateProvider.saveNextResetDateTime(dateTime.getMillis());
+            DateTime dateTime = sharedDateProvider.getTomorrowRestartDateTime();
+            sharedDateProvider.saveNextResetDateTime(dateTime.getMillis());
 
-        TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(context, dateTime);
-        TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(context, DateTime.now().plusMinutes(2));
+            TodayDoseResetAlarmManager.setNextAlarmTodayDoseResetService(context, dateTime);
+            TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(context, DateTime.now().plusMinutes(2));
+        } finally {
+            if (endProcedure != null) {
+                endProcedure.onCompleted();
+            }
+        }
     }
 }

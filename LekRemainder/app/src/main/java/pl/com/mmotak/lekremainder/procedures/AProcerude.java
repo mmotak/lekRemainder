@@ -11,5 +11,5 @@ public abstract class AProcerude {
                 .getDiComponent();
     }
 
-    public abstract void doJob(Context context);
+    public abstract void doJob(Context context, IEndProcedure endProcedure);
 }

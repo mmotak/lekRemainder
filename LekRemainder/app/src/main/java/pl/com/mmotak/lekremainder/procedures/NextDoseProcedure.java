@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
-import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 import pl.com.mmotak.lekremainder.logger.ILogger;
 import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -37,22 +36,29 @@ public class NextDoseProcedure extends AProcerude {
     }
 
     @Override
-    public void doJob(Context context) {
+    public void doJob(Context context, IEndProcedure endProcedure) {
         LOGGER.d("doJob " + DateTime.now());
 
         DateTime now = DateTime.now();
 
         /*subscribe = */
         dataProvider.getObservableForNotTakenTodayDoseAfterDateTime()
+                //.toBlocking() // make it blocking so we wait to end the procedure
                 .subscribe(new Subscriber<List<TodayDose>>() {
                     @Override
                     public void onCompleted() {
                         LOGGER.d("onCompleted ");
+                        if (endProcedure != null) {
+                            endProcedure.onCompleted();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         LOGGER.e(e.getMessage(), e);
+                        if (endProcedure != null) {
+                            endProcedure.onError();
+                        }
                     }
 
                     @Override

@@ -3,17 +3,14 @@ package pl.com.mmotak.lekremainder.broadcasts;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.content.WakefulBroadcastReceiver;
 
 import org.joda.time.DateTime;
 
 import pl.com.mmotak.lekremainder.alarms.ServicesFactory;
 import pl.com.mmotak.lekremainder.logger.ILogger;
 import pl.com.mmotak.lekremainder.logger.LekLogger;
-import pl.com.mmotak.lekremainder.procedures.DoseResetProcedure;
-import pl.com.mmotak.lekremainder.procedures.NextDoseProcedure;
+import pl.com.mmotak.lekremainder.services.NextDoseAlarmJobIntentService;
+import pl.com.mmotak.lekremainder.services.TodayDoseResetJobIntentService;
 
 public class LekRemainderMainReceiver extends BroadcastReceiver {
     private static final ILogger LOGGER = LekLogger.create(LekRemainderMainReceiver.class.getSimpleName());
@@ -30,10 +27,21 @@ public class LekRemainderMainReceiver extends BroadcastReceiver {
         LOGGER.d("onReceive id " + ServicesFactory.getName(id));
 
         switch (id) {
-            case ServicesFactory.NEXT_DOSE: new NextDoseProcedure(context).doJob(context); break;
-            case ServicesFactory.RESET: new DoseResetProcedure(context).doJob(context); break;
+            case ServicesFactory.NEXT_DOSE:
+                NextDoseAlarmJobIntentService.enqueueWork(context, intent);
+                break;
+            case ServicesFactory.RESET:
+                TodayDoseResetJobIntentService.enqueueWork(context, intent);
+                break;
         }
 
+        // version 2 with procedures
+//        switch (id) {
+//            case ServicesFactory.NEXT_DOSE: new NextDoseProcedure(context).doJob(context, null); break;
+//            case ServicesFactory.RESET: new DoseResetProcedure(context).doJob(context, null); break;
+//        }
+
+        // old version with foreground services
 //        try {
 //            LOGGER.d("onReceive " + DateTime.now());
 //            Bundle extra = intent.getExtras();

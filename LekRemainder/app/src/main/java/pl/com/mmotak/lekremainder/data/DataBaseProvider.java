@@ -296,7 +296,7 @@ public class DataBaseProvider implements IDataProvider {
 
             if (BuildConfig.DEBUG) {
                 source.setLoggingEnabled(true);
-                LOGGER.d("getData new DatabaseSource");
+                LOGGER.d("getData setLoggingEnabled(true)");
 
                 // use this in development mode to drop and recreate the tables on every upgrade
                 //source.setTableCreationMode(TableCreationMode.DROP_CREATE);
