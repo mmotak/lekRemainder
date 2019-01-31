@@ -5,8 +5,6 @@ import android.databinding.ObservableInt;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import org.joda.time.DateTime;
-
 import java.util.List;
 
 import javax.inject.Inject;

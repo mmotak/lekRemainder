@@ -23,7 +23,6 @@ import java.util.List;
 import pl.com.mmotak.lekremainder.BuildConfig;
 import pl.com.mmotak.lekremainder.R;
 import pl.com.mmotak.lekremainder.activities.MainActivity;
-import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
 import pl.com.mmotak.lekremainder.logger.ILogger;
 import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -184,7 +183,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
 
         for (TodayDose todayDose : todayDoses) {
             stringBuilder.append(todayDose.getMessage())
-            .append("\n");
+                    .append("\n");
         }
 
         return stringBuilder.toString();
@@ -210,7 +209,7 @@ public class LekRemainderNotificationManager implements INotificationProvider {
     private void showSingleNotification(boolean isAlarmType) {
         NotificationCompat.Builder builder = createBaseBuilder(isAlarmType)
                 .setContentTitle(context.getString(R.string.app_name))
-                .setContentText("This is test with alarm ("+isAlarmType+") that was triggered at \n" + LocalDateTime.now().toString())
+                .setContentText("This is test with alarm (" + isAlarmType + ") that was triggered at \n" + LocalDateTime.now().toString())
                 .setContentIntent(createPendingIntent());
         showNotifications(builder);
     }

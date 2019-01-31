@@ -2,8 +2,6 @@ package pl.com.mmotak.lekremainder.lekapp;
 
 import android.app.Application;
 
-import com.hypertrack.hyperlog.HyperLog;
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import pl.com.mmotak.lekremainder.di.DaggerDiComponent;
