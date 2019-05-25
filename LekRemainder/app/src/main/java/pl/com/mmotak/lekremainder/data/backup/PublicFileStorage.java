@@ -10,7 +10,7 @@ import java.util.List;
 public interface PublicFileStorage {
     List<File> getAllFiles();
 
-    boolean saveFile(String name, String body);
+    File saveFile(String name, String body);
 
     String loadFile(String name);
 }

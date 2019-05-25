@@ -9,6 +9,8 @@ import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.adapters.HistorySimpleAdapter;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.History;
 import rx.Subscriber;
 import rx.Subscription;
@@ -19,6 +21,7 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 
 public class HistoryFragmentViewModel extends AbstractBaseViewModel {
+    private static final ILogger LOGGER = LekLogger.create(HistoryFragmentViewModel.class.getSimpleName());
 
     @Inject
     IDataProvider dataProvider;
@@ -51,7 +54,7 @@ public class HistoryFragmentViewModel extends AbstractBaseViewModel {
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                LOGGER.e(e.getMessage(), e);
             }
 
             @Override

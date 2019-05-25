@@ -17,7 +17,6 @@ import pl.com.mmotak.lekremainder.viewModels.HistoryFragmentViewModel;
 
 public class HistoryFragment extends Fragment implements IFragment {
 
-
     private HistoryFragmentViewModel viewModel;
     private FragmentHistoryBinding binding;
 

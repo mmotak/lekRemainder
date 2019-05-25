@@ -11,7 +11,7 @@ import org.joda.time.LocalTime;
 
 import pl.com.mmotak.lekremainder.dialog.ContextHelper;
 import pl.com.mmotak.lekremainder.dialog.DateTimeDialog;
-import pl.com.mmotak.lekremainder.dialog.IDialogSuccesResult;
+import pl.com.mmotak.lekremainder.dialog.ADialogSuccessResult;
 import pl.com.mmotak.lekremainder.dialog.LocalTimeDialog;
 import pl.com.mmotak.lekremainder.dialog.NumberSeekDialog;
 
@@ -48,7 +48,7 @@ public class DialogManager {
     public static Factory dateTimePicker() {
         return (inputView, data) -> (View.OnClickListener) view -> {
             DateTimeDialog.show(getFragmentActivity(view), data == null ? null : (DateTime) data.load(),
-                    new IDialogSuccesResult<DateTime>() {
+                    new ADialogSuccessResult<DateTime>() {
                         @Override
                         public void onSuccess(DateTime dateTime) {
                             if (data != null) {
@@ -62,7 +62,7 @@ public class DialogManager {
 
     public static Factory timeDialog() {
         return (v, data) -> view -> {
-            LocalTimeDialog.show(getFragmentActivity(view), data == null ? null : (LocalTime) data.load(), new IDialogSuccesResult<LocalTime>() {
+            LocalTimeDialog.show(getFragmentActivity(view), data == null ? null : (LocalTime) data.load(), new ADialogSuccessResult<LocalTime>() {
                 @Override
                 public void onSuccess(LocalTime time) {
                     if (data != null) {
@@ -88,7 +88,7 @@ public class DialogManager {
                 number = (Integer) data.load();
             }
 
-            NumberSeekDialog.show(getFragmentActivity(view), number, max, title, new IDialogSuccesResult<Integer>() {
+            NumberSeekDialog.show(getFragmentActivity(view), number, max, title, new ADialogSuccessResult<Integer>() {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onSuccess(Integer number) {

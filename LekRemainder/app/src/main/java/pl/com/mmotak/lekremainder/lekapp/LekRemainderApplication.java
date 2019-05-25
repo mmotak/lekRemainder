@@ -8,6 +8,7 @@ import pl.com.mmotak.lekremainder.di.DaggerDiComponent;
 import pl.com.mmotak.lekremainder.di.DiApplicationModule;
 import pl.com.mmotak.lekremainder.di.DiComponent;
 import pl.com.mmotak.lekremainder.di.DiStorageModule;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 
 /**
  * Created by mmotak on 25.11.2016.
@@ -24,6 +25,7 @@ public class LekRemainderApplication extends Application {
     }
 
     private void init() {
+        LekLogger.init(this);
         JodaTimeAndroid.init(this);
 
         diComponent = DaggerDiComponent.builder()

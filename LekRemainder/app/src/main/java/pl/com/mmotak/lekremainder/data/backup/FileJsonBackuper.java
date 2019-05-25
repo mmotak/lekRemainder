@@ -7,6 +7,7 @@ import com.squareup.moshi.Types;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import pl.com.mmotak.lekremainder.data.IDataProvider;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.Dose;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.History;
@@ -24,6 +27,8 @@ import rx.Observable;
  */
 
 public class FileJsonBackuper implements IFileBackup {
+    private static final ILogger LOGGER = LekLogger.create(FileJsonBackuper.class.getSimpleName());
+    private static final String DRUG_FILE_NAME = "drugs.json";
 
     private IDataProvider dataProvider;
     private PublicFileStorage simpleFileStorage;
@@ -37,13 +42,13 @@ public class FileJsonBackuper implements IFileBackup {
     }
 
     @Override
-    public rx.Observable<Boolean> saveHistory() {
+    public Observable<File> saveHistory() {
         return dataProvider.getAllHistoryObservable()
                 .map(historyList -> saveHistoryFile(historyList));
     }
 
     @Override
-    public rx.Observable<Boolean> saveConfig() {
+    public Observable<File> saveConfig() {
         return dataProvider.getDrugsObservable()
                 .map(drugs -> saveDrugsFile(drugs));
     }
@@ -59,23 +64,21 @@ public class FileJsonBackuper implements IFileBackup {
     }
 
     private List<Drug> loadDrugsFile() {
-        String name = "drugs.json";
-        String body = simpleFileStorage.loadFile(name);
+        String body = simpleFileStorage.loadFile(DRUG_FILE_NAME);
         try {
             return drugsJsonAdapter.fromJson(body);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.e(e.getMessage(), e);
             return Collections.emptyList();
         }
     }
 
-    private boolean saveDrugsFile(List<Drug> drugs) {
-        String name = "drugs.json";
+    private File saveDrugsFile(List<Drug> drugs) {
         String body = drugsJsonAdapter.toJson(drugs);
-        return simpleFileStorage.saveFile(name, body);
+        return simpleFileStorage.saveFile(DRUG_FILE_NAME, body);
     }
 
-    private boolean saveHistoryFile(List<History> historyList) {
+    private File saveHistoryFile(List<History> historyList) {
         DateTime now = DateTime.now();
         String name = "history" + now.toString().replace(":", "") + ".json";
         String body = historyJsonAdapter.toJson(historyList);

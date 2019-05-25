@@ -1,7 +1,7 @@
 package pl.com.mmotak.lekremainder.services;
 
 import android.content.Intent;
-import android.util.Log;
+import android.os.Build;
 
 import org.joda.time.DateTime;
 
@@ -11,10 +11,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import pl.com.mmotak.lekremainder.alarms.TodayDoseResetAlarmManager;
-import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
 import pl.com.mmotak.lekremainder.data.ISharedDateProvider;
 import pl.com.mmotak.lekremainder.lekapp.LekRemainderApplication;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.TodayDose;
 import pl.com.mmotak.lekremainder.notification.INotificationProvider;
 import rx.Subscriber;
@@ -22,6 +23,7 @@ import rx.Subscription;
 
 
 public class NextDoseAlarmService extends BaseService {
+    private static final ILogger LOGGER = LekLogger.create(NextDoseAlarmService.class.getSimpleName());
 
     @Inject
     IDataProvider dataProvider;
@@ -42,35 +44,51 @@ public class NextDoseAlarmService extends BaseService {
         init();
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        startForegroundMe();
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void startForegroundMe() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // it is foreground service
+            startForeground(notificationProvider.getNextDoseId(), notificationProvider.getNextDoseNotification());
+        }
+    }
+
+    private void stopForegroundMe() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // it is foreground service
+            stopForeground(true);
+        }
+    }
+
     protected void onHandleIntent(Intent intent, int startId) {
-        Log.d("NextDoseAlarmService", "onHandleIntent " + DateTime.now());
+        LOGGER.d("onHandleIntent " + DateTime.now());
 
         DateTime now = DateTime.now();
 
-        subscribe = dataProvider.getObservableForNotTakenTodayDoseAfterDateTime(now)
+        subscribe = dataProvider.getObservableForNotTakenTodayDoseAfterDateTime()
+                .doOnSubscribe(() -> LOGGER.d("doOnSubscribe"))
                 .subscribe(new Subscriber<List<TodayDose>>() {
                     @Override
                     public void onCompleted() {
-                        Log.d("NextDoseAlarmService", "onCompleted ");
-                        unSubscribe();
-                        stopSelf(startId);
-                        LekRemainderMainReceiver.completeWakefulIntent(intent);
+                        LOGGER.d("onCompleted ");
+                        endMe(startId, intent);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("NextDoseAlarmService", "onError ");
-                        e.printStackTrace();
-                        unSubscribe();
-                        stopSelf(startId);
-                        LekRemainderMainReceiver.completeWakefulIntent(intent);
+                        LOGGER.e("onError " + e.getMessage(), e);
+                        endMe(startId, intent);
                     }
 
                     @Override
                     public void onNext(List<TodayDose> todayDoses) {
-                        Log.d("NextDoseAlarmService", "onNext " + todayDoses.size());
-                        Log.d("NextDoseAlarmService", "now " + now);
-                        Log.d("NextDoseAlarmService", "now_NEW " + DateTime.now());
+                        LOGGER.d("onNext " + todayDoses.size());
+                        LOGGER.d("now " + now);
+                        LOGGER.d("now_NEW " + DateTime.now());
                         List<TodayDose> notifications = new ArrayList<TodayDose>();
 
                         DateTime minimum = null;
@@ -95,7 +113,7 @@ public class NextDoseAlarmService extends BaseService {
                             }
                         }
 
-                        Log.d("NextDoseAlarmService", "onNext " + notifications.size());
+                        LOGGER.d("onNext " + notifications.size());
                         notificationProvider.show(notifications, playSound);
                         if (minimum == null) {
                             DateTime resetTime = null;
@@ -118,7 +136,7 @@ public class NextDoseAlarmService extends BaseService {
                         } else {
                             TodayDoseResetAlarmManager.setNextAlarmNextDoseAlarmService(getApplicationContext(), minimum);
                         }
-                        Log.d("NextDoseAlarmService", "onNext - end");
+                        LOGGER.d("onNext - end");
                     }
                 });
     }
@@ -133,6 +151,13 @@ public class NextDoseAlarmService extends BaseService {
         if (subscribe != null && subscribe.isUnsubscribed()) {
             subscribe.unsubscribe();
         }
+    }
+
+    private void endMe(int startId, Intent intent) {
+        unSubscribe();
+        stopForegroundMe();
+        stopSelf(startId);
+        //LekRemainderMainReceiver.completeWakefulIntent(intent);
     }
 
     private void init() {

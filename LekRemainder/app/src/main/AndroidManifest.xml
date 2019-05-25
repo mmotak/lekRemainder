@@ -45,6 +45,12 @@
         <service
             android:name=".services.NextDoseAlarmService"
             android:exported="false"/>
+        <service android:name=".services.TodayDoseResetJobIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
+        <service android:name=".services.NextDoseAlarmJobIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
 
         <receiver
             android:name=".broadcasts.LekRemainderBootReceiver"
@@ -59,7 +65,15 @@
             android:exported="false">
         </receiver>
 
-
+        <provider
+            android:authorities="pl.com.mmotak.lekremainder.fileprovider"
+            android:name=".LekFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

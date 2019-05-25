@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import pl.com.mmotak.lekremainder.activities.Henson;
 import pl.com.mmotak.lekremainder.adapters.DrugsAdapter;
 import pl.com.mmotak.lekremainder.data.IDataProvider;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.Drug;
 import rx.Subscriber;
 import rx.Subscription;
@@ -22,6 +24,7 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 
 public class DrugsViewModel extends AbstractBaseViewModel {
+    private static final ILogger LOGGER = LekLogger.create(DrugsViewModel.class.getSimpleName());
 
     @Inject
     IDataProvider dataProvider;
@@ -64,7 +67,7 @@ public class DrugsViewModel extends AbstractBaseViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        LOGGER.e(e.getMessage(), e);
                     }
 
                     @Override

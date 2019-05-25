@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 
 import org.joda.time.DateTime;
 
@@ -16,12 +15,15 @@ import pl.com.mmotak.lekremainder.activities.MainActivity;
 import pl.com.mmotak.lekremainder.broadcasts.LekRemainderBootReceiver;
 import pl.com.mmotak.lekremainder.broadcasts.LekRemainderMainReceiver;
 import pl.com.mmotak.lekremainder.data.ShaderDataProvider;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 
 /**
  * Created by Maciej on 2016-12-28.
  */
 
 public class TodayDoseResetAlarmManager {
+    private static final ILogger LOGGER = LekLogger.create(TodayDoseResetAlarmManager.class.getSimpleName());
 
     public static void enableAlarms(Context context) {
         // enable
@@ -81,13 +83,14 @@ public class TodayDoseResetAlarmManager {
     }
 
     private static void setNextAlarm(Context context, DateTime time, int requestCode, int id) {
+        LOGGER.d("setNextAlarm time[" + time.toString() + "]");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = createBroadcastPendingIntent(context, requestCode, createServiceIntent(context, id));
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setAlarmClock(createAlarmClockInfo(context, time), pendingIntent);
             //alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getMillis(), pendingIntent);
-        } else if (android.os.Build.VERSION.SDK_INT  >= Build.VERSION_CODES.KITKAT) {
+        } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time.getMillis(), pendingIntent);
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, time.getMillis(), pendingIntent);
@@ -102,7 +105,7 @@ public class TodayDoseResetAlarmManager {
     private static Intent createServiceIntent(Context context, int id) {
         Intent serviceIntent = new Intent(context, LekRemainderMainReceiver.class);
         serviceIntent.putExtra(LekRemainderMainReceiver.KEY, id);
-        Log.d("create", "createServiceIntent: " + id);
+        LOGGER.d("createServiceIntent: " + ServicesFactory.getName(id));
         return serviceIntent;
     }
 

@@ -24,6 +24,8 @@ import pl.com.mmotak.lekremainder.entities.DbHistory;
 import pl.com.mmotak.lekremainder.entities.DbTakeDose;
 import pl.com.mmotak.lekremainder.entities.IDbDose;
 import pl.com.mmotak.lekremainder.entities.Models;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.History;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -37,6 +39,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class DataBaseProvider implements IDataProvider {
+    private static final ILogger LOGGER = LekLogger.create(DataBaseProvider.class.getSimpleName());
 
     private SingleEntityStore<Persistable> dataStore;
     private Context context;
@@ -92,7 +95,7 @@ public class DataBaseProvider implements IDataProvider {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        LOGGER.e(e.getMessage(), e);
                     }
 
                     @Override
@@ -128,7 +131,7 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     @Override
-    public Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime(DateTime dateTime) {
+    public Observable<List<TodayDose>> getObservableForNotTakenTodayDoseAfterDateTime() {
         return getData()
                 .select(DbDose.class)
                 .orderBy(DbDose.TIME.asc())
@@ -137,8 +140,8 @@ public class DataBaseProvider implements IDataProvider {
                 .filter(dbDose -> dbDose.getDbTakeDose() == null || !dbDose.getDbTakeDose().isTaken())
                 .toList()
                 .map(DoseConverter::toTodayDoses)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
+                //.observeOn(AndroidSchedulers.mainThread());
     }
 
 
@@ -207,7 +210,7 @@ public class DataBaseProvider implements IDataProvider {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        LOGGER.e(e.getMessage(), e);
                     }
 
                     @Override
@@ -229,7 +232,7 @@ public class DataBaseProvider implements IDataProvider {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        LOGGER.e(e.getMessage(), e);
                     }
 
                     @Override
@@ -260,8 +263,8 @@ public class DataBaseProvider implements IDataProvider {
             }
 
             getData().update(list).subscribeOn(Schedulers.io())
-                    .subscribe(dbDoses -> {},
-                            throwable -> throwable.printStackTrace());
+                    .subscribe(dbDoses -> { },
+                            throwable -> LOGGER.e(throwable.getMessage(), throwable));
         }
     }
 
@@ -277,14 +280,6 @@ public class DataBaseProvider implements IDataProvider {
         if (dbDrug != null) {
             getData().toBlocking().delete(dbDrug);
         }
-
-//        getData().findByKey(DbDrug.class, id)
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(
-//                        dbDrug -> getData().delete(dbDrug)
-//                                .subscribeOn(Schedulers.io())
-//                                .subscribe()
-//                );
     }
 
     private Drug createNewDrug() {
@@ -292,21 +287,28 @@ public class DataBaseProvider implements IDataProvider {
     }
 
     private SingleEntityStore<Persistable> getData() {
+        LOGGER.d("getData start");
         if (dataStore == null) {
+            LOGGER.d("getData dataStore in NULL");
             // override onUpgrade to handle migrating to a new version
             DatabaseSource source = new DatabaseSource(context, Models.DEFAULT, 1);
+            LOGGER.d("getData new DatabaseSource");
 
             if (BuildConfig.DEBUG) {
                 source.setLoggingEnabled(true);
+                LOGGER.d("getData setLoggingEnabled(true)");
 
                 // use this in development mode to drop and recreate the tables on every upgrade
                 //source.setTableCreationMode(TableCreationMode.DROP_CREATE);
             }
             Configuration configuration = source.getConfiguration();
+            LOGGER.d("getData new Configuration");
 
             dataStore = RxSupport.toReactiveStore(
                     new EntityDataStore<Persistable>(configuration));
+            LOGGER.d("getData new dataStore");
         }
+        LOGGER.d("getData return dataStore");
         return dataStore;
     }
 }

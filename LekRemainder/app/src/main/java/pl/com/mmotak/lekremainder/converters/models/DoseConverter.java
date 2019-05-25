@@ -8,6 +8,8 @@ import pl.com.mmotak.lekremainder.entities.IDbDose;
 import pl.com.mmotak.lekremainder.entities.IDbDrug;
 import pl.com.mmotak.lekremainder.entities.DbDose;
 import pl.com.mmotak.lekremainder.entities.DbDrug;
+import pl.com.mmotak.lekremainder.logger.ILogger;
+import pl.com.mmotak.lekremainder.logger.LekLogger;
 import pl.com.mmotak.lekremainder.models.Dose;
 import pl.com.mmotak.lekremainder.models.Drug;
 import pl.com.mmotak.lekremainder.models.TodayDose;
@@ -17,8 +19,10 @@ import pl.com.mmotak.lekremainder.models.TodayDose;
  */
 
 public class DoseConverter {
+    private static final ILogger LOGGER = LekLogger.create(DoseConverter.class.getSimpleName());
 
     public static List<TodayDose> toTodayDoses(List<DbDose> dbDoses) {
+        LOGGER.d("toTodayDoses - start convert");
         List<TodayDose> outputList = new ArrayList<>();
 
         for (DbDose dbDose : dbDoses) {
@@ -37,6 +41,7 @@ public class DoseConverter {
             outputList.add(todayDose);
         }
 
+        LOGGER.d("toTodayDoses - end convert");
         return outputList;
 
     }

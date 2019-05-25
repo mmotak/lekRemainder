@@ -68,11 +68,25 @@
                 android:text="@string/save_config"/>
 
             <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:onClick="@{viewModel::onLoadConfigButtonClick}"
+            android:text="@string/load_config"/>
+
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="4dp"
-                android:onClick="@{viewModel::onLoadConfigButtonClick}"
-                android:text="@string/load_config"/>
+                android:onClick="@{viewModel::onLogsSaveToFile}"
+                android:text="@string/save_logs"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:onClick="@{viewModel::onTestNextAlarmNotification}"
+                android:text="@string/test_next_alarm_notification"/>
         </LinearLayout>
     </FrameLayout>
 </layout>
